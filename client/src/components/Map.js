@@ -5,6 +5,8 @@ import Basemap from "@arcgis/core/Basemap"
 import * as watchUtils from "@arcgis/core/core/watchUtils"
 import VectorTileLayer from "@arcgis/core/layers/VectorTileLayer"
 
+const mapIsHidden = false
+
 function debounce(func, timeout = 100) {
   let timer
   return (...args) => {
@@ -19,7 +21,7 @@ const Map = ({ mapRef, setIsLoaded, setHovered }) => {
   const mapDiv = useRef(null)
 
   useEffect(() => {
-    if (mapDiv.current) {
+    if (mapDiv.current && !mapIsHidden) {
       const vectorTileLayer = new VectorTileLayer({
         portalItem: {
           id: "f3a55a52222341a7aafc793174351bb8", // Forest and Parks Canvas

@@ -10,6 +10,7 @@ import Logo from "../assets/Logo"
 import { Link as ScrollLink } from "react-scroll"
 import DevPost from "../assets/Devpost"
 import useAnimationFrame from "../utils/useAnimationFrame"
+import { useStory } from "../context/story-context"
 
 const ClientSideOnlyMap = React.lazy(() => import("./Map"))
 
@@ -20,76 +21,45 @@ const variants = {
 
 const FrontPage = ({ children }) => {
   const isSSR = typeof window === "undefined"
-  const mapRef = useRef()
+  const {
+    mapRef,
+    ready,
+    mapLoaded,
+    setMapLoaded,
+    rotate,
+    reset,
+    currentStoryItem,
+    submitted,
+    submitURL,
+  } = useStory()
   const [hovered, setHovered] = useState("")
-  const [submitted, setSubmitted] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false)
   const [userInput, setUserInput] = useState("")
-  const [points, setPoints] = useState([])
-  const [requestOrigin, setRequestOrigin] = useState({
-    latitude: 0,
-    longitude: 0,
-  })
-  useEffect(() => {
-    if (submitted) {
-      document.body.classList.add("noscroll")
-      mapRef.current.goTo(
-        {
-          target: [requestOrigin.longitude, requestOrigin.latitude],
-          zoom: 3,
-        },
-        { animate: true, duration: 4000 }
-      )
-    } else {
-      document.body.classList.remove("noscroll")
-    }
-  }, [submitted])
-
-  useEffect(() => {
-    const timerId = setInterval(() => {}, 1000)
-    return () => clearInterval(timerId)
-  }, [mapRef.current])
 
   useAnimationFrame(() => {
     if (mapRef.current && mapRef.current.camera) {
-      if (!submitted) {
+      if (rotate) {
         const camera = mapRef.current.camera.clone()
         camera.position.longitude -= 0.1
         mapRef.current.goTo(camera, { animate: false })
       }
     }
-  }, [submitted, mapRef.current])
+  }, [rotate, mapRef.current])
 
   useEffect(() => {
     if (mapRef.current) {
-      if (submitted) {
-        redrawElements(mapRef, requestOrigin, points, hovered, setHovered)
+      if (ready) {
+        redrawElements(mapRef, currentStoryItem.points, hovered, setHovered)
       } else {
         mapRef.current.graphics.removeAll()
       }
     }
-  }, [hovered, submitted])
-
-  const submit = async () => {
-    const request = await fetch(`http://localhost:3000/${userInput}`)
-    const data = await request.json()
-    setRequestOrigin({ latitude: data.lat, longitude: data.lon })
-    if (data.CDN_LOCATIONS) {
-      setPoints(
-        data.CDN_LOCATIONS.map(({ lat, lon }) => ({
-          latitude: lat,
-          longitude: lon,
-        }))
-      )
-    }
-    setSubmitted(true)
-  }
+  }, [hovered, ready])
 
   return (
-    <div className={`text-white scroll ${submitted ? "noscroll" : ""}`}>
+    <div className={`text-white scroll`}>
       <motion.div
         initial="idle"
-        animate={submitted ? "active" : "idle"}
+        animate={ready ? "active" : "idle"}
         variants={variants}
         transition={{ duration: 1 }}
         className={`h-screen w-screen relative`}
@@ -98,13 +68,13 @@ const FrontPage = ({ children }) => {
           <React.Suspense fallback={<div />}>
             <ClientSideOnlyMap
               mapRef={mapRef}
-              setIsLoaded={setIsLoaded}
+              setIsLoaded={setMapLoaded}
               setHovered={setHovered}
             />
           </React.Suspense>
         )}
         <AnimatePresence>
-          {!isLoaded && (
+          {!mapLoaded && (
             <motion.div
               key="smooth-load"
               id="smooth-load"
@@ -114,7 +84,7 @@ const FrontPage = ({ children }) => {
               className="bg-space absolute top-0 left-0 w-full h-full"
             />
           )}
-          {submitted ? (
+          {ready ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -123,21 +93,7 @@ const FrontPage = ({ children }) => {
             >
               <button
                 onClick={() => {
-                  mapRef.current.goTo(
-                    {
-                      target: [-93.94, 29.89],
-                      zoom: 0,
-                    },
-                    { animate: true, duration: 1000 }
-                  )
-                  setTimeout(() => {
-                    setSubmitted(false)
-                    setPoints([])
-                    setRequestOrigin({
-                      latitude: 0,
-                      longitude: 0,
-                    })
-                  }, 1000)
+                  reset()
                 }}
               >
                 <ArrowLeftIcon className="h-8 w-8" />
@@ -166,12 +122,13 @@ const FrontPage = ({ children }) => {
                   <input
                     value={userInput}
                     onChange={e => setUserInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && submitURL()}
                     placeholder="your-website.com"
                     className="w-full bg-transparent text-2xl text-white px-2 mx-2 focus:outline-none"
                   />
                   <button
                     onClick={() => {
-                      submit()
+                      submitURL()
                     }}
                     className="bg-yellow-400 hover:bg-yellow-500 rounded-full text-white p-2"
                   >

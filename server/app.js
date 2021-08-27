@@ -17,14 +17,19 @@ app.use(cors(corsOptions));
 
 app.get("/:url", async (req, res) => {
   var URL = req.params.url;
-
+  let IP = req.ip === "::1" ? "51.9.166.141" : req.ip;
+  console.log(req.ip);
   dns.lookup(URL, async function (err, addresses, family) {
-    const request = await fetch(`http://ip-api.com/json/${URL}`);
-    const data = await request.json();
+    const userData = await fetch(`http://ip-api.com/json/${IP}`).then((res) =>
+      res.json()
+    );
+    const data = await fetch(`http://ip-api.com/json/${URL}`).then((res) =>
+      res.json()
+    );
     handle(
       {
-        ...data,
-        originalIP: addresses,
+        requestData: data,
+        userInfo: userData,
       },
       res
     );
