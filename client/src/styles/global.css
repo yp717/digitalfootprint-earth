@@ -1,0 +1,52 @@
+@import "@arcgis/core/assets/esri/themes/light/main.css";
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.bg-space {
+  background-color: #010b14;
+}
+.esri-attribution {
+  background-color: #fffff000;
+  @apply text-white p-2;
+}
+.esri-view-surface--inset-outline {
+ @apply focus:outline-none;
+}
+.esri-popup,
+.esri-ui-top-left,
+.esri-popup,
+.esri-popup__main-container,
+.esri-popup__pointer-direction {
+  display: none;
+}
+
+body {
+  background-color: #010b14;
+  @apply overflow-x-hidden;
+}
+
+
+body::-webkit-scrollbar {
+  width: 8px;
+  @apply w-1 md:w-2;
+}
+ 
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #010b14;
+  @apply my-1;
+}
+ 
+body::-webkit-scrollbar-thumb {
+  @apply bg-yellow-400 rounded-full;
+}
+
+.noscroll {
+  @apply overflow-y-hidden;
+}
+
+a {
+  @apply text-yellow-400 hover:text-yellow-200 cursor-pointer font-medium hover:underline;
+}
