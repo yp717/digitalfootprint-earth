@@ -6,17 +6,17 @@ import { StoryProvider } from "../context/story-context"
 import Ping from "ping.js"
 
 const Index = () => {
-  useEffect(async () => {
-    var p = new Ping()
-    let time = -1
-    try {
-      const req = await p.ping("http://linkedin.com")
-      time = req
-    } catch (e) {
-      time = e
-    }
-    console.log(time)
-  }, [])
+  // useEffect(async () => {
+  //   var p = new Ping()
+  //   let time = -1
+  //   try {
+  //     const req = await p.ping("http://linkedin.com")
+  //     time = req
+  //   } catch (e) {
+  //     time = e
+  //   }
+  //   console.log(time)
+  // }, [])
   return (
     <StoryProvider>
       <FrontPage>

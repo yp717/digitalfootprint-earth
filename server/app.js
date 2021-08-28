@@ -18,7 +18,7 @@ app.use(cors(corsOptions));
 app.get("/:url", async (req, res) => {
   var URL = req.params.url;
   let IP = req.ip === "::1" ? "51.9.166.141" : req.ip;
-  console.log(req.ip);
+  console.log(req.url);
   dns.lookup(URL, async function (err, addresses, family) {
     const userData = await fetch(`http://ip-api.com/json/${IP}`).then((res) =>
       res.json()
@@ -28,7 +28,7 @@ app.get("/:url", async (req, res) => {
     );
     handle(
       {
-        requestData: data,
+        requestData: { ...data, url: URL },
         userInfo: userData,
       },
       res

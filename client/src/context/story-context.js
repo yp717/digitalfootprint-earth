@@ -1,4 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from "react"
+import { redrawElements } from "../utils/AddElements"
+import StoryCreator from "../utils/StoryCreator"
 export const isBrowser = () => typeof window !== "undefined"
 
 const StoryContext = React.createContext()
@@ -12,7 +14,7 @@ export const StoryProvider = ({ ...props }) => {
   const [storyIndex, setStoryIndex] = useState(0)
   const [storyItems, setStoryItems] = useState([
     {
-      title: "My First Section",
+      title: "StoryStub",
       body: "This is the content of my story block.",
       goTo: {
         target: [-3.0516, 52.7263],
@@ -23,34 +25,15 @@ export const StoryProvider = ({ ...props }) => {
       layers: [],
       points: [],
     },
-    {
-      title: "My Second Section",
-      body: "This is the content of my story block.",
-      goTo: {
-        target: [3.0516, 64.7263],
-        zoom: 1,
-        duration: 2000,
-      },
-      rotate: true,
-      layers: [],
-      points: [],
-    },
   ])
 
   const submitURL = async userInput => {
     setSubmitted(true)
     const request = await fetch(`http://localhost:3000/${userInput}`)
     const data = await request.json()
-    // setRequestOrigin({ latitude: data.userInfo.lat, longitude: data.userInfo.lon })
-    // if (data.cdnInfo.cdnLocations) {
-    //   setPoints(
-    //     data.cdnInfo.cdnLocations.map(({ lat, lon, ...otherProps }) => ({
-    //       latitude: lat,
-    //       longitude: lon,
-    //       ...otherProps
-    //     }))
-    //   )
-    // }
+    console.log(data)
+    let story = StoryCreator(data)
+    setStoryItems([...story])
     setReady(true)
   }
 
@@ -63,7 +46,6 @@ export const StoryProvider = ({ ...props }) => {
   }, [ready])
 
   useEffect(() => {
-    console.log(ready, storyIndex)
     if (ready) {
       if (storyItems[storyIndex].rotate === true) {
         setRotate(true)

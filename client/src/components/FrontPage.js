@@ -48,12 +48,12 @@ const FrontPage = ({ children }) => {
   useEffect(() => {
     if (mapRef.current) {
       if (ready) {
-        redrawElements(mapRef, currentStoryItem.points, hovered, setHovered)
+        redrawElements(mapRef, currentStoryItem.points, currentStoryItem.lines, hovered, setHovered)
       } else {
         mapRef.current.graphics.removeAll()
       }
     }
-  }, [hovered, ready])
+  }, [hovered, ready, currentStoryItem.points])
 
   return (
     <div className={`text-white scroll`}>
@@ -81,7 +81,7 @@ const FrontPage = ({ children }) => {
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, delay: 1 }}
-              className="bg-space absolute top-0 left-0 w-full h-full"
+              className="bg-space absolute top-0 left-0 w-full h-full z-10"
             />
           )}
           {ready ? (
@@ -110,7 +110,7 @@ const FrontPage = ({ children }) => {
           )}
         </AnimatePresence>
 
-        {!submitted && (
+        {mapLoaded && !submitted && !ready && (
           <>
             <div className="absolute z-30 h-full w-full top-0 left-0">
               <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
@@ -122,13 +122,13 @@ const FrontPage = ({ children }) => {
                   <input
                     value={userInput}
                     onChange={e => setUserInput(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && submitURL()}
+                    onKeyDown={e => e.key === "Enter" && submitURL(userInput)}
                     placeholder="your-website.com"
                     className="w-full bg-transparent text-2xl text-white px-2 mx-2 focus:outline-none"
                   />
                   <button
                     onClick={() => {
-                      submitURL()
+                      submitURL(userInput)
                     }}
                     className="bg-yellow-400 hover:bg-yellow-500 rounded-full text-white p-2"
                   >
@@ -167,6 +167,35 @@ const FrontPage = ({ children }) => {
               </div>
             </div>
           </>
+        )}
+        {(!mapLoaded || (submitted && !ready)) && (
+          <div className="absolute z-30 h-full w-full top-0 left-0">
+            <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
+          
+                <svg
+                  class="animate-spin -ml-1 mr-3 h-24 w-24 text-yellow-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              <p className="text-2xl font-bold">{!mapLoaded? "Preparing your experience...": "Creating the story..."}</p>
+            
+            </div>
+          </div>
         )}
       </motion.div>
       {children}
