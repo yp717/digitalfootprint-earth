@@ -5,7 +5,12 @@ const { handle } = require("./cdnHandeler");
 const app = express();
 const port = process.env.PORT || 3000;
 var cors = require("cors");
-var whitelist = ["http://localhost:8000", "http://localhost:9000"];
+var whitelist = [
+  "http://localhost:8000",
+  "http://localhost:9000",
+  "http://cdnhatch-client.onrender.com",
+  "https://cdnhatch-client.onrender.com",
+];
 var corsOptions = {
   origin: function (origin, callback) {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
