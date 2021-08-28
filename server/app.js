@@ -3,9 +3,15 @@ const express = require("express");
 const fetch = require("node-fetch");
 const { handle } = require("./cdnHandeler");
 const app = express();
-const port = 3000;
+var get_ip = require("ipware")().get_ip;
+const port = process.env.PORT || 3000;
 var cors = require("cors");
-var whitelist = ["http://localhost:8000", "http://localhost:9000"];
+var whitelist = [
+  "http://localhost:8000",
+  "http://localhost:9000",
+  "http://cdnhatch-client.onrender.com",
+  "https://cdnhatch-client.onrender.com",
+];
 var corsOptions = {
   origin: function (origin, callback) {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
@@ -15,20 +21,29 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(function (req, res, next) {
+  var ip_info = get_ip(req);
+  console.log(ip_info);
+  next();
+});
 app.get("/:url", async (req, res) => {
   var URL = req.params.url;
+  let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
+  console.log(req.clientIp, req.clientIpRoutable);
 
-  dns.lookup(URL, async function (err, addresses, family) {
-    const request = await fetch(`http://ip-api.com/json/${URL}`);
-    const data = await request.json();
-    handle(
-      {
-        ...data,
-        originalIP: addresses,
-      },
-      res
-    );
-  });
+  const userData = await fetch(`http://ip-api.com/json/${IP}`).then((res) =>
+    res.json()
+  );
+  const data = await fetch(`http://ip-api.com/json/${URL}`).then((res) =>
+    res.json()
+  );
+  handle(
+    {
+      requestData: { ...data, url: URL },
+      userInfo: userData,
+    },
+    res
+  );
 });
 
 app.listen(port, () => {

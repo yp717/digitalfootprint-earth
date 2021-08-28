@@ -10,111 +10,123 @@ import Logo from "../assets/Logo"
 import { Link as ScrollLink } from "react-scroll"
 import DevPost from "../assets/Devpost"
 import useAnimationFrame from "../utils/useAnimationFrame"
+import { useStory } from "../context/story-context"
+import { useWindowSize } from "../utils/useWindowSize"
 
 const ClientSideOnlyMap = React.lazy(() => import("./Map"))
 
-const variants = {
-  idle: { padding: "6rem" },
-  active: { padding: " 0rem" },
-}
-
 const FrontPage = ({ children }) => {
   const isSSR = typeof window === "undefined"
-  const mapRef = useRef()
+  const {
+    mapRef,
+    ready,
+    mapLoaded,
+    setMapLoaded,
+    rotate,
+    reset,
+    currentStoryItem,
+    submitted,
+    submitURL,
+  } = useStory()
   const [hovered, setHovered] = useState("")
-  const [submitted, setSubmitted] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false)
   const [userInput, setUserInput] = useState("")
-  const [points, setPoints] = useState([])
-  const [requestOrigin, setRequestOrigin] = useState({
-    latitude: 0,
-    longitude: 0,
-  })
-  useEffect(() => {
-    if (submitted) {
-      document.body.classList.add("noscroll")
-      mapRef.current.goTo(
-        {
-          target: [requestOrigin.longitude, requestOrigin.latitude],
-          zoom: 3,
-        },
-        { animate: true, duration: 4000 }
-      )
-    } else {
-      document.body.classList.remove("noscroll")
-    }
-  }, [submitted])
-
-  useEffect(() => {
-    const timerId = setInterval(() => {}, 1000)
-    return () => clearInterval(timerId)
-  }, [mapRef.current])
+  const { width } = useWindowSize()
+  const variants = {
+    idle: { padding: width < 550 ? "2rem" : width < 1000 ? "4rem" : "6rem" },
+    active: { padding: " 0rem" },
+  }
 
   useAnimationFrame(() => {
     if (mapRef.current && mapRef.current.camera) {
-      if (!submitted) {
+      if (rotate) {
         const camera = mapRef.current.camera.clone()
         camera.position.longitude -= 0.1
         mapRef.current.goTo(camera, { animate: false })
       }
     }
-  }, [submitted, mapRef.current])
+  }, [rotate, mapRef.current])
 
   useEffect(() => {
     if (mapRef.current) {
-      if (submitted) {
-        redrawElements(mapRef, requestOrigin, points, hovered, setHovered)
+      if (ready) {
+        redrawElements(
+          mapRef,
+          currentStoryItem.points,
+          currentStoryItem.lines,
+          hovered,
+          setHovered
+        )
       } else {
         mapRef.current.graphics.removeAll()
       }
     }
-  }, [hovered, submitted])
-
-  const submit = async () => {
-    const request = await fetch(`http://localhost:3000/${userInput}`)
-    const data = await request.json()
-    setRequestOrigin({ latitude: data.lat, longitude: data.lon })
-    if (data.CDN_LOCATIONS) {
-      setPoints(
-        data.CDN_LOCATIONS.map(({ lat, lon }) => ({
-          latitude: lat,
-          longitude: lon,
-        }))
-      )
-    }
-    setSubmitted(true)
-  }
+  }, [hovered, ready, currentStoryItem.points])
 
   return (
-    <div className={`text-white scroll ${submitted ? "noscroll" : ""}`}>
+    <div className={`text-white scroll`}>
       <motion.div
         initial="idle"
-        animate={submitted ? "active" : "idle"}
+        animate={ready ? "active" : "idle"}
         variants={variants}
         transition={{ duration: 1 }}
         className={`h-screen w-screen relative`}
       >
+        {!ready && (
+          <>
+            <ScrollLink
+              to="research"
+              smooth={true}
+              duration={500}
+              className="absolute bottom-0 left-1/2 -ml-5 mb-10 z-30"
+            >
+              <ChevronDoubleDownIcon className="h-10 w-10" />
+            </ScrollLink>
+            <div className="absolute top-0 left-0 w-full flex flex-col md:flex-row md:justify-between py-3 md:py-5 px-5 md:px-10 z-30">
+              <div className="">
+                <div className="flex items-center space-x-1">
+                  <Logo className="h-6 w-6 mb-1" />
+                  <p className="text-xl">
+                    <span className="font-bold">CDN</span>Hatch
+                  </p>
+                </div>
+              </div>
+              <div className="hidden md:inline-block text-right text-xs md:text-sm">
+                <p className="">
+                  A submission for <a>Esri's Hack for a Sustainable Future</a>
+                </p>
+                <p className="">
+                  Built by <a>Sam Larsen-Disney</a> & <a>Yannis Panagis</a>
+                </p>
+                <div className="mt-2 hidden md:flex md:justify-end">
+                  <a href="" className="">
+                    <DevPost className="w-20 md:w-24" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
         {!isSSR && (
           <React.Suspense fallback={<div />}>
             <ClientSideOnlyMap
               mapRef={mapRef}
-              setIsLoaded={setIsLoaded}
+              setIsLoaded={setMapLoaded}
               setHovered={setHovered}
             />
           </React.Suspense>
         )}
         <AnimatePresence>
-          {!isLoaded && (
+          {!mapLoaded && (
             <motion.div
               key="smooth-load"
               id="smooth-load"
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, delay: 1 }}
-              className="bg-space absolute top-0 left-0 w-full h-full"
+              className="bg-space absolute top-0 left-0 w-full h-full z-10"
             />
           )}
-          {submitted ? (
+          {ready ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -123,21 +135,7 @@ const FrontPage = ({ children }) => {
             >
               <button
                 onClick={() => {
-                  mapRef.current.goTo(
-                    {
-                      target: [-93.94, 29.89],
-                      zoom: 0,
-                    },
-                    { animate: true, duration: 1000 }
-                  )
-                  setTimeout(() => {
-                    setSubmitted(false)
-                    setPoints([])
-                    setRequestOrigin({
-                      latitude: 0,
-                      longitude: 0,
-                    })
-                  }, 1000)
+                  reset()
                 }}
               >
                 <ArrowLeftIcon className="h-8 w-8" />
@@ -154,62 +152,66 @@ const FrontPage = ({ children }) => {
           )}
         </AnimatePresence>
 
-        {!submitted && (
+        {mapLoaded && !submitted && !ready && (
           <>
-            <div className="absolute z-30 h-full w-full top-0 left-0">
+            <div className="absolute z-30 h-full w-full top-0 left-0 px-2">
               <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
-                <Logo className="h-12 w-12 text-yellow-400" />
-                <h1 className="text-4xl font-bold text-white max-w-lg text-center">
+                <Logo className="h-8 w-8 md:h-12 md:w-12 text-yellow-400" />
+                <h1 className="text-2xl md:text-4xl font-bold text-white max-w-lg text-center">
                   Optimizing CDN locations for a greener planet.
                 </h1>
-                <div className="border-4 border-yellow-400 rounded-full flex p-1 w-full max-w-lg">
+                <div className="border-4 border-yellow-400 rounded-full flex p-1 mx-4 w-full max-w-lg">
                   <input
                     value={userInput}
                     onChange={e => setUserInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && submitURL(userInput)}
                     placeholder="your-website.com"
-                    className="w-full bg-transparent text-2xl text-white px-2 mx-2 focus:outline-none"
+                    className="w-full bg-transparent text-lg md:text-2xl text-white px-1 md:px-2 mx-2 focus:outline-none"
                   />
                   <button
                     onClick={() => {
-                      submit()
+                      submitURL(userInput)
                     }}
                     className="bg-yellow-400 hover:bg-yellow-500 rounded-full text-white p-2"
                   >
-                    <SearchIcon className="h-6 w-6" />
+                    <SearchIcon className="h-4 w-4 md:h-6 md:w-6" />
                   </button>
                 </div>
               </div>
             </div>
-            <ScrollLink
-              to="research"
-              smooth={true}
-              duration={500}
-              className="absolute bottom-0 left-1/2 -ml-5 mb-10 z-30"
-            >
-              <ChevronDoubleDownIcon className="h-10 w-10" />
-            </ScrollLink>
-            <div className="absolute top-0 left-0 text-right my-5 mx-10 z-30">
-              <div className="flex items-center space-x-1">
-                <Logo className="h-6 w-6 mb-1" />
-                <p className="text-xl">
-                  <span className="font-bold">CDN</span>Hatch
-                </p>
-              </div>
-            </div>
-            <div className="absolute top-0 right-0 text-right my-5 mx-10 z-30">
-              <p className="text-sm">
-                A submission for <a>Esri's Hack for a Sustainable Future</a>
-              </p>
-              <p className="text-sm">
-                Built by <a>Sam Larsen-Disney</a> & <a>Yannis Panagis</a>
-              </p>
-              <div className="flex mt-2 justify-end">
-                <a href="" className="">
-                  <DevPost className="w-24" />
-                </a>
-              </div>
-            </div>
           </>
+        )}
+
+        {(!mapLoaded || (submitted && !ready)) && (
+          <div className="absolute z-30 h-full w-full top-0 left-0">
+            <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
+              <svg
+                className="animate-spin -ml-1 mr-3 h-16 w-16 md:h-24 md:w-24 text-yellow-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <p className="text-lg md:text-2xl font-bold">
+                {!mapLoaded
+                  ? "Preparing your experience..."
+                  : "Creating the story..."}
+              </p>
+            </div>
+          </div>
         )}
       </motion.div>
       {children}

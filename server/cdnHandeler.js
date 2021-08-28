@@ -3,23 +3,26 @@ const FastlyCDNS = require("./cdn-locations/fastly.json");
 const CloudflareCDNS = require("./cdn-locations/cloud-flare.json");
 const AzureCDNS = require("./cdn-locations/azure.json");
 const GoogleCDNS = require("./cdn-locations/google.json");
+const AkamaiCDNS = require("./cdn-locations/akamai.json");
 const AMAZON = /Amazon/;
 const FASTLY = /Fastly/;
 const CLOUDFLARE = /Cloudflare/;
-const AKAMI = /Akamai/;
+const AKAMAI = /Akamai/;
 const MICROSOFT = /Microsoft/;
 const GOOGLE = /Google/;
 
 function handle(data, res) {
-  const { isp } = data;
+  const { isp } = data.requestData;
 
   switch (true) {
     case AMAZON.test(isp):
       res.end(
         JSON.stringify({
           ...data,
-          CDN_LOCATIONS: AmazonCDNS,
-          CDN_PROVIDER: "Amazon",
+          cdnInfo: {
+            cdnLocations: AmazonCDNS,
+            cdnProvider: "Amazon",
+          },
         })
       );
       break;
@@ -28,8 +31,10 @@ function handle(data, res) {
       res.end(
         JSON.stringify({
           ...data,
-          CDN_LOCATIONS: FastlyCDNS,
-          CDN_PROVIDER: "Fastly",
+          cdnInfo: {
+            cdnLocations: FastlyCDNS,
+            cdnProvider: "Fastly",
+          },
         })
       );
       break;
@@ -37,8 +42,10 @@ function handle(data, res) {
       res.end(
         JSON.stringify({
           ...data,
-          CDN_LOCATIONS: CloudflareCDNS,
-          CDN_PROVIDER: "CloudFlare",
+          cdnInfo: {
+            cdnLocations: CloudflareCDNS,
+            cdnProvider: "CloudFlare",
+          },
         })
       );
       break;
@@ -46,8 +53,10 @@ function handle(data, res) {
       res.end(
         JSON.stringify({
           ...data,
-          CDN_LOCATIONS: AzureCDNS,
-          CDN_PROVIDER: "Microsoft Azure",
+          cdnInfo: {
+            cdnLocations: AzureCDNS,
+            cdnProvider: "Microsoft Azure",
+          },
         })
       );
       break;
@@ -55,8 +64,22 @@ function handle(data, res) {
       res.end(
         JSON.stringify({
           ...data,
-          CDN_LOCATIONS: GoogleCDNS,
-          CDN_PROVIDER: "Google",
+          cdnInfo: {
+            cdnLocations: GoogleCDNS,
+            cdnProvider: "Google",
+          },
+        })
+      );
+      break;
+    case AKAMAI.test(isp):
+      // console.log(Object.keys(AkamaiCDNS).map(key => AkamaiCDNS[key]))
+      res.end(
+        JSON.stringify({
+          ...data,
+          cdnInfo: {
+            cdnLocations: Object.keys(AkamaiCDNS).map(key => AkamaiCDNS[key]),
+            cdnProvider: "Akamai",
+          },
         })
       );
       break;
