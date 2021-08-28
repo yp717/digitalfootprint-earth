@@ -50,3 +50,4 @@ body::-webkit-scrollbar-thumb {
 a {
   @apply text-yellow-400 hover:text-yellow-200 cursor-pointer font-medium hover:underline;
 }
+

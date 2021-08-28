@@ -9,7 +9,6 @@ const DevPost = ({ className }) => {
       x="0px"
       y="0px"
       viewBox="0 0 600 116.5"
-      enable-background="new 0 0 600 116.5"
       className={className}
     >
       <polygon

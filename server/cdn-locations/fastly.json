@@ -1,291 +1,329 @@
 [
+  { "name": "Accra", "lat": 5.6, "lon": -0.19 },
   {
-    "status": "success",
-    "country": "Canada",
-    "countryCode": "CA",
-    "region": "QC",
-    "regionName": "Quebec",
-    "city": "Montreal",
-    "zip": "H4X",
-    "lat": 45.5017,
-    "lon": -73.5673,
-    "timezone": "America/Toronto",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "23.235.32.0",
-    "range": "20"
+    "name": "Adelaide",
+    "lat": -34.93,
+    "lon": 138.6
   },
   {
-    "status": "success",
-    "country": "Japan",
-    "countryCode": "JP",
-    "region": "13",
-    "regionName": "Tokyo",
-    "city": "Tokyo",
-    "zip": "102-0082",
-    "lat": 35.6887,
-    "lon": 139.745,
-    "timezone": "Asia/Tokyo",
-    "isp": "Fastly",
-    "org": "Fastly, Inc",
-    "as": "AS54113 Fastly",
-    "query": "43.249.72.0",
-    "range": "22"
+    "name": "Amsterdam",
+    "lat": 52.36,
+    "lon": 4.89
   },
   {
-    "status": "success",
-    "country": "New Zealand",
-    "countryCode": "NZ",
-    "region": "AUK",
-    "regionName": "Auckland",
-    "city": "Auckland",
-    "zip": "1010",
-    "lat": -36.8485,
-    "lon": 174.763,
-    "timezone": "Pacific/Auckland",
-    "isp": "Fastly",
-    "org": "Fastly, Inc",
-    "as": "",
-    "query": "103.244.50.0",
-    "range": "24"
+    "name": "Ashburn",
+    "lat": 39.04,
+    "lon": -77.48
   },
   {
-    "status": "success",
-    "country": "Brazil",
-    "countryCode": "BR",
-    "region": "RJ",
-    "regionName": "Rio de Janeiro",
-    "city": "Rio de Janeiro",
-    "zip": "20000",
-    "lat": -22.9485,
-    "lon": -43.3436,
-    "timezone": "America/Sao_Paulo",
-    "isp": "Fastly",
-    "org": "Fastly, Inc",
-    "as": "",
-    "query": "103.245.222.0",
-    "range": "23"
+    "name": "Atlanta",
+    "lat": 33.74,
+    "lon": -84.38
   },
   {
-    "status": "success",
-    "country": "Singapore",
-    "countryCode": "SG",
-    "region": "",
-    "regionName": "",
-    "city": "Singapore",
-    "zip": "",
-    "lat": 1.35208,
-    "lon": 103.82,
-    "timezone": "Asia/Singapore",
-    "isp": "Fastly",
-    "org": "Fastly, Inc",
-    "as": "AS54113 Fastly",
-    "query": "103.245.224.0",
-    "range": "24"
+    "name": "Auckland",
+    "lat": -36.84,
+    "lon": 174.76
   },
   {
-    "status": "success",
-    "country": "Canada",
-    "countryCode": "CA",
-    "region": "QC",
-    "regionName": "Quebec",
-    "city": "Montreal",
-    "zip": "H4X",
-    "lat": 45.5017,
-    "lon": -73.5673,
-    "timezone": "America/Toronto",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "104.156.80.0",
-    "range": "20"
+    "name": "Bogota",
+    "lat": 4.7,
+    "lon": -74.07
   },
   {
-    "status": "success",
-    "country": "United States",
-    "countryCode": "US",
-    "region": "NJ",
-    "regionName": "New Jersey",
-    "city": "Newark",
-    "zip": "07175",
-    "lat": 40.7357,
-    "lon": -74.1724,
-    "timezone": "America/New_York",
-    "isp": "Fastly",
-    "org": "Fastly, Inc",
-    "as": "AS54113 Fastly",
-    "query": "146.75.0.0",
-    "range": "17"
+    "name": "Boston",
+    "lat": 42.36,
+    "lon": -71.05
   },
   {
-    "status": "success",
-    "country": "Canada",
-    "countryCode": "CA",
-    "region": "QC",
-    "regionName": "Quebec",
-    "city": "Montreal",
-    "zip": "H4X",
-    "lat": 45.5017,
-    "lon": -73.5673,
-    "timezone": "America/Toronto",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "151.101.0.0",
-    "range": "16"
+    "name": "Brisbane",
+    "lat": -27.46,
+    "lon": 153.02
   },
   {
-    "status": "success",
-    "country": "Canada",
-    "countryCode": "CA",
-    "region": "ON",
-    "regionName": "Ontario",
-    "city": "Toronto",
-    "zip": "M4J",
-    "lat": 43.6911,
-    "lon": -79.3353,
-    "timezone": "America/Toronto",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "157.52.64.0",
-    "range": "18"
+    "name": "Brussels",
+    "lat": 50.85,
+    "lon": 4.35
   },
   {
-    "status": "success",
-    "country": "United States",
-    "countryCode": "US",
-    "region": "NY",
-    "regionName": "New York",
-    "city": "New York",
-    "zip": "10123",
-    "lat": 40.7831,
-    "lon": -73.9713,
-    "timezone": "America/New_York",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "167.82.0.0",
-    "range": "17"
+    "name": "Calgary",
+    "lat": 51.04,
+    "lon": -114.07
   },
   {
-    "status": "success",
-    "country": "United States",
-    "countryCode": "US",
-    "region": "NJ",
-    "regionName": "New Jersey",
-    "city": "Newark",
-    "zip": "07175",
-    "lat": 40.7357,
-    "lon": -74.1724,
-    "timezone": "America/New_York",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "167.82.128.0",
-    "range": "20"
+    "name": "Chennai",
+    "lat": 13.08,
+    "lon": 80.27
   },
   {
-    "status": "success",
-    "country": "United States",
-    "countryCode": "US",
-    "region": "GA",
-    "regionName": "Georgia",
-    "city": "Atlanta",
-    "zip": "30301",
-    "lat": 33.7485,
-    "lon": -84.3871,
-    "timezone": "America/New_York",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "167.82.160.0",
-    "range": "20"
+    "name": "Chicago",
+    "lat": 41.87,
+    "lon": -87.62
   },
   {
-    "status": "success",
-    "country": "United States",
-    "countryCode": "US",
-    "region": "VA",
-    "regionName": "Virginia",
-    "city": "Ashburn",
-    "zip": "20149",
-    "lat": 39.0481,
-    "lon": -77.4728,
-    "timezone": "America/New_York",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "167.82.224.0",
-    "range": "20"
+    "name": "Columbus",
+    "lat": 39.96,
+    "lon": -82.99
   },
   {
-    "status": "success",
-    "country": "United Kingdom",
-    "countryCode": "GB",
-    "region": "ENG",
-    "regionName": "England",
-    "city": "London",
-    "zip": "W1B",
-    "lat": 51.5074,
-    "lon": -0.127758,
-    "timezone": "Europe/London",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "172.111.64.0",
-    "range": "18"
+    "name": "Christchurch",
+    "lat": -43.53,
+    "lon": 172.63
   },
   {
-    "status": "success",
-    "country": "United Kingdom",
-    "countryCode": "GB",
-    "region": "ENG",
-    "regionName": "England",
-    "city": "London",
-    "zip": "W1B",
-    "lat": 51.5074,
-    "lon": -0.127758,
-    "timezone": "Europe/London",
-    "isp": "Fastly",
-    "org": "Fastly, Inc.",
-    "as": "AS54113 Fastly",
-    "query": "185.31.16.0",
-    "range": "22"
+    "name": "Copenhagen",
+    "lat": 55.67,
+    "lon": 12.56
   },
   {
-    "status": "success",
-    "country": "United States",
-    "countryCode": "US",
-    "region": "VA",
-    "regionName": "Virginia",
-    "city": "Ashburn",
-    "zip": "20149",
-    "lat": 39.0481,
-    "lon": -77.4728,
-    "timezone": "America/New_York",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "199.27.72.0",
-    "range": "21"
+    "name": "Curitiba",
+    "lat": -25.48,
+    "lon": -49.3
   },
   {
-    "status": "success",
-    "country": "United States",
-    "countryCode": "US",
-    "region": "FL",
-    "regionName": "Florida",
-    "city": "Jacksonville",
-    "zip": "32255",
-    "lat": 30.3341,
-    "lon": -81.6544,
-    "timezone": "America/New_York",
-    "isp": "Fastly",
-    "org": "Fastly",
-    "as": "AS54113 Fastly",
-    "query": "199.232.0.0",
-    "range": "16"
+    "name": "Dallas",
+    "lat": 32.77,
+    "lon": -96.79
+  },
+  {
+    "name": "Denver",
+    "lat": 39.73,
+    "lon": -104.99
+  },
+  {
+    "name": "Detroit",
+    "lat": 42.33,
+    "lon": -83.05
+  },
+  {
+    "name": "Dubai",
+    "lat": 25.2,
+    "lon": 55.27
+  },
+  {
+    "name": "Dublin",
+    "lat": 53.34,
+    "lon": -6.26
+  },
+  {
+    "name": "Fortaleza",
+    "lat": -3.73,
+    "lon": -38.53
+  },
+  {
+    "name": "Frankfurt",
+    "lat": 50.11,
+    "lon": 8.68
+  },
+  {
+    "name": "Helsinki",
+    "lat": 60.16,
+    "lon": 24.93
+  },
+  {
+    "name": "Hyderabad",
+    "lat": 17.38,
+    "lon": 78.49
+  },
+  {
+    "name": "Honolulu",
+    "lat": 21.31,
+    "lon": -157.86
+  },
+  {
+    "name": "Houston",
+    "lat": 29.76,
+    "lon": -95.36
+  },
+  {
+    "name": "Jacksonville",
+    "lat": 30.33,
+    "lon": -81.65
+  },
+  {
+    "name": "Jakarta",
+    "lat": -6.21,
+    "lon": 106.85
+  },
+  {
+    "name": "Johannesburg",
+    "lat": -26.2,
+    "lon": 28.04
+  },
+  {
+    "name": "Kolkata",
+    "lat": 22.57,
+    "lon": 88.36
+  },
+  {
+    "name": "Lima",
+    "lat": -12.05,
+    "lon": -77.04
+  },
+  {
+    "name": "Lisbon",
+    "lat": 38.72,
+    "lon": -9.14
+  },
+  {
+    "name": "London",
+    "lat": 51.5,
+    "lon": 0.12
+  },
+  {
+    "name": "Madrid",
+    "lat": 40.41,
+    "lon": -3.7
+  },
+  {
+    "name": "Manila",
+    "lat": 14.6,
+    "lon": 120.98
+  },
+  {
+    "name": "Manchester",
+    "lat": 53.48,
+    "lon": -2.24
+  },
+  {
+    "name": "Marseille",
+    "lat": 43.3,
+    "lon": 5.37
+  },
+  {
+    "name": "Melbourne",
+    "lat": -37.81,
+    "lon": 144.96
+  },
+  {
+    "name": "Miami",
+    "lat": 25.76,
+    "lon": -80.19
+  },
+  {
+    "name": "Milan",
+    "lat": 45.46,
+    "lon": 9.19
+  },
+  {
+    "name": "Minneapolis",
+    "lat": 44.97,
+    "lon": -93.26
+  },
+  {
+    "name": "Montreal",
+    "lat": 45.5,
+    "lon": -73.56
+  },
+  {
+    "name": "Mumbai",
+    "lat": 19.07,
+    "lon": 72.87
+  },
+  {
+    "name": "Munich",
+    "lat": 48.14,
+    "lon": 11.58
+  },
+  {
+    "name": "Nairobi",
+    "lat": -1.29,
+    "lon": 36.82
+  },
+  {
+    "name": "Osaka",
+    "lat": 34.69,
+    "lon": 135.5
+  },
+  {
+    "name": "Oslo",
+    "lat": 59.91,
+    "lon": 10.75
+  },
+  {
+    "name": "Paris",
+    "lat": 48.85,
+    "lon": 2.35
+  },
+  {
+    "name": "Perth",
+    "lat": -31.95,
+    "lon": 115.86
+  },
+  {
+    "name": "Portland",
+    "lat": 45.51,
+    "lon": -122.68
+  },
+  {
+    "name": "Phoenix",
+    "lat": 33.45,
+    "lon": -112.07
+  },
+  { "name": "Rome", "lat": 41.9, "lon": 12.5 },
+  {
+    "name": "Santiago",
+    "lat": -33.44,
+    "lon": -70.66
+  },
+  {
+    "name": "Seattle",
+    "lat": 47.6,
+    "lon": -122.33
+  },
+  {
+    "name": "Seoul",
+    "lat": 37.57,
+    "lon": 126.98
+  },
+  {
+    "name": "Singapore",
+    "lat": 1.35,
+    "lon": 103.81
+  },
+  {
+    "name": "Sofia",
+    "lat": 42.7,
+    "lon": 23.32
+  },
+  {
+    "name": "Stockholm",
+    "lat": 59.32,
+    "lon": 18.06
+  },
+  {
+    "name": "Sydney",
+    "lat": -33.86,
+    "lon": 151.2
+  },
+  {
+    "name": "Taipei",
+    "lat": 25.03,
+    "lon": 121.57
+  },
+  {
+    "name": "Tokyo",
+    "lat": 35.67,
+    "lon": 139.65
+  },
+  {
+    "name": "Toronto",
+    "lat": 43.65,
+    "lon": -79.38
+  },
+  {
+    "name": "Vancouver",
+    "lat": 49.28,
+    "lon": -123.12
+  },
+  {
+    "name": "Vienna",
+    "lat": 48.2,
+    "lon": 16.37
+  },
+  {
+    "name": "Wellington",
+    "lat": -41.28,
+    "lon": 174.77
   }
 ]
