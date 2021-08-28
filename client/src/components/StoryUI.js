@@ -15,7 +15,8 @@ const StoryUI = () => {
     return null;
   }
   return (
-    <div className="absolute bottom-0 right-0 mb-12 mr-4 w-full sm:max-w-sm md:max-w-xl z-30">
+    <div className="absolute bottom-0 right-0 mb-12 px-4 w-full z-30">
+      <div className="w-full md:max-w-xl ml-auto">
       <motion.div
         className="flex justify-end"
         initial={{ y: 0 }}
@@ -66,6 +67,7 @@ const StoryUI = () => {
           )}
         </div>
       </motion.div>
+    </div>
     </div>
   )
 }
