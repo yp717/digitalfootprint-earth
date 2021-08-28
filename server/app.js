@@ -3,6 +3,7 @@ const express = require("express");
 const fetch = require("node-fetch");
 const { handle } = require("./cdnHandeler");
 const app = express();
+var get_ip = require("ipware")().get_ip;
 const port = process.env.PORT || 3000;
 var cors = require("cors");
 var whitelist = [
@@ -20,25 +21,29 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(function (req, res, next) {
+  var ip_info = get_ip(req);
+  console.log(ip_info);
+  next();
+});
 app.get("/:url", async (req, res) => {
   var URL = req.params.url;
-  let IP = req.ip === "::1" ? "51.9.166.141" : req.ip;
-  console.log(req.url);
-  dns.lookup(URL, async function (err, addresses, family) {
-    const userData = await fetch(`http://ip-api.com/json/${IP}`).then((res) =>
-      res.json()
-    );
-    const data = await fetch(`http://ip-api.com/json/${URL}`).then((res) =>
-      res.json()
-    );
-    handle(
-      {
-        requestData: { ...data, url: URL },
-        userInfo: userData,
-      },
-      res
-    );
-  });
+  let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
+  console.log(req.clientIp, req.clientIpRoutable);
+
+  const userData = await fetch(`http://ip-api.com/json/${IP}`).then((res) =>
+    res.json()
+  );
+  const data = await fetch(`http://ip-api.com/json/${URL}`).then((res) =>
+    res.json()
+  );
+  handle(
+    {
+      requestData: { ...data, url: URL },
+      userInfo: userData,
+    },
+    res
+  );
 });
 
 app.listen(port, () => {
