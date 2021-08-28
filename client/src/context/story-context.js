@@ -1,6 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from "react"
 import { redrawElements } from "../utils/AddElements"
 import StoryCreator from "../utils/StoryCreator"
+import Ping from "ping.js"
 export const isBrowser = () => typeof window !== "undefined"
 
 const StoryContext = React.createContext()
@@ -29,9 +30,17 @@ export const StoryProvider = ({ ...props }) => {
 
   const submitURL = async userInput => {
     setSubmitted(true)
-    const request = await fetch(`http://localhost:3000/${userInput}`)
+    const p = new Ping()
+    let time = -1
+    try {
+      const req = await p.ping("http://linkedin.com")
+      time = req
+    } catch (e) {
+      time = e
+    }
+    const request = await fetch(`https://cdnhatch-api.onrender.com/${userInput}`)
     const data = await request.json()
-    console.log(data)
+    data.requestData.networkLatency = time
     let story = StoryCreator(data)
     setStoryItems([...story])
     setReady(true)
@@ -47,21 +56,22 @@ export const StoryProvider = ({ ...props }) => {
 
   useEffect(() => {
     if (ready) {
-      if (storyItems[storyIndex].rotate === true) {
-        setRotate(true)
-      } else {
-        setRotate(false)
-        setTimeout(() => {
-          const { target, zoom, duration } = storyItems[storyIndex].goTo
-          mapRef.current.goTo(
-            {
-              target: target,
-              zoom: zoom,
-            },
-            { animate: true, duration: duration }
-          )
-        }, 200)
-      }
+      setRotate(false)
+      setTimeout(() => {
+        const { target, zoom, duration } = storyItems[storyIndex].goTo
+        mapRef.current.goTo(
+          {
+            target: target,
+            zoom: zoom,
+          },
+          { animate: true, duration: duration }
+        )
+        if (storyItems[storyIndex].rotate === true) {
+          setTimeout(() => {
+            setRotate(true)
+          }, duration)
+        }
+      }, 200)
     }
   }, [ready, storyIndex])
 
