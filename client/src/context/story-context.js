@@ -38,7 +38,7 @@ export const StoryProvider = ({ ...props }) => {
     } catch (e) {
       time = e
     }
-    const request = await fetch(`http://localhost:3000/${userInput}`)
+    const request = await fetch(`https://cdnhatch-api.onrender.com/${userInput}`)
     const data = await request.json()
     data.requestData.networkLatency = time
     let story = StoryCreator(data)
