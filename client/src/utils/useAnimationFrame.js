@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef } from "react"
 // Reusable component that also takes dependencies
 const useAnimationFrame = (cb, deps) => {
   const frameRef = useRef()
-  const lastRef = useRef(performance.now())
-  const initRef = useRef(performance.now())
+  const lastRef = useRef()
+  const initRef = useRef()
 
   const animate = useCallback(() => {
     const now = performance.now()
@@ -20,6 +20,8 @@ const useAnimationFrame = (cb, deps) => {
     if (typeof performance === "undefined" || typeof window === "undefined") {
       return
     }
+    initRef.current = performance.now()
+    lastRef.current = performance.now()
 
     frameRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(frameRef.current)
