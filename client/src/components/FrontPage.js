@@ -12,6 +12,7 @@ import useAnimationFrame from "../utils/useAnimationFrame"
 import { useStory } from "../context/story-context"
 import { useWindowSize } from "../utils/useWindowSize"
 import Header from "./core/Header"
+import SearchBar from "./SearchBar"
 
 const ClientSideOnlyMap = React.lazy(() => import("./Map"))
 
@@ -26,10 +27,10 @@ const FrontPage = ({ children }) => {
     reset,
     currentStoryItem,
     submitted,
-    submitURL,
+    validationError,
   } = useStory()
   const [hovered, setHovered] = useState("")
-  const [userInput, setUserInput] = useState("")
+
   const { width } = useWindowSize()
   const variants = {
     idle: { padding: width < 550 ? "2rem" : width < 1000 ? "4rem" : "6rem" },
@@ -61,6 +62,8 @@ const FrontPage = ({ children }) => {
       }
     }
   }, [hovered, ready, currentStoryItem.points, currentStoryItem.lines, mapRef])
+
+  console.log(validationError)
 
   return (
     <div className={`text-white scroll`}>
@@ -138,23 +141,7 @@ const FrontPage = ({ children }) => {
                 <h1 className="text-2xl md:text-4xl font-bold text-white max-w-lg text-center">
                   Optimizing CDN locations for a greener planet.
                 </h1>
-                <div className="border-4 border-yellow-400 rounded-full flex p-1 mx-4 w-full max-w-lg">
-                  <input
-                    value={userInput}
-                    onChange={e => setUserInput(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && submitURL(userInput)}
-                    placeholder="your-website.com"
-                    className="w-full bg-transparent text-lg md:text-2xl text-white px-1 md:px-2 mx-2 focus:outline-none"
-                  />
-                  <button
-                    onClick={() => {
-                      submitURL(userInput)
-                    }}
-                    className="bg-yellow-400 hover:bg-yellow-500 rounded-full text-white p-2"
-                  >
-                    <SearchIcon className="h-4 w-4 md:h-6 md:w-6" />
-                  </button>
-                </div>
+                <SearchBar />
               </div>
             </div>
           </>
