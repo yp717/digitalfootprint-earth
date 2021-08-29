@@ -1,27 +1,29 @@
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 
 // Reusable component that also takes dependencies
-export default (cb, deps) => {
-  if (typeof performance === "undefined" || typeof window === "undefined") {
-    return
-  }
+const useAnimationFrame = (cb, deps) => {
+  const frameRef = useRef()
+  const lastRef = useRef(performance.now())
+  const initRef = useRef(performance.now())
 
-  const frame = useRef()
-  const last = useRef(performance.now())
-  const init = useRef(performance.now())
-
-  const animate = () => {
+  const animate = useCallback(() => {
     const now = performance.now()
-    const time = (now - init.current) / 1000
-    const delta = (now - last.current) / 1000
+    const time = (now - initRef.current) / 1000
+    const delta = (now - lastRef.current) / 1000
     // In seconds ~> you can do ms or anything in userland
     cb({ time, delta })
-    last.current = now
-    frame.current = requestAnimationFrame(animate)
-  }
+    lastRef.current = now
+    frameRef.current = requestAnimationFrame(animate)
+  }, [cb])
 
   useEffect(() => {
-    frame.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(frame.current)
-  }, deps) // Make sure to change it if the deps change
+    if (typeof performance === "undefined" || typeof window === "undefined") {
+      return
+    }
+
+    frameRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(frameRef.current)
+  }, [...deps, animate]) // Make sure to change it if the deps change
 }
+
+export default useAnimationFrame

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from "react"
-import { redrawElements } from "../utils/AddElements"
+// import { redrawElements } from "../utils/AddElements"
 import StoryCreator from "../utils/StoryCreator"
 import Ping from "ping.js"
 export const isBrowser = () => typeof window !== "undefined"
@@ -38,7 +38,9 @@ export const StoryProvider = ({ ...props }) => {
     } catch (e) {
       time = e
     }
-    const request = await fetch(`https://cdnhatch-api.onrender.com/${userInput}`)
+    const request = await fetch(
+      `https://cdnhatch-api.onrender.com/${userInput}`
+    )
     const data = await request.json()
     data.requestData.networkLatency = time
     let story = StoryCreator(data)
@@ -73,7 +75,7 @@ export const StoryProvider = ({ ...props }) => {
         }
       }, 200)
     }
-  }, [ready, storyIndex])
+  }, [ready, storyIndex, storyItems])
 
   const next = () => {
     setStoryIndex(Math.min(storyIndex + 1, storyItems.length - 1))

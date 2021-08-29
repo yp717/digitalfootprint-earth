@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import isEqual from "lodash-es/isEqual"
+
 export function useDeepEffect(effectFunc, deps) {
   const isFirst = useRef(true)
   const prevDeps = useRef(deps)
