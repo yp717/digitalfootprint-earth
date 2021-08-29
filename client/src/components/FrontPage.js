@@ -17,6 +17,7 @@ const FrontPage = ({ children }) => {
   const isSSR = typeof window === "undefined"
   const {
     mapRef,
+    webMapRef,
     ready,
     mapLoaded,
     setMapLoaded,
@@ -87,6 +88,7 @@ const FrontPage = ({ children }) => {
           <React.Suspense fallback={<div />}>
             <ClientSideOnlyMap
               mapRef={mapRef}
+              webMapRef={webMapRef}
               setIsLoaded={setMapLoaded}
               setHovered={setHovered}
             />

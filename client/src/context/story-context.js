@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from "react"
-// import { redrawElements } from "../utils/AddElements"
 import StoryCreator from "../utils/StoryCreator"
 import Ping from "ping.js"
+import addLayers from "../utils/AddLayers"
 export const isBrowser = () => typeof window !== "undefined"
 
 const StoryContext = React.createContext()
@@ -10,6 +10,7 @@ export const StoryProvider = ({ ...props }) => {
   const [userInput, setUserInput] = useState("")
 
   const mapRef = useRef()
+  const webMapRef = useRef()
   const [mapLoaded, setMapLoaded] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [validationError, setValidationError] = useState(false)
@@ -63,7 +64,7 @@ export const StoryProvider = ({ ...props }) => {
     const p = new Ping()
     let time = -1
     try {
-      const req = await p.ping("http://linkedin.com")
+      const req = await p.ping(`https://${userInput}`)
       time = req
     } catch (e) {
       time = e
@@ -96,6 +97,7 @@ export const StoryProvider = ({ ...props }) => {
     if (ready) {
       setRotate(false)
       setTimeout(() => {
+        webMapRef.current.layers.removeAll()
         const { target, zoom, duration } = storyItems[storyIndex].goTo
         mapRef.current.goTo(
           {
@@ -108,6 +110,12 @@ export const StoryProvider = ({ ...props }) => {
           setTimeout(() => {
             setRotate(true)
           }, duration)
+        }
+        if (
+          storyItems[storyIndex].layers &&
+          storyItems[storyIndex].layers.length !== 0
+        ) {
+          addLayers(webMapRef, storyItems[storyIndex].layers)
         }
       }, 200)
     }
@@ -132,6 +140,7 @@ export const StoryProvider = ({ ...props }) => {
       { animate: true, duration: 1500 }
     )
     setTimeout(() => {
+      webMapRef.current.layers.removeAll()
       setSubmitted(false)
       setReady(false)
       setStoryIndex(0)
@@ -144,6 +153,7 @@ export const StoryProvider = ({ ...props }) => {
         userInput,
         setUserInput,
         mapRef,
+        webMapRef,
         mapLoaded,
         setMapLoaded,
         submitted,
