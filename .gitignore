@@ -68,3 +68,7 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+
+# Data Analysis Python Env
+env/*
+.ipynb_checkpoints
