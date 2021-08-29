@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   SearchIcon,
@@ -44,7 +44,7 @@ const FrontPage = ({ children }) => {
         mapRef.current.goTo(camera, { animate: false })
       }
     }
-  }, [rotate, mapRef.current])
+  }, [mapRef.current])
 
   useEffect(() => {
     if (mapRef.current) {
@@ -60,7 +60,7 @@ const FrontPage = ({ children }) => {
         mapRef.current.graphics.removeAll()
       }
     }
-  }, [hovered, ready, currentStoryItem.points])
+  }, [hovered, ready, currentStoryItem.points, currentStoryItem.lines, mapRef])
 
   return (
     <div className={`text-white scroll`}>
@@ -92,13 +92,20 @@ const FrontPage = ({ children }) => {
               </div>
               <div className="hidden md:inline-block text-right text-xs md:text-sm">
                 <p className="">
-                  A submission for <a>Esri's Hack for a Sustainable Future</a>
+                  A submission for{" "}
+                  <a href="https://hack-for-a-sustainable-future.devpost.com">
+                    Esri's Hack for a Sustainable Future
+                  </a>
                 </p>
                 <p className="">
-                  Built by <a>Sam Larsen-Disney</a> & <a>Yannis Panagis</a>
+                  Built by <a href="https://sld.codes">Sam Larsen-Disney</a> &{" "}
+                  <a href="https://yannispanagis.com">Yannis Panagis</a>
                 </p>
                 <div className="mt-2 hidden md:flex md:justify-end">
-                  <a href="" className="">
+                  <a
+                    href="https://hack-for-a-sustainable-future.devpost.com"
+                    className=""
+                  >
                     <DevPost className="w-20 md:w-24" />
                   </a>
                 </div>

@@ -1,8 +1,8 @@
-export default function (data) {
+const StoryCreator = data => {
   let storyItems = []
   const { url, networkLatency } = data.requestData
   const { cdnProvider, cdnLocations } = data.cdnInfo
-  const { city, country, isp } = data.userInfo
+  const { city, isp } = data.userInfo
   storyItems.push({
     title: "It all starts with you.",
     body: `Your request to ${url} started with you in ${city}. It was routed via your ISP - ${isp}.`,
@@ -52,7 +52,7 @@ export default function (data) {
     goTo: {
       target: [data.requestData.lon, data.requestData.lat],
       zoom: 3,
-      duration: 15 * (1 / dist) -3 < 1 ? 100 : 2000,
+      duration: 15 * (1 / dist) - 3 < 1 ? 100 : 2000,
     },
     rotate: true,
     layers: [],
@@ -65,3 +65,5 @@ export default function (data) {
 
   return storyItems
 }
+
+export default StoryCreator

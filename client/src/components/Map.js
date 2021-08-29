@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react"
+import React, { useRef, useEffect } from "react"
 import SceneView from "@arcgis/core/views/SceneView"
 import WebMap from "@arcgis/core/WebMap"
 import Basemap from "@arcgis/core/Basemap"
@@ -96,7 +96,7 @@ const Map = ({ mapRef, setIsLoaded, setHovered }) => {
 
       mapRef.current = view
     }
-  }, [])
+  }, [mapRef, setHovered, setIsLoaded])
 
   return (
     <div className="w-full h-full relative">
