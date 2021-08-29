@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDoubleDownIcon, ArrowLeftIcon } from "@heroicons/react/solid"
 import { redrawElements } from "../utils/AddElements"
-import Logo from "../assets/Logo"
 import { Link as ScrollLink } from "react-scroll"
 import useAnimationFrame from "../utils/useAnimationFrame"
 import { useStory } from "../context/story-context"
 import { useWindowSize } from "../utils/useWindowSize"
 import Header from "./core/Header"
-import SearchBar from "./SearchBar"
+import SearchUI from "./SearchUI"
+
 import LoadingProgressIndicator from "./LoadingProgressIndicator"
 
 const ClientSideOnlyMap = React.lazy(() => import("./Map"))
@@ -23,7 +23,6 @@ const FrontPage = ({ children }) => {
     rotate,
     reset,
     currentStoryItem,
-    submitted,
     validationError,
   } = useStory()
   const [hovered, setHovered] = useState("")
@@ -130,20 +129,7 @@ const FrontPage = ({ children }) => {
           )}
         </AnimatePresence>
 
-        {mapLoaded && !submitted && !ready && (
-          <>
-            <div className="absolute z-30 h-full w-full top-0 left-0 px-2">
-              <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
-                <Logo className="h-8 w-8 md:h-12 md:w-12 text-yellow-400" />
-                <h1 className="text-2xl md:text-4xl font-bold text-white max-w-lg text-center">
-                  Optimizing CDN locations for a greener planet.
-                </h1>
-                <SearchBar />
-              </div>
-            </div>
-          </>
-        )}
-
+        <SearchUI />
         <LoadingProgressIndicator />
       </motion.div>
       {children}

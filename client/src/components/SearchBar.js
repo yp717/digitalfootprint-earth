@@ -6,12 +6,15 @@ import { useStory } from "../context/story-context"
 
 // useEffect with timeout that sets validationError back to false
 const SearchBar = () => {
-  const { userInput, setUserInput, submitURL } = useStory()
+  const { userInput, setUserInput, submitURL, setValidationError } = useStory()
   return (
     <div className="border-4 border-yellow-400 rounded-full flex p-1 mx-4 w-full max-w-lg">
       <input
         value={userInput}
-        onChange={e => setUserInput(e.target.value)}
+        onChange={e => {
+          setUserInput(e.target.value)
+          setValidationError(false)
+        }}
         onKeyDown={e => e.key === "Enter" && submitURL(userInput)}
         placeholder="your-website.com"
         className="w-full bg-transparent text-lg md:text-2xl text-white px-1 md:px-2 mx-2 focus:outline-none"
