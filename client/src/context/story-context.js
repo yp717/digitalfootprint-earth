@@ -7,10 +7,13 @@ export const isBrowser = () => typeof window !== "undefined"
 const StoryContext = React.createContext()
 
 export const StoryProvider = ({ ...props }) => {
+  const [userInput, setUserInput] = useState("")
+
   const mapRef = useRef()
   const webMapRef = useRef()
   const [mapLoaded, setMapLoaded] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [validationError, setValidationError] = useState(false)
   const [ready, setReady] = useState(false)
   const [rotate, setRotate] = useState(true)
   const [storyIndex, setStoryIndex] = useState(0)
@@ -29,8 +32,35 @@ export const StoryProvider = ({ ...props }) => {
     },
   ])
 
+  async function validateURL(userInput) {
+    // If the URL is not valid then return false
+    var pattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    ) // fragment locator
+
+    // todo: we may not want to use a traditional alert it was just for testing
+    if (await !pattern.test(userInput)) {
+      setValidationError(true)
+      return false
+    }
+
+    setValidationError(false)
+    // Remove the protocol if there is one
+    let result = userInput.replace(/(^\w+:|^)\/\//, "")
+
+    // Remove any trailing paths if there are any
+    result = result.split("/")[0]
+
+    return result
+  }
+
   const submitURL = async userInput => {
-    setSubmitted(true)
     const p = new Ping()
     let time = -1
     try {
@@ -39,14 +69,20 @@ export const StoryProvider = ({ ...props }) => {
     } catch (e) {
       time = e
     }
-    const request = await fetch(
-      `https://cdnhatch-api.onrender.com/${userInput}`
-    )
-    const data = await request.json()
-    data.requestData.networkLatency = time
-    let story = StoryCreator(data)
-    setStoryItems([...story])
-    setReady(true)
+
+    const validatedURL = await validateURL(userInput)
+
+    if (!validationError && validatedURL !== false) {
+      setSubmitted(true)
+      const request = await fetch(
+        `https://cdnhatch-api.onrender.com/${validatedURL}`
+      )
+      const data = await request.json()
+      data.requestData.networkLatency = time
+      let story = StoryCreator(data)
+      setStoryItems([...story])
+      setReady(true)
+    }
   }
 
   useEffect(() => {
@@ -83,7 +119,7 @@ export const StoryProvider = ({ ...props }) => {
         }
       }, 200)
     }
-  }, [ready, storyIndex])
+  }, [ready, storyIndex, storyItems])
 
   const next = () => {
     setStoryIndex(Math.min(storyIndex + 1, storyItems.length - 1))
@@ -114,6 +150,8 @@ export const StoryProvider = ({ ...props }) => {
   return (
     <StoryContext.Provider
       value={{
+        userInput,
+        setUserInput,
         mapRef,
         webMapRef,
         mapLoaded,
@@ -126,6 +164,8 @@ export const StoryProvider = ({ ...props }) => {
         hasNext,
         hasPrev,
         submitURL,
+        validationError,
+        setValidationError,
         rotate,
         reset,
       }}

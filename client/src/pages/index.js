@@ -1,5 +1,4 @@
 import React from "react"
-import { useEffect } from "react"
 import FrontPage from "../components/FrontPage"
 import StoryUI from "../components/StoryUI"
 import { StoryProvider } from "../context/story-context"
