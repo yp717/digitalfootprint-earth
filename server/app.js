@@ -37,10 +37,16 @@ app.get("/:url", async (req, res) => {
   const data = await fetch(`http://ip-api.com/json/${URL}`).then((res) =>
     res.json()
   );
+  const greenWebFoundation = await fetch(
+    `https://admin.thegreenwebfoundation.org/api/v3/greencheck/${URL}`
+  ).then((res) => res.json());
   handle(
     {
       requestData: { ...data, url: URL },
       userInfo: userData,
+      environmentalData: {
+        greenWebFoundation,
+      },
     },
     res
   );

@@ -17,9 +17,8 @@ function debounce(func, timeout = 100) {
   }
 }
 
-const Map = ({ mapRef, setIsLoaded, setHovered }) => {
+const Map = ({ mapRef, webMapRef, setIsLoaded, setHovered }) => {
   const mapDiv = useRef(null)
-
   useEffect(() => {
     if (mapDiv.current && !mapIsHidden) {
       const vectorTileLayer = new VectorTileLayer({
@@ -38,6 +37,8 @@ const Map = ({ mapRef, setIsLoaded, setHovered }) => {
         },
         basemap: basemap,
       })
+
+      webMapRef.current = webmap
 
       const view = new SceneView({
         container: mapDiv.current,

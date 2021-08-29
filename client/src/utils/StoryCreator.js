@@ -55,7 +55,7 @@ export default function (data) {
       duration: 15 * (1 / dist) -3 < 1 ? 100 : 2000,
     },
     rotate: true,
-    layers: [],
+    layers: ["CO2"],
     points: cdnLocations.map(item => ({
       latitude: item.lat,
       longitude: item.lon,
