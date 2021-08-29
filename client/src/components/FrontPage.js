@@ -8,10 +8,10 @@ import {
 import { redrawElements } from "../utils/AddElements"
 import Logo from "../assets/Logo"
 import { Link as ScrollLink } from "react-scroll"
-import DevPost from "../assets/Devpost"
 import useAnimationFrame from "../utils/useAnimationFrame"
 import { useStory } from "../context/story-context"
 import { useWindowSize } from "../utils/useWindowSize"
+import Header from "./core/Header"
 
 const ClientSideOnlyMap = React.lazy(() => import("./Map"))
 
@@ -81,36 +81,7 @@ const FrontPage = ({ children }) => {
             >
               <ChevronDoubleDownIcon className="h-10 w-10" />
             </ScrollLink>
-            <div className="absolute top-0 left-0 w-full flex flex-col md:flex-row md:justify-between py-3 md:py-5 px-5 md:px-10 z-30">
-              <div className="">
-                <div className="flex items-center space-x-1">
-                  <Logo className="h-6 w-6 mb-1" />
-                  <p className="text-xl">
-                    <span className="font-bold">CDN</span>Hatch
-                  </p>
-                </div>
-              </div>
-              <div className="hidden md:inline-block text-right text-xs md:text-sm">
-                <p className="">
-                  A submission for{" "}
-                  <a href="https://hack-for-a-sustainable-future.devpost.com">
-                    Esri's Hack for a Sustainable Future
-                  </a>
-                </p>
-                <p className="">
-                  Built by <a href="https://sld.codes">Sam Larsen-Disney</a> &{" "}
-                  <a href="https://yannispanagis.com">Yannis Panagis</a>
-                </p>
-                <div className="mt-2 hidden md:flex md:justify-end">
-                  <a
-                    href="https://hack-for-a-sustainable-future.devpost.com"
-                    className=""
-                  >
-                    <DevPost className="w-20 md:w-24" />
-                  </a>
-                </div>
-              </div>
-            </div>
+            <Header />
           </>
         )}
         {!isSSR && (
