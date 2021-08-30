@@ -1,5 +1,3 @@
-const puppeteer = require("puppeteer");
-
 /**
  * Compute the total weight of a website based on the performance metrics
  * @param {} performanceMetrics
@@ -7,7 +5,6 @@ const puppeteer = require("puppeteer");
  */
 function computeTotalWeight(performanceMetrics) {
   return performanceMetrics.reduce((acc, curr) => {
-    console.log(curr.transferSize);
     if (curr.transferSize > 0 && typeof curr.transferSize !== "undefined") {
       acc += curr.transferSize;
     }
@@ -16,9 +13,8 @@ function computeTotalWeight(performanceMetrics) {
 }
 
 // Run lighthouse for performance only because we don't care about the rest
-async function main() {
+async function computePageWeight(url, browser) {
   // Puppeteer set up
-  const browser = await puppeteer.launch();
   const context = await browser.createIncognitoBrowserContext();
   const page = await context.newPage();
 
@@ -32,7 +28,7 @@ async function main() {
 
   // Go to URL and let it try things until the network tab is idle
   // This should eventually be the URL of the web page that the user enters
-  await page.goto("http://sld.codes", {
+  await page.goto(`http://${url}`, {
     waitUntil: "networkidle2",
   });
 
@@ -50,7 +46,11 @@ async function main() {
   let result = await page._client.send("Performance.getMetrics");
   console.log(result.metrics);
 
-  await browser.close();
+  browser.close();
+
+  return result.metrics;
 }
 
-main();
+module.exports = {
+  computePageWeight,
+};

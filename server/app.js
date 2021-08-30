@@ -2,6 +2,11 @@ const dns = require("dns");
 const express = require("express");
 const fetch = require("node-fetch");
 const { handle } = require("./cdnHandeler");
+const puppeteer = require("puppeteer");
+
+const { computePageWeight } = require("./computePageWeight");
+const { lighthouseAudit } = require("./lighthouseAudit");
+
 const app = express();
 var get_ip = require("ipware")().get_ip;
 const port = process.env.PORT || 3000;
@@ -42,13 +47,19 @@ app.get("/:url", async (req, res) => {
     `https://admin.thegreenwebfoundation.org/api/v3/greencheck/${URL}`
   ).then((res) => res.json());
 
-  // const performanceData = await computePageWeight()
+  // you have to ensure that the stripped url is passed into this function
+  const browser = await puppeteer.launch();
+  const lighthouseScores = await lighthouseAudit(URL, browser);
+  const performanceData = await computePageWeight(URL, browser);
 
+  console.log(performanceData);
+  console.log(lighthouseScores);
   // Calculate the C02 on the server -> using per megabyte value for CO2
+  // 2020 web almanac: 1.82 MB = 1.2 g C0
 
   handle(
     {
-      requestData: { ...data, url: URL, ...performanceData },
+      requestData: { ...data, url: URL, lighthouseScores, performanceData },
       userInfo: userData,
       environmentalData: {
         greenWebFoundation,
