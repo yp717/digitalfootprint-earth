@@ -13,6 +13,7 @@
     "express": "^4.17.1",
     "ipware": "^2.0.0",
     "node-fetch": "^2.6.1",
+    "puppeteer": "^10.2.0",
     "satelize": "^0.2.0"
   }
 }

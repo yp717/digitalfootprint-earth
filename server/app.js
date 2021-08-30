@@ -26,6 +26,7 @@ app.use(function (req, res, next) {
   console.log(ip_info);
   next();
 });
+
 app.get("/:url", async (req, res) => {
   var URL = req.params.url;
   let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
@@ -40,9 +41,14 @@ app.get("/:url", async (req, res) => {
   const greenWebFoundation = await fetch(
     `https://admin.thegreenwebfoundation.org/api/v3/greencheck/${URL}`
   ).then((res) => res.json());
+
+  // const performanceData = await computePageWeight()
+
+  // Calculate the C02 on the server -> using per megabyte value for CO2
+
   handle(
     {
-      requestData: { ...data, url: URL },
+      requestData: { ...data, url: URL, ...performanceData },
       userInfo: userData,
       environmentalData: {
         greenWebFoundation,
