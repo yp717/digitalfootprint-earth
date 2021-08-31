@@ -1,19 +1,24 @@
-require("dotenv").config()
-const crypto = require('crypto');
+require("dotenv").config();
+const crypto = require("crypto");
 const express = require("express");
 const fetch = require("node-fetch");
 const { handle } = require("./cdnHandeler");
+const puppeteer = require("puppeteer");
+
+const { computePageWeight } = require("./computePageWeight");
+const { lighthouseAudit } = require("./lighthouseAudit");
+
 const app = express();
 var get_ip = require("ipware")().get_ip;
 
-var firebase = require("firebase-admin")
+var firebase = require("firebase-admin");
 
-var serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG)
+var serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
   databaseURL: process.env.FIREBASE_DB_URL,
-})
+});
 
 const db = firebase.firestore();
 
@@ -39,6 +44,7 @@ app.use(function (req, res, next) {
   console.log(ip_info);
   next();
 });
+
 app.get("/:url", async (req, res) => {
   var URL = req.params.url;
   let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
@@ -88,6 +94,12 @@ app.get("/:url", async (req, res) => {
     const greenWebFoundation = await fetch(
       `https://admin.thegreenwebfoundation.org/api/v3/greencheck/${URL}`
     ).then((res) => res.json());
+    const browser = await puppeteer.launch();
+    const lighthouseScores = await lighthouseAudit(URL, browser);
+    const performanceData = await computePageWeight(URL, browser);
+
+    console.log(performanceData);
+    console.log(lighthouseScores);
     const DataWithCDN = handle({
       requestData: { ...data, url: URL },
       userInfo: userData,
