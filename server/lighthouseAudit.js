@@ -17,12 +17,11 @@ async function lighthouseAudit(url, browser) {
     port: new URL(browser.wsEndpoint()).port,
     output: "json",
     logLevel: "info",
+    onlyCategories: ['performance']
   });
 
-  const lighthouse_scores = Object.values(lhr.categories);
-  console.log(
-    `Lighthouse scores: ${lighthouse_scores.map((c) => c.score).join(", ")}`
-  );
+  const lighthouse_scores = lhr.categories.performance.score * 100
+  console.log('Performance score was', lighthouse_scores);
 
   return lighthouse_scores;
 }
