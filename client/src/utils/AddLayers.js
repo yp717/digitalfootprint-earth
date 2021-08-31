@@ -31,7 +31,7 @@ function addLayers(webMapRef, layers) {
             {
               type: "size",
               field: "annual_co2_emissions_per_capita",
-              stops: [{ value: 0, size: 20000 }],
+              stops: [{ value: 0, size: 15000 }],
               axis: "height",
             },
             {

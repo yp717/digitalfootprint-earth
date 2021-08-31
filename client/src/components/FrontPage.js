@@ -60,8 +60,6 @@ const FrontPage = ({ children }) => {
     }
   }, [hovered, ready, currentStoryItem.points, currentStoryItem.lines, mapRef])
 
-  console.log(validationError)
-
   return (
     <div className={`text-white scroll`}>
       <motion.div
@@ -77,7 +75,7 @@ const FrontPage = ({ children }) => {
               to="research"
               smooth={true}
               duration={500}
-              className="absolute bottom-0 left-1/2 -ml-5 mb-10 z-30"
+              className="absolute bottom-0 left-1/2 -ml-5 mb-10 z-50"
             >
               <ChevronDoubleDownIcon className="h-10 w-10" />
             </ScrollLink>
@@ -110,7 +108,7 @@ const FrontPage = ({ children }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute top-0 left-0 m-5"
+              className="absolute top-0 left-0 m-5 z-30"
             >
               <button
                 onClick={() => {

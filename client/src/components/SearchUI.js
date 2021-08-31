@@ -22,10 +22,15 @@ const SearchUI = () => {
         <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
           <Logo className="h-8 w-8 md:h-12 md:w-12 text-yellow-400" />
           <h1 className="text-2xl md:text-4xl font-bold text-white max-w-lg text-center">
-            Optimizing CDN locations for a greener planet.
+            Translating Digital Footprints into Real World Effects.
           </h1>
-          <SearchBar />
-          <div className="h-10">{validationError && <ValidationWarning />}</div>
+          <div className="relative w-full mx-auto max-w-sm md:max-w-lg flex flex-col items-center">
+            <SearchBar />
+            <div className="absolute top-0 mt-16 mx-auto flex ">
+              {validationError && <ValidationWarning />}
+            </div>
+          </div>
+          <p className="text-lg font-medium">12,400+ Webpages Analyzed</p>
         </div>
       </div>
     </>

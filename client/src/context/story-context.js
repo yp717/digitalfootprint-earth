@@ -98,19 +98,26 @@ export const StoryProvider = ({ ...props }) => {
       setRotate(false)
       setTimeout(() => {
         webMapRef.current.layers.removeAll()
-        const { target, zoom, duration } = storyItems[storyIndex].goTo
-        mapRef.current.goTo(
-          {
-            target: target,
-            zoom: zoom,
-          },
-          { animate: true, duration: duration }
-        )
-        if (storyItems[storyIndex].rotate === true) {
-          setTimeout(() => {
+        if (storyItems[storyIndex].goTo) {
+          const { target, zoom, duration } = storyItems[storyIndex].goTo
+          mapRef.current.goTo(
+            {
+              target: target,
+              zoom: zoom,
+            },
+            { animate: true, duration: duration }
+          )
+          if (storyItems[storyIndex].rotate === true) {
+            setTimeout(() => {
+              setRotate(true)
+            }, duration)
+          }
+        } else {
+          if (storyItems[storyIndex].rotate === true) {
             setRotate(true)
-          }, duration)
+          }
         }
+
         if (
           storyItems[storyIndex].layers &&
           storyItems[storyIndex].layers.length !== 0
