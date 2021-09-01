@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "gatsby"
 import FrontPage from "../components/FrontPage"
 import StoryUI from "../components/StoryUI"
 import { StoryProvider } from "../context/story-context"
@@ -8,14 +9,22 @@ const Index = () => {
     <StoryProvider>
       <FrontPage>
         <StoryUI />
-        <div id="research" className="h-screen w-screen flex p-12 space-x-6">
-          <ul className="space-y-3 text-center">
-            <li className="bg-gray-900 px-2 py-1 rounded-full">About</li>
-            <li className="bg-gray-900 px-2 py-1 rounded-full">Our Research</li>
+        <div
+          id="research"
+          className="h-screen w-screen flex flex-col items-center justify-center p-12"
+        >
+          <ul className="space-y-6 text-2xl text-center">
+            <li className="px-2 py-1 rounded-full">
+              <Link to="/how-it-works">How It Works</Link>
+            </li>
+            <li className="px-2 py-1 rounded-full">
+              <Link to="/bigger-picture">The Bigger Picture</Link>
+            </li>
+            <li className="px-2 py-1 rounded-full">
+              <Link to="/api">API Access</Link>
+            </li>
           </ul>
-          <div>
-          <p className="text-6xl text-yellow-400 font-bold">Our Research</p>
-          </div>
+          <div></div>
         </div>
       </FrontPage>
     </StoryProvider>

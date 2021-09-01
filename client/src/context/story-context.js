@@ -75,7 +75,7 @@ export const StoryProvider = ({ ...props }) => {
     if (!validationError && validatedURL !== false) {
       setSubmitted(true)
       const request = await fetch(
-        `https://cdnhatch-api.onrender.com/${validatedURL}`
+        `https://cdnhatch-api.onrender.com/story/${validatedURL}`
       )
       const data = await request.json()
       data.requestData.networkLatency = time

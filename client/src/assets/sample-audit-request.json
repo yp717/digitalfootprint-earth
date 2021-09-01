@@ -1,0 +1,45 @@
+{
+  "requestData": {
+    "zip": "H4X",
+    "lon": -73.5673,
+    "as": "AS54113 Fastly",
+    "countryCode": "CA",
+    "timezone": "America/Toronto",
+    "regionName": "Quebec",
+    "status": "success",
+    "lat": 45.5017,
+    "city": "Montreal",
+    "org": "Fastly",
+    "query": "151.101.1.195",
+    "country": "Canada",
+    "isp": "Fastly",
+    "region": "QC"
+  },
+  "environmentalData": {
+    "greenWebFoundation": {
+      "hosted_by_website": "firebase.google.com",
+      "green": true,
+      "hosted_by": "Firebase Hosting",
+      "partner": null,
+      "modified": "2021-09-01T11:37:27",
+      "supporting_documents": [],
+      "hosted_by_id": 861,
+      "url": "sld.codes"
+    }
+  },
+  "performance": { "totalSize": 271351, "performanceScore": 65 },
+  "cdnInfo": {
+    "cdnLocations": [
+      { "name": "Accra", "lat": 5.6, "lon": -0.19 },
+      { "name": "Adelaide", "lat": -34.93, "lon": 138.6 },
+      { "name": "Amsterdam", "lat": 52.36, "lon": 4.89 },
+      { "name": "Ashburn", "lat": 39.04, "lon": -77.48 },
+      { "name": "Atlanta", "lat": 33.74, "lon": -84.38 },
+      { "name": "Auckland", "lat": -36.84, "lon": 174.76 },
+      { "name": "Bogota", "lat": 4.7, "lon": -74.07 },
+      { "name": "Boston", "lat": 42.36, "lon": -71.05 },
+      { "name": "Brisbane", "lat": -27.46, "lon": 153.02 }
+    ],
+    "cdnProvider": "Fastly"
+  }
+}

@@ -11,63 +11,45 @@ const AKAMAI = /Akamai/;
 const MICROSOFT = /Microsoft/;
 const GOOGLE = /Google/;
 
-function handle(data) {
-  const { isp } = data.requestData;
-
+function handle(isp) {
   switch (true) {
     case AMAZON.test(isp):
-      return JSON.stringify({
-        ...data,
-        cdnInfo: {
-          cdnLocations: AmazonCDNS,
-          cdnProvider: "Amazon",
-        },
-      });
+      return {
+        cdnLocations: AmazonCDNS,
+        cdnProvider: "Amazon",
+      };
 
     case FASTLY.test(isp):
-      return JSON.stringify({
-        ...data,
-        cdnInfo: {
-          cdnLocations: FastlyCDNS,
-          cdnProvider: "Fastly",
-        },
-      });
+      return {
+        cdnLocations: FastlyCDNS,
+        cdnProvider: "Fastly",
+      };
     case CLOUDFLARE.test(isp):
-      return JSON.stringify({
-        ...data,
-        cdnInfo: {
-          cdnLocations: CloudflareCDNS,
-          cdnProvider: "CloudFlare",
-        },
-      });
+      return {
+        cdnLocations: CloudflareCDNS,
+        cdnProvider: "CloudFlare",
+      };
     case MICROSOFT.test(isp):
-      return JSON.stringify({
-        ...data,
-        cdnInfo: {
-          cdnLocations: AzureCDNS,
-          cdnProvider: "Microsoft Azure",
-        },
-      });
+      return {
+        cdnLocations: AzureCDNS,
+        cdnProvider: "Microsoft Azure",
+      };
     case GOOGLE.test(isp):
-      return JSON.stringify({
-        ...data,
-        cdnInfo: {
-          cdnLocations: GoogleCDNS,
-          cdnProvider: "Google",
-        },
-      });
+      return {
+        cdnLocations: GoogleCDNS,
+        cdnProvider: "Google",
+      };
     case AKAMAI.test(isp):
       // console.log(Object.keys(AkamaiCDNS).map(key => AkamaiCDNS[key]))
-      return JSON.stringify({
-        ...data,
-        cdnInfo: {
-          cdnLocations: Object.keys(AkamaiCDNS).map((key) => AkamaiCDNS[key]),
-          cdnProvider: "Akamai",
-        },
-      });
+      return {
+        cdnLocations: Object.keys(AkamaiCDNS).map((key) => AkamaiCDNS[key]),
+        cdnProvider: "Akamai",
+      };
     default:
-      console.log(data);
-      return JSON.stringify(data);
+      return {
+        cdnLocations: [],
+        cdnProvider: "UNKNOWN",
+      };
   }
 }
 

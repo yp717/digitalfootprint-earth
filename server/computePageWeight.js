@@ -29,7 +29,7 @@ async function computePageWeight(url, browser) {
   // Go to URL and let it try things until the network tab is idle
   // This should eventually be the URL of the web page that the user enters
   await page.goto(`http://${url}`, {
-    waitUntil: "networkidle2",
+    waitUntil: "domcontentloaded",
   });
 
   // Store the available performance metrics
