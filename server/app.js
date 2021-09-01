@@ -45,13 +45,20 @@ function notStale(doc) {
   return differenceInHours(currentTime, auditTime) <= 23;
 }
 
-app.use(cors(corsOptions));
-
 app.use(function (req, res, next) {
   get_ip(req);
   next();
 });
-app.get("/:url", async (req, res) => {
+app.get("/stats", cors(corsOptions), async (req, res) => {
+  const statsDocRef = await db.collection("stats").doc("global");
+  const doc = await statsDocRef.get();
+  if (doc.exists) {
+    res.send(doc.data());
+  } else {
+    res.sendStatus(404);
+  }
+});
+app.get("/:url", cors(), async (req, res) => {
   var URL = req.params.url;
   const validURL = await validateURL(URL);
   if (!validURL || URL === "favicon.ico") {
