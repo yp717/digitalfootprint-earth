@@ -35,7 +35,7 @@ async function generateAudit(URL, db, id) {
     },
     environmentalData: { greenWebFoundation },
   };
-  let { environmentalData, requestData, performance } = auditData;
+  let { environmentalData, requestData, performance } = fullDataSet;
   db.collection("stories").doc(id).set(
     {
       locked: false,
