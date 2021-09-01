@@ -1,15 +1,17 @@
 require("dotenv").config();
 const crypto = require("crypto");
 const express = require("express");
-const fetch = require("node-fetch");
-const puppeteer = require("puppeteer");
 var firebase = require("firebase-admin");
+const differenceInHours = require("date-fns/differenceInHours");
+var cors = require("cors");
+const { generateAudit } = require("./generateAudit");
+const { gatherUserData } = require("./gatherUserData");
 const { handle } = require("./cdnHandeler");
-const { computePageWeight } = require("./computePageWeight");
-const { lighthouseAudit } = require("./lighthouseAudit");
-
+const { validateURL } = require("./urlValidator");
 const app = express();
 var get_ip = require("ipware")().get_ip;
+
+const port = process.env.PORT || 3000;
 
 var serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
@@ -20,8 +22,6 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 
-const port = process.env.PORT || 3000;
-var cors = require("cors");
 var whitelist = [
   "http://localhost:8000",
   "http://localhost:9000",
@@ -35,79 +35,88 @@ var corsOptions = {
   },
 };
 
+function notStale(doc) {
+  const { time } = doc.data();
+  if (!time) {
+    return false;
+  }
+  const currentTime = new Date();
+  const auditTime = time.toDate();
+  return differenceInHours(currentTime, auditTime) <= 23;
+}
+
 app.use(cors(corsOptions));
 
 app.use(function (req, res, next) {
-  var ip_info = get_ip(req);
-  console.log(ip_info);
+  get_ip(req);
   next();
 });
-
 app.get("/:url", async (req, res) => {
   var URL = req.params.url;
+  const validURL = await validateURL(URL);
+  if (!validURL || URL === "favicon.ico") {
+    res.sendStatus(400);
+    return;
+  }
   let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
-  const id = crypto.createHash(`md5`).update(`${URL}_${IP}`).digest(`hex`);
+  const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
 
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
-  if (doc.exists) {
-    console.log("Story Requested Already!");
-    // if cache - > redirect to URL
-    const { locked, data } = doc.data();
-    // if in progress -> wait -> redirect to URL
+  if (doc.exists && notStale(doc)) {
+    console.log("Story active");
+    const { locked, ...data } = doc.data();
     if (locked) {
-      console.log("Waiting for story");
-      userDocRef.onSnapshot(
-        (doc) => {
-          const { locked, data } = doc.data();
+      console.log("Story being processed");
+      const observer = userDocRef.onSnapshot(
+        async (doc) => {
+          const { locked, ...data } = doc.data();
           if (!locked) {
-            res.send(data);
+            const userInfo = await gatherUserData(IP);
+            const { isp } = data.requestData;
+            const cdnInfo = handle(isp);
+            res.send({ ...data, userInfo, cdnInfo });
+            observer();
           }
         },
         (err) => {
+          observer();
           res.sendStatus(500);
           res.end();
           return;
         }
       );
     } else {
+      console.log("Story already ready");
       // Story is already ready -> Send it!
-      res.send(data);
+      const userInfo = await gatherUserData(IP);
+      const { isp } = data.requestData;
+      const cdnInfo = handle(isp);
+      res.send({ ...data, userInfo, cdnInfo });
       return;
     }
   } else {
+    console.log("Creating Story");
     db.collection("stories").doc(id).set(
       {
         locked: true,
+        time: new Date(),
       },
       { merge: true }
     );
-    // Create the Story
-    const userData = await fetch(`http://ip-api.com/json/${IP}`).then((res) =>
-      res.json()
-    );
-    const data = await fetch(`http://ip-api.com/json/${URL}`).then((res) =>
-      res.json()
-    );
-    const greenWebFoundation = await fetch(
-      `https://admin.thegreenwebfoundation.org/api/v3/greencheck/${URL}`
-    ).then((res) => res.json());
-    const browser = await puppeteer.launch();
-    const performanceScore = await lighthouseAudit(URL, browser);
-    const totalSize = await computePageWeight(URL, browser);
-    browser.close();
-    const DataWithCDN = handle({
-      requestData: { ...data, url: URL, performanceScore, totalSize },
-      userInfo: userData,
-      environmentalData: {
-        greenWebFoundation,
-      },
-    });
-    res.send(DataWithCDN);
+
+    const auditData = await generateAudit(URL);
+    const userInfo = await gatherUserData(IP);
+    const { isp } = auditData.requestData;
+    const cdnInfo = handle(isp);
+    res.send({ ...auditData, userInfo, cdnInfo });
+    let { environmentalData, requestData, performance } = auditData;
     db.collection("stories").doc(id).set(
       {
         locked: false,
-        data: DataWithCDN,
+        environmentalData,
+        requestData,
+        performance,
       },
       { merge: true }
     );
