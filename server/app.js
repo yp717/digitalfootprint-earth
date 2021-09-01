@@ -58,26 +58,24 @@ app.get("/stats", cors(corsOptions), async (req, res) => {
     res.sendStatus(404);
   }
 });
-app.get("/:url", cors(), async (req, res) => {
+app.get("/audit/:url", cors(), async (req, res) => {
   var URL = req.params.url;
   const validURL = await validateURL(URL);
-  if (!validURL || URL === "favicon.ico") {
+  if (!validURL) {
     res.sendStatus(400);
     return;
   }
   let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
-
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
   if (doc.exists && notStale(doc)) {
-    console.log("Story active");
-    const { locked, ...data } = doc.data();
+    const { locked, time, ...data } = doc.data();
     if (locked) {
       console.log("Story being processed");
       const observer = userDocRef.onSnapshot(
         async (doc) => {
-          const { locked, ...data } = doc.data();
+          const { locked, time, ...data } = doc.data();
           if (!locked) {
             const userInfo = await gatherUserData(IP);
             const { isp } = data.requestData;
@@ -94,7 +92,54 @@ app.get("/:url", cors(), async (req, res) => {
         }
       );
     } else {
-      console.log("Story already ready");
+      const { isp } = data.requestData;
+      const cdnInfo = handle(isp);
+      res.send({ ...data, cdnInfo });
+      return;
+    }
+  } else {
+    const auditData = await generateAudit(URL, db, id);
+    const { isp } = auditData.requestData;
+    const cdnInfo = handle(isp);
+    res.send({ ...auditData, cdnInfo });
+  }
+});
+
+app.get("/story/:url", cors(), async (req, res) => {
+  var URL = req.params.url;
+  const validURL = await validateURL(URL);
+  if (!validURL) {
+    res.sendStatus(400);
+    return;
+  }
+  let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
+  const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
+  const userDocRef = await db.collection("stories").doc(id);
+  const doc = await userDocRef.get();
+  if (doc.exists && notStale(doc)) {
+    console.log("Story active");
+    const { locked, time, ...data } = doc.data();
+    if (locked) {
+      console.log("Story being processed");
+      const observer = userDocRef.onSnapshot(
+        async (doc) => {
+          const { locked, time, ...data } = doc.data();
+          if (!locked) {
+            const userInfo = await gatherUserData(IP);
+            const { isp } = data.requestData;
+            const cdnInfo = handle(isp);
+            res.send({ ...data, userInfo, cdnInfo });
+            observer();
+          }
+        },
+        (err) => {
+          observer();
+          res.sendStatus(500);
+          res.end();
+          return;
+        }
+      );
+    } else {
       // Story is already ready -> Send it!
       const userInfo = await gatherUserData(IP);
       const { isp } = data.requestData;
@@ -104,29 +149,11 @@ app.get("/:url", cors(), async (req, res) => {
     }
   } else {
     console.log("Creating Story");
-    db.collection("stories").doc(id).set(
-      {
-        locked: true,
-        time: new Date(),
-      },
-      { merge: true }
-    );
-
-    const auditData = await generateAudit(URL);
+    const auditData = await generateAudit(URL, db, id);
     const userInfo = await gatherUserData(IP);
     const { isp } = auditData.requestData;
     const cdnInfo = handle(isp);
     res.send({ ...auditData, userInfo, cdnInfo });
-    let { environmentalData, requestData, performance } = auditData;
-    db.collection("stories").doc(id).set(
-      {
-        locked: false,
-        environmentalData,
-        requestData,
-        performance,
-      },
-      { merge: true }
-    );
   }
 });
 

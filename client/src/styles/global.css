@@ -24,7 +24,7 @@
 
 body {
   background-color: #010b14;
-  @apply overflow-x-hidden;
+  @apply overflow-x-hidden text-white;
 }
 
 

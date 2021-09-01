@@ -4,7 +4,15 @@ const { computePageWeight } = require("./computePageWeight");
 const { lighthouseAudit } = require("./lighthouseAudit");
 const puppeteerArgs = require("./puppeteerArgs.json");
 
-async function generateAudit(URL) {
+async function generateAudit(URL, db, id) {
+  db.collection("stories").doc(id).set(
+    {
+      locked: true,
+      time: new Date(),
+    },
+    { merge: true }
+  );
+
   const browser = await puppeteer.launch({
     headless: true,
     args: puppeteerArgs,
@@ -27,6 +35,16 @@ async function generateAudit(URL) {
     },
     environmentalData: { greenWebFoundation },
   };
+  let { environmentalData, requestData, performance } = auditData;
+  db.collection("stories").doc(id).set(
+    {
+      locked: false,
+      environmentalData,
+      requestData,
+      performance,
+    },
+    { merge: true }
+  );
   return fullDataSet;
 }
 
