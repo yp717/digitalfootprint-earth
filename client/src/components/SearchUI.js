@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useStory } from "../context/story-context"
 import SearchBar from "./SearchBar"
 import Logo from "../assets/Logo"
@@ -7,6 +7,13 @@ import ValidationWarning from "./ValidationWarning"
 const SearchUI = () => {
   const { mapLoaded, submitted, ready, validationError, setValidationError } =
     useStory()
+
+    const [data, setData] = useState("...")
+    useEffect(async () => {
+      const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
+      const data = await request.json()
+      setData(`${data.auditCount}+`)
+    }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => setValidationError(false), 3000)
@@ -30,7 +37,7 @@ const SearchUI = () => {
               {validationError && <ValidationWarning />}
             </div>
           </div>
-          <p className="text-lg font-medium">12,400+ Webpages Analyzed</p>
+          <p className="text-lg font-medium">{data} Webpages Analyzed</p>
         </div>
       </div>
     </>

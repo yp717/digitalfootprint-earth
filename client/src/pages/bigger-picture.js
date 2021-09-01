@@ -7,7 +7,7 @@ const BiggerPicture = () => {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState()
   useEffect(async () => {
-    const request = await fetch(`http://localhost:3000/stats`)
+    const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
     const data = await request.json()
     setData(data)
     setLoading(false)
