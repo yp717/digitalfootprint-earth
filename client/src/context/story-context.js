@@ -17,6 +17,7 @@ export const StoryProvider = ({ ...props }) => {
   const [ready, setReady] = useState(false)
   const [rotate, setRotate] = useState(true)
   const [storyIndex, setStoryIndex] = useState(0)
+  const [auditScores, setAuditScores] = useState({})
   const [storyItems, setStoryItems] = useState([
     {
       title: "StoryStub",
@@ -81,6 +82,7 @@ export const StoryProvider = ({ ...props }) => {
       data.requestData.networkLatency = time
       let story = StoryCreator(data)
       setStoryItems([...story])
+      setAuditScores(data.auditScores)
       setReady(true)
     }
   }
@@ -166,6 +168,7 @@ export const StoryProvider = ({ ...props }) => {
         submitted,
         ready,
         currentStoryItem: storyItems[storyIndex],
+        auditScores,
         next,
         prev,
         hasNext,
