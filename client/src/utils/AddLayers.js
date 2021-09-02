@@ -58,6 +58,9 @@ function addLayers(webMapRef, layers) {
         })
         break
       }
+      default:
+        console.log("Shouldn't happen")
+        break
     }
   })
 }
