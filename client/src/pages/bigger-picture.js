@@ -43,7 +43,7 @@ const BiggerPicture = () => {
       </div>
     )
   }
-  console.log(data)
+
   return (
     <div>
       <Header />
