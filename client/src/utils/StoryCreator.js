@@ -2,24 +2,25 @@ import { getDistance, getDistanceInKM } from "./locationUtils"
 
 const StoryCreator = data => {
   let storyItems = []
-  const { url, networkLatency } = data.requestData
+  console.log(data)
+  const { networkLatency } = data.requestData
   const { cdnProvider, cdnLocations } = data.cdnInfo
   const { city, isp } = data.userInfo
-  const { hosted_by, green } = data.environmentalData.greenWebFoundation
-  storyItems.push({
-    hero: true,
-    title: "A Large Title",
-    body: `It's sub content`,
-    rotate: true,
-    goTo: {
-      target: [data.userInfo.lon, data.userInfo.lat],
-      zoom: 1,
-      duration: 2000,
-    },
-    layers: [],
-    points: [],
-    lines: [],
-  })
+  const { hosted_by, green, url } = data.environmentalData.greenWebFoundation
+  // storyItems.push({
+  //   hero: true,
+  //   title: "You're Stor",
+  //   body: `It's sub content`,
+  //   rotate: true,
+  //   goTo: {
+  //     target: [data.userInfo.lon, data.userInfo.lat],
+  //     zoom: 1,
+  //     duration: 2000,
+  //   },
+  //   layers: [],
+  //   points: [],
+  //   lines: [],
+  // })
   storyItems.push({
     title: "It all starts with you.",
     body: `Your request to ${url} started with you in ${city}. It was routed via your ISP - ${isp}.`,
