@@ -16,6 +16,10 @@ module.exports = {
     `gatsby-plugin-postcss`,
     `gatsby-plugin-mdx`,
     {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/audit/*`] },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content`,
