@@ -1,94 +1,96 @@
-var generateBadge =
-  generateBadge ||
-  (function () {
-    let style = "";
-    let html = "";
-    let color = "";
-    let text = "";
-    let id = "";
-    return {
-      init: function (pText, pColor, pId) {
-        color = pColor;
-        text = pText;
-        id = pId;
-        style = `
-            <style>
-                .badge {
-                    cursor: pointer !important;
-                    width: 366px !important;
-                    background: #FFFFFF !important;
-                    border: 7px solid #000000 !important;
-                    boxSizing: border-box !important;
-                    borderRadius: 25px !important;
-                    paddingTop: 20px !important;
-                    paddingBottom: 20px !important;
-                    paddingLeft: 20px !important;
-                    paddingRight: 20px !important;
-                }
-
-                .badge-date-text {
-                    fontFamily: Roboto, sans-serif !important;
-                    fontStyle: normal !important;
-                    fontWeight: bold !important;
-                    fontSize: 20px !important;
-                    lineHeight: 23px !important;
-                    color: #ABABAB !important;
-                }
-
-                .badge-site-url {
-                    fontFamily: Roboto, sans-serif !important;
-                    fontStyle: normal !important;
-                    fontWeight: bold !important;
-                    fontSize: 40px !important;
-                    lineHeight: 47px !important;
-                    color: #000000 !important;
-                }
-
-                .badge-description {
-                    fontFamily: Roboto, sans-serif !important;
-                    fontStyle: normal !important;
-                    fontWeight: bold !important;
-                    fontSize: 15px !important;
-                    lineHeight: 18px !important;
-                    color: #000000 !important;
-                }
-
-                .badge-score {
-                    fontFamily: Roboto, sans-serif !important;
-                    fontStyle: normal !important;
-                    fontWeight: bold !important;
-                    fontSize: 50px !important;
-                    lineHeight: 59px !important;
-                    color: #000000 !important;
-                }
-
-                .badge-point-score {
-                    fontFamily: Roboto, sans-serif !important;
-                    fontStyle: normal !important;
-                    fontWeight: bold !important;
-                    fontSize: 15px !important;
-                    lineHeight: 18px !important;
-                    color: #000000 !important;
-                }
-            </style>
-        `;
-
-        // todo: verify this is the optimal way to request the google font - using Roboto for now
-        html =
-          "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap' rel='stylesheet'>";
-        html += `
-        <div class="badge"
+<div
+            style={{
+              cursor: "pointer",
+              width: "366px",
+              background: "#FFFFFF",
+              border: "7px solid #000000",
+              boxSizing: "border-box",
+              borderRadius: "25px",
+              paddingTop: "20px",
+              paddingBottom: "20px",
+              paddingLeft: "20px",
+              paddingRight: "20px",
+            }}
           >
-            <p class="badge-date-text">Audited 10/11/2021</p>
-            <h3 class="bade-site-url">scalemath.com</h3>
-            <p class="badge-description"> Sustainable Digital Footprint</p>
-            <p class="badge-score">8/10
-              <span class="bade-point-name">GreenScoreTM</span>
+            {/* todo: there is an issue with pulling in another font that we have to be careful about */}
+            <p
+              style={{
+                fontFamily: "Roboto, sans-serif",
+                fontStyle: "normal",
+                fontWeight: "bold",
+                fontSize: "20px",
+                lineHeight: "23px",
+                color: "#ABABAB",
+              }}
+            >
+              Audited 10/11/2021
             </p>
-            <div class="flex">
-              <p class="badge-powered-by">Powered by CDNHatch</p>
+            <h3
+              style={{
+                fontFamily: "Roboto, sans-serif",
+                fontStyle: "normal",
+                fontWeight: "bold",
+                fontSize: "40px",
+                lineHeight: "47px",
+                color: "#000000",
+              }}
+            >
+              scalemath.com
+            </h3>
+            <p
+              style={{
+                fontFamily: "Roboto, sans-serif",
+                fontStyle: "normal",
+                fontWeight: "bold",
+                fontSize: "15px",
+                lineHeight: "18px",
+                color: "#000000",
+              }}
+            >
+              Sustainable Digital Footprint
+            </p>
+            <p
+              style={{
+                fontFamily: "Roboto, sans-serif",
+                fontStyle: "normal",
+                fontWeight: "bold",
+                fontSize: "50px",
+                lineHeight: "59px",
+                color: "#000000",
+              }}
+            >
+              8/10
+              <span
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontStyle: "normal",
+                  fontWeight: "bold",
+                  fontSize: "15px",
+                  lineHeight: "18px",
+                  color: "#000000",
+                }}
+              >
+                GreenScoreTM
+              </span>
+            </p>
+            <div style={{ display: "flex" }}>
+              <p
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontStyle: "normal",
+                  fontWeight: "bold",
+                  fontSize: "15px",
+                  lineHeight: "18px",
+                  color: "#000000",
+                  flexGrow: "1",
+                  paddingTop: "7px",
+                }}
+              >
+                Powered by CDNHatch
+              </p>
               <svg
-                style={{ height: "25px", flex: "0 1 auto", color: "black" }}
+                className={`fill-current text-black flex-initial`}
+                style={{ height: "25px", flex: "0 1 auto" }}
                 viewBox="0 0 450 512"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
@@ -105,25 +107,4 @@ var generateBadge =
                 </g>
               </svg>
             </div>
-          </div>`;
-      },
-      getHTML: function () {
-        var rtn =
-          style +
-          html
-            .replace("[color]", color)
-            .replace("[text]", text)
-            .replace("[id]", id);
-        return rtn;
-      },
-      draw: function () {
-        document.writeln(
-          style +
-            html
-              .replace("[color]", color)
-              .replace("[text]", text)
-              .replace("[id]", id)
-        );
-      },
-    };
-  })();
+          </div>

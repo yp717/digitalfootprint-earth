@@ -28,8 +28,8 @@ async function computePageWeight(url, browser) {
 
   // Go to URL and let it try things until the network tab is idle
   // This should eventually be the URL of the web page that the user enters
-  await page.goto(`http://${url}`, {
-    waitUntil: "domcontentloaded",
+  await page.goto(`http://google.com`, {
+    waitUntil: "networkidle2",
   });
 
   // Store the available performance metrics
@@ -42,13 +42,13 @@ async function computePageWeight(url, browser) {
   console.log(`TOTAL SIZE: ${totalSize}`);
 
   // Pull out the other metrics from the results
-  // console.log("Devtools: Performance.getMetrics");
-  // let result = await page._client.send("Performance.getMetrics");
-  // console.log(result.metrics);
+  console.log("Devtools: Performance.getMetrics");
+  let result = await page._client.send("Performance.getMetrics");
+  console.log(result.metrics);
 
-  // browser.close();
+  browser.close();
 
-  return totalSize;
+  return result.metrics;
 }
 
 module.exports = {
