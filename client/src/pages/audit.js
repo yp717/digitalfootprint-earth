@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Router, Match, useLocation } from "@reach/router"
 import { navigate } from "gatsby"
-import {} from "@reach/router"
 import Header from "../components/core/Header"
 
 const AuditPage = ({ url }) => {
@@ -108,7 +107,7 @@ function Audit() {
       <Header />
       <Match path="/audit/:eventId">
         {props =>
-          props.match ? <AuditPage url={props.match.eventId} /> : navigate("/")
+          props.match ? <AuditPage url={props.match.eventId} /> : typeof window !== "undefined" && navigate("/")
         }
       </Match>
     </div>
