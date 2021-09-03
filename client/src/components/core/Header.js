@@ -15,7 +15,7 @@ const Header = () => {
           >
             <Logo className="h-6 w-6 mb-1" />
             <p className="text-xl text-white">
-              <span className="font-bold">CDN</span>Hatch
+              <span className="font-bold">Digital</span>Footprint
             </p>
           </Link>
         </div>

@@ -1,9 +1,11 @@
 require("dotenv").config();
+const fs = require("fs");
 const crypto = require("crypto");
 const path = require("path");
 const express = require("express");
 var firebase = require("firebase-admin");
 const differenceInHours = require("date-fns/differenceInHours");
+const format = require("date-fns/format");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
 const { generateBadge } = require("./generateBadge");
@@ -175,9 +177,47 @@ app.get("/story/:url", cors(), async (req, res) => {
   }
 });
 
-app.get("/badge", (req, res) => {
-  // res.sendFile("/server/generateBadge.js", (err) => console.log(err));
-  res.sendFile(path.join(__dirname, "generateBadge.js"));
+app.get("/badge", async (req, res) => {
+  const URL = "yellow.com";
+  const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
+  const userDocRef = await db.collection("stories").doc(id);
+  const doc = await userDocRef.get();
+  if (doc.exists && notStale(doc)) {
+    console.log("Story active");
+    const { locked, time, ...data } = doc.data();
+    const {
+      auditScores: { total },
+    } = data;
+    const auditTime = time.toDate();
+    fs.readFile(path.join(__dirname, "generateBadge.js"), (error, data) => {
+      if (error) {
+        throw error;
+      }
+      // console.log(data.toString().replace("[URL]", req.headers.origin));
+      res.send(
+        data
+          .toString()
+          .replace("[URL]", req.hostname)
+          .replace("[SCORE]", total)
+          .replace("[DATE]", "Audited " + format(auditTime, "MM/dd/yyyy"))
+      );
+    });
+  } else {
+    fs.readFile(path.join(__dirname, "generateBadge.js"), (error, data) => {
+      if (error) {
+        throw error;
+      }
+      // console.log(data.toString().replace("[URL]", req.headers.origin));
+      res.send(
+        data
+          .toString()
+          .replace("[URL]", req.hostname)
+          .replace("[SCORE]", "-")
+          .replace("[DATE]", "Auditing right now.")
+      );
+    });
+    // generateAudit(URL, db, id);
+  }
 });
 
 app.listen(port, () => {
