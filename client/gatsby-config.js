@@ -15,6 +15,7 @@ module.exports = {
   plugins: [
     `gatsby-plugin-postcss`,
     `gatsby-plugin-mdx`,
+    `gatsby-plugin-react-helmet-async`,
     {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/audit/*`] },
