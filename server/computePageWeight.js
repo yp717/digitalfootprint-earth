@@ -39,13 +39,13 @@ async function computePageWeight(url, browser) {
 
   const totalSize = computeTotalWeight(performanceMetrics);
   // Pull out the other metrics from the results
-  // console.log("Devtools: Performance.getMetrics");
-  // let result = await page._client.send("Performance.getMetrics");
-  // console.log(result.metrics);
+  console.log("Devtools: Performance.getMetrics");
+  let result = await page._client.send("Performance.getMetrics");
+  console.log(result.metrics);
 
-  // browser.close();
+  browser.close();
 
-  return totalSize;
+  return result.metrics;
 }
 
 module.exports = {

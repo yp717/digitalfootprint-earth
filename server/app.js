@@ -1,15 +1,19 @@
 require("dotenv").config();
 const crypto = require("crypto");
+const path = require("path");
 const express = require("express");
 var firebase = require("firebase-admin");
 const differenceInHours = require("date-fns/differenceInHours");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
+const { generateBadge } = require("./generateBadge");
 const { gatherUserData } = require("./gatherUserData");
 const { handle } = require("./cdnHandeler");
 const { validateURL } = require("./urlValidator");
 const app = express();
 var get_ip = require("ipware")().get_ip;
+
+const INDEX = "/index.html";
 
 const port = process.env.PORT || 3000;
 
@@ -49,6 +53,7 @@ app.use(function (req, res, next) {
   get_ip(req);
   next();
 });
+
 app.get("/stats", cors(corsOptions), async (req, res) => {
   const statsDocRef = await db.collection("stats").doc("global");
   const doc = await statsDocRef.get();
@@ -58,6 +63,7 @@ app.get("/stats", cors(corsOptions), async (req, res) => {
     res.sendStatus(404);
   }
 });
+
 app.get("/audit/:url", cors(), async (req, res) => {
   var URL = req.params.url;
   const validURL = await validateURL(URL);
@@ -155,6 +161,11 @@ app.get("/story/:url", cors(), async (req, res) => {
     const cdnInfo = handle(isp);
     res.send({ ...auditData, userInfo, cdnInfo });
   }
+});
+
+app.get("/badge", (req, res) => {
+  // res.sendFile("/server/generateBadge.js", (err) => console.log(err));
+  res.sendFile(path.join(__dirname, "generateBadge.js"));
 });
 
 app.listen(port, () => {
