@@ -17,15 +17,15 @@ async function generateAudit(URL, db, id) {
     headless: true,
     args: puppeteerArgs,
   });
-  const [data, greenWebFoundation, performanceScore, totalSize] =
+  const [data, greenWebFoundation, performanceScore] =
     await Promise.all([
       fetch(`http://ip-api.com/json/${URL}`).then((res) => res.json()),
       fetch(
         `https://admin.thegreenwebfoundation.org/api/v3/greencheck/${URL}`
       ).then((res) => res.json()),
       lighthouseAudit(URL, browser),
-      computePageWeight(URL, browser),
     ]);
+    const totalSize = await computePageWeight(URL, browser)
   browser.close();
   const totalSizeMB = totalSize / 1024 / 1024;
   const auditScores = {
