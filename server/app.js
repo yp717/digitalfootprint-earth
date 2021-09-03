@@ -185,7 +185,7 @@ app.get("/badge", async (req, res) => {
       res.send(
         data
           .toString()
-          .replace("[URL]", req.hostname)
+          .replace("[URL]", req.get('host'))
           .replace("[SCORE]", total)
           .replace("[DATE]", "Audited " + format(auditTime, "MM/dd/yyyy"))
       );

@@ -12,15 +12,17 @@ const BiggerPicture = () => {
   useEffect(() => {}, [])
   return (
     <div className="space-y-12 md:space-y-24 pb-12 px-2">
-      <Helmet>
-        <script
-          type="text/javascript"
-          src="http://localhost:3000/badge"
-        ></script>
-        <script type="text/javascript" defer>
-          generateBadge.init(); generateBadge.draw("our-badge");
-        </script>
-      </Helmet>
+  
+        <Helmet>
+          <script
+            type="text/javascript"
+            src="https://cdnhatch-api.onrender.com/badge"
+          ></script>
+          <script type="text/javascript" defer>
+            generateBadge.init(); generateBadge.draw("our-badge");
+          </script>
+        </Helmet>
+
       <Header />
       <div className="flex items-center justify-center max-w-4xl mx-auto pt-24">
         <div className="flex flex-col text-center">
@@ -70,8 +72,8 @@ const BiggerPicture = () => {
         </p>
         <div id="our-badge"></div>
         <div className="bg-gray-800 w-full rounded p-2">
-        <code className="whitespace-pre-wrap">
-          {`<div id="our-badge"></div>
+          <code className="whitespace-pre-wrap">
+            {`<div id="our-badge"></div>
 <script
   type="text/javascript"
   src="http://localhost:3000/badge"
@@ -79,7 +81,7 @@ const BiggerPicture = () => {
 <script type="text/javascript" defer>
   generateBadge.init(); generateBadge.draw("our-badge");
 </script>`}
-        </code>
+          </code>
         </div>
       </div>
     </div>
