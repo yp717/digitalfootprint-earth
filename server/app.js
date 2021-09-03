@@ -7,13 +7,12 @@ const differenceInHours = require("date-fns/differenceInHours");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
 const { generateBadge } = require("./generateBadge");
+const { computeRoute } = require("./computeRoute");
 const { gatherUserData } = require("./gatherUserData");
 const { handle } = require("./cdnHandeler");
 const { validateURL } = require("./urlValidator");
 const app = express();
 var get_ip = require("ipware")().get_ip;
-
-const INDEX = "/index.html";
 
 const port = process.env.PORT || 3000;
 
@@ -75,6 +74,7 @@ app.get("/audit/:url", cors(), async (req, res) => {
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
+  console.log(doc);
   if (doc.exists && notStale(doc)) {
     const { locked, time, ...data } = doc.data();
     if (locked) {
@@ -118,10 +118,13 @@ app.get("/story/:url", cors(), async (req, res) => {
     res.sendStatus(400);
     return;
   }
+
   let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
+
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
+
   if (doc.exists && notStale(doc)) {
     console.log("Story active");
     const { locked, time, ...data } = doc.data();
@@ -134,6 +137,7 @@ app.get("/story/:url", cors(), async (req, res) => {
             const userInfo = await gatherUserData(IP);
             const { isp } = data.requestData;
             const cdnInfo = handle(isp);
+
             res.send({ ...data, userInfo, cdnInfo });
             observer();
           }
@@ -150,6 +154,13 @@ app.get("/story/:url", cors(), async (req, res) => {
       const userInfo = await gatherUserData(IP);
       const { isp } = data.requestData;
       const cdnInfo = handle(isp);
+
+      console.log(typeof userInfo.lon);
+
+      await computeRoute(
+        [userInfo.lon, userInfo.lat],
+        [data.requestData.lon, data.requestData.lat]
+      );
       res.send({ ...data, userInfo, cdnInfo });
       return;
     }
@@ -159,6 +170,7 @@ app.get("/story/:url", cors(), async (req, res) => {
     const userInfo = await gatherUserData(IP);
     const { isp } = auditData.requestData;
     const cdnInfo = handle(isp);
+
     res.send({ ...auditData, userInfo, cdnInfo });
   }
 });
