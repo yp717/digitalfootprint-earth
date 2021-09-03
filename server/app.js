@@ -8,7 +8,7 @@ const differenceInHours = require("date-fns/differenceInHours");
 const format = require("date-fns/format");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
-const { generateBadge } = require("./generateBadge");
+// const { generateBadge } = require("./generateBadge");
 const { computeRoute } = require("./computeRoute");
 const { gatherUserData } = require("./gatherUserData");
 const { handle } = require("./cdnHandeler");
@@ -157,12 +157,9 @@ app.get("/story/:url", cors(), async (req, res) => {
       const { isp } = data.requestData;
       const cdnInfo = handle(isp);
 
-      console.log(typeof userInfo.lon);
+      // console.log(typeof userInfo.lon);
+      await computeRoute([userInfo.lon, userInfo.lat], 500);
 
-      await computeRoute(
-        [userInfo.lon, userInfo.lat],
-        [data.requestData.lon, data.requestData.lat]
-      );
       res.send({ ...data, userInfo, cdnInfo });
       return;
     }
