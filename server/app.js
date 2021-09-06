@@ -157,7 +157,12 @@ app.get("/story/:url", cors(), async (req, res) => {
       const { isp } = data.requestData;
       const cdnInfo = handle(isp);
 
+      console.log(userInfo);
+
+      // use the page size to calculate the approximate carbon value and pass this in to compute route
       // console.log(typeof userInfo.lon);
+      https://observablehq.com/@mrchrisadams/carbon-footprint-of-sending-data-around
+      // const c02_produced = await computeCarbonFootprint() not sure where the value comes from but when I get it should go here (can write the function without)
       await computeRoute([userInfo.lon, userInfo.lat], 500);
 
       res.send({ ...data, userInfo, cdnInfo });
