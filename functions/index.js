@@ -7,8 +7,12 @@ const db = admin.firestore();
 exports.aggregateAudits = functions.firestore
   .document("stories/{restId}")
   .onWrite(async (change, context) => {
-    const { locked, environmentalData, performance } = change.after.data();
+    const id = context.params.restId 
+    const { locked, environmentalData, performance, auditScores } = change.after.data();
     if (!locked) {
+      db.collection('timelines').doc(id).set({
+        timeline: admin.firestore.FieldValue.arrayUnion({date: new Date(), auditScores})
+      }, {merge: true})
       const restRef = db.collection("stats").doc("global");
       await db.runTransaction(async (transaction) => {
         const restDoc = await transaction.get(restRef);

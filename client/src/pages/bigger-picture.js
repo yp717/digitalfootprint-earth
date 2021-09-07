@@ -2,8 +2,62 @@ import React, { useEffect } from "react"
 import { Link } from "gatsby"
 import Header from "../components/core/Header"
 import { useState } from "react"
+import { PieChart, Pie } from "recharts"
 
 const BiggerPicture = () => {
+  const data01 = [
+    {
+      name: "Group A",
+      value: 400,
+    },
+    {
+      name: "Group B",
+      value: 300,
+    },
+    {
+      name: "Group C",
+      value: 300,
+    },
+    {
+      name: "Group D",
+      value: 200,
+    },
+    {
+      name: "Group E",
+      value: 278,
+    },
+    {
+      name: "Group F",
+      value: 189,
+    },
+  ]
+  const data02 = [
+    {
+      name: "Group A",
+      value: 2400,
+    },
+    {
+      name: "Group B",
+      value: 4567,
+    },
+    {
+      name: "Group C",
+      value: 1398,
+    },
+    {
+      name: "Group D",
+      value: 9800,
+    },
+    {
+      name: "Group E",
+      value: 3908,
+    },
+    {
+      name: "Group F",
+      value: 4800,
+    },
+  ]
+
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState()
   useEffect(async () => {
@@ -12,6 +66,9 @@ const BiggerPicture = () => {
     setData(data)
     setLoading(false)
   }, [])
+
+  console.log(data)
+
   if (loading) {
     return (
       <div className="absolute z-30 h-full w-full top-0 left-0">
@@ -37,7 +94,7 @@ const BiggerPicture = () => {
             ></path>
           </svg>
           <p className="text-lg md:text-2xl font-bold">
-           Gathering Statistics...
+            Gathering Statistics...
           </p>
         </div>
       </div>
@@ -45,15 +102,55 @@ const BiggerPicture = () => {
   }
 
   return (
-    <div>
+    <>
       <Header />
-      <div className="flex items-center justify-center h-screen text-white ">
+      <div className="max-w-4xl h-screen text-white mx-auto mt-32">
         <div className="flex flex-col text-center">
           <h1 className="font-bold text-6xl mb-6">The Bigger Picture</h1>
           <p>Aggregating our audit data for a look at the wider web.</p>
+
+          <div className="flex flex-col lg:flex-row">
+            <div className="flex-grow">
+              <h2 className="text-left font-bold text-2xl">
+                Only X% of sites currently use Green Hosting Providers
+              </h2>
+              <p className="text-left">
+                According to Digital Footprint usage statistics and data
+                obtained via the{" "}
+                <a href="https://www.thegreenwebfoundation.org/">
+                  Green Web Foundation
+                </a>
+              </p>
+            </div>
+            <div className="flex-initial">
+              This is where the pie chart should go
+              <PieChart width={730} height={250}>
+                <Pie
+                  data={data01}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={50}
+                  fill="#8884d8"
+                />
+                <Pie
+                  data={data02}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  fill="#82ca9d"
+                  label
+                />
+              </PieChart>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

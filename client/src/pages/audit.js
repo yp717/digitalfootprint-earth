@@ -50,7 +50,7 @@ const AuditPage = ({ url }) => {
   const {
     requestData,
     environmentalData: {
-      greenWebFoundation: { green, data:greenData, hosted_by, hosted_by_website },
+      greenWebFoundation: { green, hosted_by, hosted_by_website },
     },
     auditScores: {
       hosting,
@@ -91,11 +91,11 @@ const AuditPage = ({ url }) => {
             <p>Hosting</p>
             <p>{hosting}/3</p>
           </div>
-          {greenData ? <div>
+          <div>
             <p>Hosted By: {hosted_by}</p>
             <p>Website: {hosted_by_website}</p>
             <p>Considered to be {green ? "green" : "not green"}</p>
-          </div> : <div>We were unable to determine whether {url} was hosted green or not.</div> }
+          </div>
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
           <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">

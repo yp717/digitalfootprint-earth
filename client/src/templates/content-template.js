@@ -1,4 +1,5 @@
 import React from "react"
+import Header from "../components/core/Header"
 import { MDXProvider } from "@mdx-js/react"
 import { graphql, Link } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
@@ -6,10 +7,10 @@ import { MDXRenderer } from "gatsby-plugin-mdx"
 const ContentTemplate = ({ data }) => {
   const { mdx } = data
   const { frontmatter, body } = mdx
-  const tags = frontmatter.tags
 
   return (
     <MDXProvider>
+      <Header />
       <div className="container row margin-10-t margin-10-b">
         <div className="col-xs-12 pad-5-lr">
           <h1 className="text-align-left is-background-blue-text">
