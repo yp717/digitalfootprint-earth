@@ -16,6 +16,7 @@ export const StoryProvider = ({ ...props }) => {
   const [validationError, setValidationError] = useState(false)
   const [ready, setReady] = useState(false)
   const [rotate, setRotate] = useState(true)
+  const [showTools, setShowTools] = useState(false)
   const [storyIndex, setStoryIndex] = useState(0)
   const [auditScores, setAuditScores] = useState({})
   const [storyItems, setStoryItems] = useState([
@@ -86,6 +87,15 @@ export const StoryProvider = ({ ...props }) => {
       setReady(true)
     }
   }
+
+  useEffect(() => {
+    if (ready && showTools) {
+      document.body.classList.remove("tools-hidden")
+    } else {
+      document.body.classList.add("tools-hidden")
+      
+    }
+  }, [ready, showTools])
 
   useEffect(() => {
     if (ready) {
@@ -161,6 +171,7 @@ export const StoryProvider = ({ ...props }) => {
       value={{
         userInput,
         setUserInput,
+        toggleTools: () => setShowTools(!showTools),
         mapRef,
         webMapRef,
         mapLoaded,
