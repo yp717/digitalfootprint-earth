@@ -10,7 +10,7 @@ const apiKey = process.env.ARCGIS_API_KEY;
 
 const avg_C02_car_per_km = 120.1; // g/km
 
-async function computeRoute(origin, c02_used) {
+async function computeServiceArea(origin, c02_used) {
   const authentication = new ApiKey({
     key: apiKey,
   });
@@ -30,8 +30,6 @@ async function computeRoute(origin, c02_used) {
     // kilometers: distanceCutoff,
     trimOuterPolygon: true,
     authentication,
-  }).then((response) => {
-    console.log(response);
   });
 
   // url not accessible to anonymous users
@@ -55,5 +53,5 @@ async function computeRoute(origin, c02_used) {
 }
 
 module.exports = {
-  computeRoute,
+  computeServiceArea,
 };

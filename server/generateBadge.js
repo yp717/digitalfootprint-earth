@@ -1,7 +1,6 @@
 var generateBadge =
   generateBadge ||
   (function () {
-    console.log("yo")
     let style = "";
     let html = "";
     let color = "";

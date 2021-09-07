@@ -4,12 +4,12 @@ const crypto = require("crypto");
 const path = require("path");
 const express = require("express");
 var firebase = require("firebase-admin");
-const differenceInHours = require("date-fns/differenceInHours");
+const differenceInDays = require("date-fns/differenceInDays");
 const format = require("date-fns/format");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
 // const { generateBadge } = require("./generateBadge");
-const { computeRoute } = require("./computeRoute");
+const { computeServiceArea } = require("./computeServiceArea");
 const { gatherUserData } = require("./gatherUserData");
 const { handle } = require("./cdnHandeler");
 const { validateURL } = require("./urlValidator");
@@ -47,7 +47,7 @@ function notStale(doc) {
   }
   const currentTime = new Date();
   const auditTime = time.toDate();
-  return differenceInHours(currentTime, auditTime) <= 23;
+  return differenceInDays(currentTime, auditTime) <= 6;
 }
 
 app.use(function (req, res, next) {
@@ -161,11 +161,16 @@ app.get("/story/:url", cors(), async (req, res) => {
 
       // use the page size to calculate the approximate carbon value and pass this in to compute route
       // console.log(typeof userInfo.lon);
-      https://observablehq.com/@mrchrisadams/carbon-footprint-of-sending-data-around
+      // https://observablehq.com/@mrchrisadams/carbon-footprint-of-sending-data-around
       // const c02_produced = await computeCarbonFootprint() not sure where the value comes from but when I get it should go here (can write the function without)
-      await computeRoute([userInfo.lon, userInfo.lat], 500);
+      const totalSizeMB = data.performance.totalSize / 1024 / 1024;
+      const c02_produced = totalSizeMB * 10; // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
+      const serviceArea = await computeServiceArea(
+        [userInfo.lon, userInfo.lat],
+        c02_produced
+      );
 
-      res.send({ ...data, userInfo, cdnInfo });
+      res.send({ ...data, userInfo, cdnInfo, serviceArea });
       return;
     }
   } else {
@@ -175,7 +180,14 @@ app.get("/story/:url", cors(), async (req, res) => {
     const { isp } = auditData.requestData;
     const cdnInfo = handle(isp);
 
-    res.send({ ...auditData, userInfo, cdnInfo });
+    const totalSizeMB = data.performance.totalSize / 1024 / 1024;
+    const c02_produced = totalSizeMB * 10; // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
+    const serviceArea = await computeServiceArea(
+      [userInfo.lon, userInfo.lat],
+      c02_produced
+    );
+
+    res.send({ ...auditData, userInfo, cdnInfo, serviceArea });
   }
 });
 
@@ -199,7 +211,7 @@ app.get("/badge", async (req, res) => {
       res.send(
         data
           .toString()
-          .replace("[URL]", req.get('host'))
+          .replace("[URL]", req.get("host"))
           .replace("[SCORE]", total)
           .replace("[DATE]", "Audited " + format(auditTime, "MM/dd/yyyy"))
       );
