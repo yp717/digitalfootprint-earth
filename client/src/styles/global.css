@@ -14,12 +14,20 @@
 .esri-view-surface--inset-outline {
  @apply focus:outline-none;
 }
-.esri-popup,
-.esri-ui-top-left,
-.esri-popup,
+.esri-popup, .esri-popup,
 .esri-popup__main-container,
 .esri-popup__pointer-direction {
   display: none;
+}
+.tools-hidden .esri-ui-top-left
+{
+  @apply hidden;
+}
+
+.esri-ui-top-left
+{
+  top: 70px !important;
+  left: 5px !important;
 }
 
 body {

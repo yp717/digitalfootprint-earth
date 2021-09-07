@@ -119,6 +119,7 @@ const StoryCreator = data => {
   if (green) {
     storyItems.push({
       ...defaultStoryItem,
+      showHostingScore:true,
       title: `${url} is hosted green.`,
       body: `This URL is hosted on ${hosted_by} which the Green Web Foundation considers green.`,
       rotate: true,
@@ -126,6 +127,7 @@ const StoryCreator = data => {
   } else {
     storyItems.push({
       ...defaultStoryItem,
+      showHostingScore:true,
       title: `${url}'s hosting could be greener.`,
       body: `This URL is hosted on ${hosted_by} which the Green Web Foundation considers not to be green. Switching to a green hosting provider would be a great start.`,
       rotate: true,

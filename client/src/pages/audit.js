@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import {Link} from "gatsby"
 import { Router, Match, useLocation } from "@reach/router"
 import { navigate } from "gatsby"
 import Header from "../components/core/Header"
@@ -49,7 +50,13 @@ const AuditPage = ({ url }) => {
   const {
     requestData,
     environmentalData: {
-      greenWebFoundation: { green, hosted_by, hosted_by_website },
+      greenWebFoundation: { green, data:greenData, hosted_by, hosted_by_website },
+    },
+    auditScores: {
+      hosting,
+      pageWeight,
+      performance,
+      total
     },
     cdnInfo: { cdnProvider, cdnLocations },
     performance: { performanceScore, totalSize },
@@ -64,37 +71,49 @@ const AuditPage = ({ url }) => {
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
           <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
             <p>Performance</p>
-            <p>1/3</p>
+            <p>{performance}/3</p>
           </div>
           <div>
-            <p>Performance: {performanceScore}</p>
-            <p>Page Size: {(totalSize / (1024 * 1024)).toFixed(2)}MB</p>
+            <p>Your site has a Lighthouse performance score of {performanceScore}%.</p>
+          </div>
+        </div>
+        <div className="bg-gray-800 rounded p-4 w-full h-full ">
+          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
+            <p>Page Size</p>
+            <p>{pageWeight}/3</p>
+          </div>
+          <div>
+            <p>Your site has a page size of {(totalSize / (1024 * 1024)).toFixed(2)}MB.</p>
           </div>
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
           <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
             <p>Hosting</p>
-            <p>3/3</p>
+            <p>{hosting}/3</p>
           </div>
-          <div>
+          {greenData ? <div>
             <p>Hosted By: {hosted_by}</p>
             <p>Website: {hosted_by_website}</p>
             <p>Considered to be {green ? "green" : "not green"}</p>
-          </div>
+          </div> : <div>We were unable to determine whether {url} was hosted green or not.</div> }
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
           <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
-            <p>CDN</p>
-            <p>3/3</p>
+            <p>Additional Info</p>
           </div>
           <div>
             <p>CDN Provider: {cdnProvider}</p>
-            <p>Locations: {cdnLocations.length}</p>
+            <p>CDN Server Locations: {cdnLocations.length}</p>
           </div>
         </div>
         <div className="bg-yellow-400 text-gray-800 rounded p-4 w-full h-full flex justify-between items-center text-3xl font-bold">
           <p>Our Score</p>
-          <p>7/9</p>
+          <p>{total}/9</p>
+        </div>
+        <div className="grid md:grid-cols-2">
+          <Link to="/">
+            See your personal story with {url}.
+          </Link>
         </div>
       </div>
     </div>
