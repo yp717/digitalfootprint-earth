@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const path = require("path");
 const express = require("express");
 var firebase = require("firebase-admin");
-const differenceInDays = require("date-fns/differenceInDays");
+const differenceInHours = require("date-fns/differenceInHours");
 const format = require("date-fns/format");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
@@ -47,7 +47,7 @@ function notStale(doc) {
   }
   const currentTime = new Date();
   const auditTime = time.toDate();
-  return differenceInDays(currentTime, auditTime) <= 6;
+  return differenceInHours(currentTime, auditTime) > 12;
 }
 
 app.use(function (req, res, next) {
