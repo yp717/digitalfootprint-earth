@@ -2,68 +2,17 @@ import React, { useEffect } from "react"
 import { Link } from "gatsby"
 import Header from "../components/core/Header"
 import { useState } from "react"
-import { PieChart, Pie } from "recharts"
+import ProportionGreen from "../components/visualizations/ProportionGreen"
+import PerformanceOverview from "../components/visualizations/PerformanceOverview"
 
 const BiggerPicture = () => {
-  const data01 = [
-    {
-      name: "Group A",
-      value: 400,
-    },
-    {
-      name: "Group B",
-      value: 300,
-    },
-    {
-      name: "Group C",
-      value: 300,
-    },
-    {
-      name: "Group D",
-      value: 200,
-    },
-    {
-      name: "Group E",
-      value: 278,
-    },
-    {
-      name: "Group F",
-      value: 189,
-    },
-  ]
-  const data02 = [
-    {
-      name: "Group A",
-      value: 2400,
-    },
-    {
-      name: "Group B",
-      value: 4567,
-    },
-    {
-      name: "Group C",
-      value: 1398,
-    },
-    {
-      name: "Group D",
-      value: 9800,
-    },
-    {
-      name: "Group E",
-      value: 3908,
-    },
-    {
-      name: "Group F",
-      value: 4800,
-    },
-  ]
-
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState()
+
   useEffect(async () => {
     const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
-    const data = await request.json()
-    setData(data)
+    const newData = await request.json()
+    setData(newData)
     setLoading(false)
   }, [])
 
@@ -107,47 +56,13 @@ const BiggerPicture = () => {
       <div className="max-w-4xl h-screen text-white mx-auto mt-32">
         <div className="flex flex-col text-center">
           <h1 className="font-bold text-6xl mb-6">The Bigger Picture</h1>
-          <p>Aggregating our audit data for a look at the wider web.</p>
-
-          <div className="flex flex-col lg:flex-row">
-            <div className="flex-grow">
-              <h2 className="text-left font-bold text-2xl">
-                Only X% of sites currently use Green Hosting Providers
-              </h2>
-              <p className="text-left">
-                According to Digital Footprint usage statistics and data
-                obtained via the{" "}
-                <a href="https://www.thegreenwebfoundation.org/">
-                  Green Web Foundation
-                </a>
-              </p>
-            </div>
-            <div className="flex-initial">
-              This is where the pie chart should go
-              <PieChart width={730} height={250}>
-                <Pie
-                  data={data01}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={50}
-                  fill="#8884d8"
-                />
-                <Pie
-                  data={data02}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#82ca9d"
-                  label
-                />
-              </PieChart>
-            </div>
-          </div>
+          <p className="px-5 mb-6">
+            None of this means anything without looking at the bigger picture.
+          </p>
+          {/* How much data is transferred over the web every second / year - big scary statistics */}
+          {/* usage statistics of the platform - number audited on line chart  */}
+          <ProportionGreen data={data} />
+          <PerformanceOverview data={data} />
         </div>
       </div>
     </>
