@@ -14,14 +14,9 @@ In this hackathon, we wrote _exactly_ NUMBER lines of code and made 78 commits o
 
 ## Introduction
 
-<!-- add citations -->
-<!-- https://www.wwf.org.au/news/blogs/plastic-waste-and-climate-change-whats-the-connection#gs.az5w7t -->
+The internet is responsible for nearly 3.7% of all global CO2 emissions. [1] This means that the internet produces more CO2 than every country on earth except the US and China. Further, in 2015 it was estimated that the internet produced approximately 600 million tonnes of CO2 a year. [2] BCG estimates that the internet produces almost 1 billion tonnes of greenhouse gases each year. [5] While these different sources vary in their estimates, the environmental impact of the internet still parallels that of plastic, as the production and inciniration of plastic is responsible for 850 million tonnes of greenhouse gases in the atmosphere. Unfortunately, it is not held to the same standards or put under the same scrutiny that countires are as we move toward achieving the United Nation's 2025 Sustainability Goals. We can do a lot better.
 
-The internet is responsible for nearly 3% of all global CO2 emissions. This means that the internet produces more CO2 than every country on earth except the US and China. Further, in 2015 it was estimated that the internet produced approximately 600 million tonnes of CO2 a year. For comparison, the environmental impact of the internet parallels that of plastic, as the production and inciniration of plastic is responsible for 850 million tonnes of greenhouse gases in the atmosphere. Unfortunately, it is not held to the same standards or put under the same scrutiny that countires are as we move toward achieving the United Nation's 2025 Sustainability Goals. We can do a lot better.
-
-There are currently 4.66 billion active internet users worldwide, which is approximately 59.5% [Statisa] of the global population. This number is growing every day and consequently so is the carbon footprint the internet has on our planet. In this next phase of development, we must be conscious of the environmental impact of our browsing and take both small and large steps as individuals and cooperations toward a sustainable future.
-
-> That ethereal place where we store our data, stream our movies, and email the world has a physical presence – in hundreds of giant data centers that are taking a growing toll on the planet.
+The cloud where we store our data has a physical presence in thousands of data centres around the world. These data centres consume as more electricity and emit more CO2 than the airline industry. [3] There are currently 4.66 billion active internet users worldwide, which is approximately 59.5% [4] of the global population. This number is growing every day and consequently so is the carbon footprint the internet has on our planet. In this next phase of development, we must be conscious of the environmental impact of our browsing and take both small and large steps as individuals and cooperations toward a sustainable future.
 
 All of this has led us to our problem statement:
 **How do we improve awareness and tackle the growing environmental impact of our internet usage?**
@@ -30,7 +25,7 @@ All of this has led us to our problem statement:
 
 DigitalFootprint.earth is a trifecta of tools that:
 
-1. **Brings the impact you have when using the internet to life through interactive storytelling using maps!** Using mathematics and ESRI's mapping technology, we can estimate and visualize the CO2 produced when you navigate to any given webpage. ESRI's ArcGIS API takes seemingly meaningless data and translates it into a tangible story that shows how serious the impact of the internet can be on our planet.
+1. **Brings the impact you have when using the internet to life through interactive storytelling using maps to help us understand our human impact!** Using mathematics and ESRI's mapping technology, we can estimate and visualize the CO2 produced when you navigate to any given webpage. ESRI's ArcGIS API takes seemingly meaningless data and translates it into a tangible story that shows how serious the impact of the internet can be on our planet.
 
 2. **Helps you reduce the impact your site has on the enviroment.** We investigate a site's hosting, CDN, performance and size to suggest mechanisms for improvement. Our research during this hack found that the steps we need to take toward making the internet greener are simple and awareness is the biggest challenge.
 
@@ -127,3 +122,11 @@ If you don't host your own site, that doesn't mean that there's nothing you can 
 - _Unsubscribe_: Email subscriptions and mailing lists produce a lot of CO2. Unsubscribing from the email lists that you don't read instead of letting them pile up in your inbox is another quick step you can take to be a greener citizen of the internet
 
 ❤️ We hope you like this hack submission. We had great fun making it.
+
+## Citations
+
+[1] [BBC. Why your internet habits are not as clean as you think](https://www.bbc.com/future/article/20200305-why-your-internet-habits-are-not-as-clean-as-you-think#:~:text=The%20carbon%20footprint%20of%20our,a%20researcher%20at%20Lancaster%20University)
+[2] [WWF. Plastic waste and climate change whats the connection?](https://www.wwf.org.au/news/blogs/plastic-waste-and-climate-change-whats-the-connection#gs.az5w7t)
+[3] [Digiplex. Factories of the digital Age](https://digiplex.com/insights/factories-of-the-digital-age/)
+[4] [Statista. Digital population worldwide](https://www.statista.com/statistics/617136/digital-population-worldwide/#:~:text=How%20many%20people%20use%20the,the%20internet%20via%20mobile%20devices)
+[5] [BBC Science Focus. Citation of the Boston Consulting Group (BCG)](https://www.sciencefocus.com/science/what-is-the-carbon-footprint-of-the-internet/)
