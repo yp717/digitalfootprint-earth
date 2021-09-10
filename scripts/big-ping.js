@@ -1,11 +1,17 @@
-const fetch = require("node-fetch")
-const data = require("./database.json")
+import fetch from "node-fetch";
+import Data from "./database.json";
 
-async function bigPing(){
-    for (const {domain} of data) {
-        const result = await fetch(`https://cdnhatch-api.onrender.com/audit/${domain}`);
-        console.log(result);
-      }
+async function bigPing() {
+  let count = 1;
+  for (const { domain } of Data) {
+    if (count >= 30) {
+      console.log(`Loading ${count}/${Data.length}: ${domain}`);
+      const result = await fetch(
+        `http://cdnhatch-api.onrender.com/audit/${domain}`
+      );
+      count++;
+    }
+  }
 }
 
-bigPing()
+bigPing();

@@ -47,7 +47,7 @@ function notStale(doc) {
   }
   const currentTime = new Date();
   const auditTime = time.toDate();
-  return differenceInHours(currentTime, auditTime) > 12;
+  return differenceInHours(currentTime, auditTime) < 12;
 }
 
 app.use(function (req, res, next) {
@@ -106,10 +106,14 @@ app.get("/audit/:url", cors(), async (req, res) => {
       return;
     }
   } else {
-    const auditData = await generateAudit(URL, db, id);
-    const { isp } = auditData.requestData;
-    const cdnInfo = handle(isp);
-    res.send({ ...auditData, cdnInfo });
+    try {
+      const auditData = await generateAudit(URL, db, id);
+      const { isp } = auditData.requestData;
+      const cdnInfo = handle(isp);
+      res.send({ ...auditData, cdnInfo });
+    } catch (e) {
+      res.send(500);
+    }
   }
 });
 
@@ -156,8 +160,6 @@ app.get("/story/:url", cors(), async (req, res) => {
       const userInfo = await gatherUserData(IP);
       const { isp } = data.requestData;
       const cdnInfo = handle(isp);
-
-      console.log(userInfo);
 
       // use the page size to calculate the approximate carbon value and pass this in to compute route
       // console.log(typeof userInfo.lon);
