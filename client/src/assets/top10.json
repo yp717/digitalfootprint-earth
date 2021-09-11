@@ -1,0 +1,72 @@
+[
+  {
+    "position": 1,
+    "domain": "wikipedia.org",
+    "count": 377652205,
+    "etv": 758938038.7599548,
+    "size": 63552
+  },
+  {
+    "position": 2,
+    "domain": "facebook.com",
+    "count": 364453470,
+    "etv": 660001667.3274113,
+    "size": 401893
+  },
+  {
+    "position": 3,
+    "domain": "youtube.com",
+    "count": 293707313,
+    "etv": 253692560.6953565,
+    "size": 2609089
+  },
+  {
+    "position": 4,
+    "domain": "pinterest.com",
+    "count": 253880663,
+    "etv": 69410114.48686704,
+    "size": 6039099
+  },
+  {
+    "position": 5,
+    "domain": "google.com",
+    "count": 193802952,
+    "etv": 482628816.5036734,
+    "size": 380748
+  },
+  {
+    "position": 6,
+    "domain": "amazon.com",
+    "count": 169472261,
+    "etv": 543394653.4667591,
+    "size": 3004643
+  },
+  {
+    "position": 7,
+    "domain": "twitter.com",
+    "count": 153612076,
+    "etv": 192741014.6954329,
+    "size": 17774
+  },
+  {
+    "position": 8,
+    "domain": "instagram.com",
+    "count": 145568697,
+    "etv": 263154427.54984823,
+    "size": 54110
+  },
+  {
+    "position": 9,
+    "domain": "linkedin.com",
+    "count": 124128174,
+    "etv": 165811568.26158512,
+    "size": 148214
+  },
+  {
+    "position": 10,
+    "domain": "reddit.com",
+    "count": 117932859,
+    "etv": 11213338.551948681,
+    "size": 63552
+  }
+]
