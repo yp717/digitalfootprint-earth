@@ -3,6 +3,7 @@ import { Link } from "gatsby"
 
 import Logo from "../../assets/Logo"
 import DevPost from "../../assets/Devpost"
+import GitHub from "../../assets/Github"
 
 const Header = () => {
   return (
@@ -34,13 +35,17 @@ const Header = () => {
           </a>{" "}
           & <a href="https://yannispanagis.com">Yannis Panagis</a>
         </p>
-        <div className="mt-2 hidden md:flex md:justify-end">
+        <div className="mt-2 hidden md:flex space-x-2 items-center md:justify-end">
+        <GitHub className="w-6" />
           <a
             href="https://hack-for-a-sustainable-future.devpost.com"
             className=""
           >
             <DevPost className="w-20 md:w-24" />
           </a>
+          
+   
+     
         </div>
       </div>
     </div>

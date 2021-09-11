@@ -14,6 +14,7 @@ export const StoryProvider = ({ ...props }) => {
   const webMapRef = useRef()
   const [mapLoaded, setMapLoaded] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [storyEnd, setStoryEnd] = useState(false)
   const [showLocationRequest, setShowLocationRequest] = useState(false)
   const [validationError, setValidationError] = useState(false)
   const [ready, setReady] = useState(false)
@@ -91,13 +92,14 @@ export const StoryProvider = ({ ...props }) => {
         setSubmitted(true)
         const request = await fetch(
           latitude && longitude
-            ? `https://cdnhatch-api.onrender.com/story/${validatedURL}?lat=${latitude}&lon=${longitude}`
-            : `https://cdnhatch-api.onrender.com/story/${validatedURL}`
+            ? `https://api.digitalfootprint.earth/story/${validatedURL}?lat=${latitude}&lon=${longitude}`
+            : `https://api.digitalfootprint.earth/story/${validatedURL}`
         )
         const data = await request.json()
         data.requestData.networkLatency = time
         let story = StoryCreator(data)
         setStoryItems([...story])
+        setTempURL(validatedURL)
         setAuditScores(data.auditScores)
         setReady(true)
       } else {
@@ -159,6 +161,9 @@ export const StoryProvider = ({ ...props }) => {
   }, [ready, storyIndex, storyItems])
 
   const next = () => {
+    if(storyIndex === storyItems.length  -1 ){
+      setStoryEnd(true)
+    }
     setStoryIndex(Math.min(storyIndex + 1, storyItems.length - 1))
   }
   const prev = () => {
@@ -206,6 +211,8 @@ export const StoryProvider = ({ ...props }) => {
         prev,
         hasNext,
         hasPrev,
+        storyEnd,
+        setStoryEnd,
         submitURL,
         validationError,
         tempURL,
