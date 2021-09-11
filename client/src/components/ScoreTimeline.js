@@ -17,14 +17,17 @@ const ScoreTimeline = ({ url }) => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(true)
 
-  useEffect(async () => {
-    const request = await fetch(
-      `http://cdnhatch-api.onrender.com/timeline/${url}`
-    )
-    const data = await request.json()
-    setData(data)
-    setLoading(false)
-  }, [])
+  useEffect(() => {
+    async function fetchData() {
+      const request = await fetch(
+        `http://cdnhatch-api.onrender.com/timeline/${url}`
+      )
+      const data = await request.json()
+      setData(data)
+      setLoading(false)
+    }
+    fetchData()
+  }, [url])
 
   if (loading) {
     return <div className="h-8 w-full bg-gray-600" />

@@ -5,8 +5,9 @@
  */
 
 const siteMetadata = {
-  title: `CDNHatch`,
-  description: `Optimizing Website Hosting and Performance for a greener planet.`,
+  title: `DigitalFootprint.earth`,
+  description: `Translating Digital Footprints into Real World Effects.`,
+  siteUrl: "https://digitalfootprint.earth",
 }
 
 module.exports = {

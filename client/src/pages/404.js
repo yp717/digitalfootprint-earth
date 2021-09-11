@@ -1,10 +1,12 @@
 import React from "react"
 import { Link } from "gatsby"
 import Header from "../components/core/Header"
+import SEO from "../components/core/SEO"
 
 const FourOhFour = () => {
   return (
     <div>
+      <SEO title="404" description="Page not found." />
       <Header />
       <div className="flex items-center justify-center h-screen">
         <div className="flex flex-col text-center">

@@ -4,6 +4,7 @@ import { useState } from "react"
 import ProportionGreen from "../components/visualizations/ProportionGreen"
 import PerformanceOverview from "../components/visualizations/PerformanceOverview"
 import PopularSitesOverview from "../components/visualizations/PopularSitesOverview"
+import SEO from "../components/core/SEO"
 
 const BiggerPicture = () => {
   const [loading, setLoading] = useState(true)
@@ -24,6 +25,10 @@ const BiggerPicture = () => {
   if (loading) {
     return (
       <div className="absolute z-30 h-full w-full top-0 left-0">
+        <SEO
+          title="Bigger Picture"
+          description="A closer look at the bigger picture behind your digital footprint."
+        />
         <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
           <svg
             className="animate-spin -ml-1 mr-3 h-16 w-16 md:h-24 md:w-24 text-yellow-400"
