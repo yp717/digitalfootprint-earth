@@ -76,11 +76,11 @@ app.get("/timeline/:url", cors(corsOptions), async (req, res) => {
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const timelineDocRef = await db.collection("timelines").doc(id);
   const doc = await timelineDocRef.get();
-  if (doc.exists){
+  if (doc.exists) {
     res.send(doc.data());
   } else {
-    res.sendStatus(404)
-    res.end()
+    res.sendStatus(404);
+    res.end();
   }
 });
 
@@ -228,7 +228,9 @@ app.get("/badge", async (req, res) => {
     const {
       auditScores: { total },
     } = data;
+    console.log({ time });
     const auditTime = time.toDate();
+    console.log({ auditTime });
     fs.readFile(path.join(__dirname, "generateBadge.js"), (error, data) => {
       if (error) {
         throw error;
