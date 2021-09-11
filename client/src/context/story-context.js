@@ -39,6 +39,7 @@ export const StoryProvider = ({ ...props }) => {
   ])
 
   const { latitude, longitude } = usePosition()
+
   useEffect(() => {
     if (geoLocationOverlook) {
       submitURL(tempURL)

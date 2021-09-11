@@ -13,7 +13,7 @@ async function bigPing() {
           console.log("Failed.");
           controller.abort();
         }, 80000);
-        await fetch(`http://cdnhatch-api.onrender.com/audit/${domain}`, {
+        await fetch(`https://cdnhatch-api.onrender.com/audit/${domain}`, {
           signal,
         });
         clearTimeout(timeout);

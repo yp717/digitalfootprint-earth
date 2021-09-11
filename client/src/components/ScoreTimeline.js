@@ -20,7 +20,7 @@ const ScoreTimeline = ({ url }) => {
   useEffect(() => {
     async function fetchData() {
       const request = await fetch(
-        `http://cdnhatch-api.onrender.com/timeline/${url}`
+        `https://cdnhatch-api.onrender.com/timeline/${url}`
       )
       const data = await request.json()
       setData(data)

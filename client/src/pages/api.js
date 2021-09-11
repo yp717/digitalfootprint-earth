@@ -74,7 +74,7 @@ const BiggerPicture = () => {
             {`<div id="our-badge"></div>
 <script
   type="text/javascript"
-  src="http://localhost:3000/badge"
+  src="https://cdnhatch-api.onrender.com/badge"
 ></script>
 <script type="text/javascript" defer>
   generateBadge.init(); generateBadge.draw("our-badge");

@@ -138,6 +138,7 @@ app.get("/audit/:url", cors(), async (req, res) => {
 });
 
 app.get("/story/:url", cors(), async (req, res) => {
+  console.log(req.params);
   var URL = req.params.url;
   const validURL = await validateURL(URL);
   if (!validURL) {
@@ -154,25 +155,34 @@ app.get("/story/:url", cors(), async (req, res) => {
   if (doc.exists && notStale(doc)) {
     console.log("Story active");
     const { locked, time, ...data } = doc.data();
-    console.log({ locked, time, ...data });
+    // console.log({ locked, time, ...data });
     if (locked) {
       console.log("Story being processed");
       const observer = userDocRef.onSnapshot(
         async (doc) => {
           const { locked, time, ...data } = doc.data();
           if (!locked) {
-            const userInfo = await gatherUserData(IP);
+            let userInfo = await gatherUserData(IP);
             const { isp } = data.requestData;
             const cdnInfo = handle(isp);
             const totalSizeMB = data.performance.totalSize / 1024 / 1024;
             const c02_produced = totalSizeMB * 10;
-            var lat = req.params.lat || userInfo.lat;
-            var lon = req.params.lon || userInfo.lon;
+            var lat = req.query.lat || userInfo.lat;
+            var lon = req.query.lon || userInfo.lon;
             const serviceArea = await computeServiceArea(
               [lon, lat],
               c02_produced
             );
-            let geoLocation = {lat, lon}
+
+            let geoLocation = undefined;
+
+            if (req.query.lat && req.query.lon) {
+              console.log("if it happens it happens");
+              geoLocation = { lat, lon };
+              // overwrite the city in userInfo
+              userInfo = { ...userInfo, city: "YANASAMLAND" };
+            }
+
             res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
             observer();
           }
@@ -186,18 +196,23 @@ app.get("/story/:url", cors(), async (req, res) => {
       );
     } else {
       // Story is already ready -> Send it!
-      const userInfo = await gatherUserData(IP);
+      let userInfo = await gatherUserData(IP);
       const { isp } = data.requestData;
       const cdnInfo = handle(isp);
       const totalSizeMB = data.performance.totalSize / 1024 / 1024;
       const c02_produced = totalSizeMB * 10;
-      var lat = req.params.lat || userInfo.lat;
-      var lon = req.params.lon || userInfo.lon;
-      const serviceArea = await computeServiceArea(
-        [lon, lat],
-        c02_produced
-      );
-      let geoLocation = {lat, lon}
+      var lat = req.query.lat || userInfo.lat;
+      var lon = req.query.lon || userInfo.lon;
+      const serviceArea = await computeServiceArea([lon, lat], c02_produced);
+
+      let geoLocation = undefined;
+
+      if (req.query.lat && req.query.lon) {
+        geoLocation = { lat, lon };
+        // overwrite the city in userInfo
+        userInfo = { ...userInfo, city: "YANASAMLAND" };
+      }
+
       res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
       return;
     }
@@ -205,18 +220,24 @@ app.get("/story/:url", cors(), async (req, res) => {
     console.log("Creating Story");
     try {
       const auditData = await generateAudit(URL, db, id);
-      const userInfo = await gatherUserData(IP);
+      let userInfo = await gatherUserData(IP);
       const { isp } = auditData.requestData;
       const cdnInfo = handle(isp);
       const totalSizeMB = data.performance.totalSize / 1024 / 1024;
       const c02_produced = totalSizeMB * 10;
-      var lat = req.params.lat || userInfo.lat;
-      var lon = req.params.lon || userInfo.lon;
-      const serviceArea = await computeServiceArea(
-        [lon, lat],
-        c02_produced
-      );
-      let geoLocation = {lat, lon}
+      var lat = req.query.lat || userInfo.lat;
+      var lon = req.query.lon || userInfo.lon;
+      const serviceArea = await computeServiceArea([lon, lat], c02_produced);
+
+      let geoLocation = undefined;
+
+      if (req.query.lat && req.query.lon) {
+        console.log("if it happens it happens");
+        geoLocation = { lat, lon };
+        // overwrite the city in userInfo
+        userInfo = { ...userInfo, city: "YANASAMLAND" };
+      }
+
       res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
     } catch (e) {
       res.sendStatus(500);
