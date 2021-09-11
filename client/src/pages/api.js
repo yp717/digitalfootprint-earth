@@ -3,6 +3,7 @@ import Header from "../components/core/Header"
 import sampleRequest from "../assets/sample-audit-request.json"
 import { StaticImage } from "gatsby-plugin-image"
 import SEO from "../components/core/SEO"
+import Footer from "../components/core/Footer"
 
 const ReactJson = React.lazy(() => import("react-json-view"))
 
@@ -88,6 +89,7 @@ const BiggerPicture = () => {
         async
       ></script>
       <script type="text/javascript" defer></script>
+      <Footer/>
     </div>
   )
 }

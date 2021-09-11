@@ -52,6 +52,7 @@ const ScoreTimeline = ({ url }) => {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart width={500} height={400} data={processedData}>
             <XAxis
+            tick={{ fill: 'white' }}
               dataKey="date"
               dateFormatter={dateFormatter}
               tickFormatter={dateFormatter}
@@ -60,7 +61,7 @@ const ScoreTimeline = ({ url }) => {
                 Date.parse(processedData[processedData.length - 1].date),
               ]}
             />
-            <YAxis dataKey="total" />
+            <YAxis dataKey="total"  tick={{ fill: 'white' }}/>
             <Tooltip />
             <Line
               type="monotone"

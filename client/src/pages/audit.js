@@ -62,14 +62,14 @@ const AuditPage = ({ url }) => {
     performance: { performanceScore, totalSize },
   } = data
   return (
-    <div className="max-w-4xl mx-auto space-y-2 py-12 md:py-24">
+    <div className="max-w-4xl mx-auto space-y-2 py-12 md:py-24 px-5">
       <div>
         <p>AUDIT RESULTS</p>
-        <h1 className="text-7xl text-yellow-400 font-bold pb-2">{url}</h1>
+        <h1 className="text-4xl md:text-7xl text-yellow-400 font-bold pb-2">{url}</h1>
       </div>
       <div className="grid gap-4">
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
-          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
+          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-xl md:text-3xl text-gray-100 font-bold">
             <p>Performance</p>
             <p>{performance}/3</p>
           </div>
@@ -81,7 +81,7 @@ const AuditPage = ({ url }) => {
           </div>
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
-          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
+          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-xl md:text-3xl text-gray-100 font-bold">
             <p>Page Size</p>
             <p>{pageWeight}/3</p>
           </div>
@@ -93,7 +93,7 @@ const AuditPage = ({ url }) => {
           </div>
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
-          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
+          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-xl md:text-3xl text-gray-100 font-bold">
             <p>Hosting</p>
             <p>{hosting}/3</p>
           </div>
@@ -104,7 +104,7 @@ const AuditPage = ({ url }) => {
           </div>
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
-          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-3xl text-gray-100 font-bold">
+          <div className="flex justify-between items-center border-b-4 border-gray-700 pb-2 mb-2 text-xl md:text-3xl text-gray-100 font-bold">
             <p>Additional Info</p>
           </div>
           <div>
@@ -112,11 +112,18 @@ const AuditPage = ({ url }) => {
             <p>CDN Server Locations: {cdnLocations.length}</p>
           </div>
         </div>
-        <div className="bg-yellow-400 text-gray-800 rounded p-4 w-full h-full flex justify-between items-center text-3xl font-bold">
+       
+        <div className="bg-yellow-400 text-gray-800 rounded p-4 w-full h-full flex justify-between items-center text-xl md:text-3xl font-bold">
           <p>Our Score</p>
           <p>{total}/9</p>
         </div>
+        <div className="bg-gray-800 rounded py-4 pr-4 w-full">
+        <div className="flex justify-between items-center border-b-4 ml-4 border-gray-700 pb-2 mb-2 text-xl md:text-3xl text-gray-100 font-bold">
+            <p>Results Over Time</p>
+          </div>
         <ScoreTimeline url={url} />
+        </div>
+        
         <div className="grid md:grid-cols-2">
           <Link to="/">See your personal story with {url}.</Link>
         </div>

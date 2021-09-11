@@ -4,8 +4,8 @@ import PropTypes from "prop-types"
 import { Helmet } from "react-helmet-async"
 
 const SEO = ({ title, description }) => {
-  console.log(title)
-  console.log(description)
+  // console.log(title)
+  // console.log(description)
   const { site } = useStaticQuery(graphql`
     query SEO {
       site {

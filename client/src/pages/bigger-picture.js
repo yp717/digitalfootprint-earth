@@ -5,6 +5,8 @@ import ProportionGreen from "../components/visualizations/ProportionGreen"
 import PerformanceOverview from "../components/visualizations/PerformanceOverview"
 import PopularSitesOverview from "../components/visualizations/PopularSitesOverview"
 import SEO from "../components/core/SEO"
+import Layout from "../components/core/Layout"
+import Footer from "../components/core/Footer"
 
 const BiggerPicture = () => {
   const [loading, setLoading] = useState(true)
@@ -59,9 +61,9 @@ const BiggerPicture = () => {
   }
 
   return (
-    <>
+    <div className="mb-6">
       <Header />
-      <div className="max-w-4xl h-screen text-white mx-auto mt-32">
+      <div className="max-w-4xl text-white mx-auto mt-32 mb-16">
         <div className="flex flex-col text-center">
           <h1 className="font-bold text-6xl mb-6">The Bigger Picture</h1>
           <p className="px-5 mb-6">
@@ -75,7 +77,8 @@ const BiggerPicture = () => {
           {/* bar chart of the ten biggest sites on the web and their respective users */}
         </div>
       </div>
-    </>
+      <Footer/>
+    </div>
   )
 }
 
