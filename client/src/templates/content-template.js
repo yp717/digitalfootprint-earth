@@ -17,7 +17,9 @@ const ContentTemplate = ({ data }) => {
             {frontmatter.title}
           </h1>
         </div>
-        <MDXRenderer>{body}</MDXRenderer>
+        <div className="mx-auto">
+          <MDXRenderer>{body}</MDXRenderer>
+        </div>
       </div>
     </MDXProvider>
   )

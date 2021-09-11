@@ -3,4 +3,24 @@ title: How it Works
 date: 2021-03-06
 ---
 
-Please note that all of the performance audits are run from the same server. This means that while the carbon value may not be truly representative due to the limitations in our analysis based on the time constraints of a hack, the error between audits of sites is systematic and consistent. Future iterations of Digital Footprint can improve the complexity of the analysis used to generate these scores to form more accurate comparisons.
+## What does it do?
+
+DigitalFootprint.earth is a trifecta of tools that:
+
+1. **Brings the impact you have when using the internet to life through interactive storytelling using maps to help us understand our human impact!** Using mathematics and ESRI's mapping technology, we can estimate and visualize the CO2 produced when you navigate to any given webpage. ESRI's ArcGIS API takes seemingly meaningless data and translates it into a tangible story that shows how serious the impact of the internet can be on our planet.
+2. **Helps you reduce the impact your site has on the enviroment.** We investigate a site's hosting, CDN, performance and size to suggest mechanisms for improvement. Our research during this hack found that the steps we need to take toward making the internet greener are simple and awareness is the biggest challenge.
+3. **Provides a way to audit, rank and aggregate web pages to create a new standard for a greener web.** Via our web application or API, developers can consistently monitor their site's performance, CDN response time, and other request metadata via our scoring system.
+
+Our custom designed score can be displayed as a badge on a webpage to demonstrate to a site's visitors that the developers are holding themselves accountable to ensuring that their site is as green as it can be.
+
+All of the performance audits are run from the same server. This means that while the carbon value may not be truly representative due to the limitations in our analysis based on the time constraints of a hack, the error between audits of sites is systematic and consistent.
+
+We run a lighthouse audit to evaluate the performance of each website using Puppeteer. For consistency we disable all caching mechanisms and set consistent viewport dimensions to form a fair basis for comparison between sites. We then use Puppeteer to visit the URL and wait until almost all network traffic is idle to approximate the amount of data transferred each time a user visits the site. We refer to this metric as the approximate page weight.
+
+## limitations
+
+Due to the time constraints of this hackathon, there are a number of limitations and assumptions behind the estimates used for DigitalFootprint.earth. These are summarized as follows:
+
+- _All of the performance audits are run from the same server_: This means that there is a systematic error between audits of sites.
+-
+-
