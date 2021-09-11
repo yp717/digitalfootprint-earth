@@ -3,6 +3,7 @@ import {Link} from "gatsby"
 import { Router, Match, useLocation } from "@reach/router"
 import { navigate } from "gatsby"
 import Header from "../components/core/Header"
+import ScoreTimeline from "../components/ScoreTimeline"
 
 const AuditPage = ({ url }) => {
   const [loading, setLoading] = useState(true)
@@ -65,7 +66,7 @@ const AuditPage = ({ url }) => {
     <div className="max-w-4xl mx-auto space-y-2 py-12 md:py-24">
       <div>
         <p>AUDIT RESULTS</p>
-        <h1 className="text-7xl text-yellow-400 font-bold">{url}</h1>
+        <h1 className="text-7xl text-yellow-400 font-bold pb-2">{url}</h1>
       </div>
       <div className="grid gap-4">
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
@@ -110,6 +111,7 @@ const AuditPage = ({ url }) => {
           <p>Our Score</p>
           <p>{total}/9</p>
         </div>
+        <ScoreTimeline url={url}/>
         <div className="grid md:grid-cols-2">
           <Link to="/">
             See your personal story with {url}.
