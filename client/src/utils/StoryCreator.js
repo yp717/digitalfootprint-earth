@@ -9,6 +9,7 @@ const defaultStoryItem = {
   layers: [],
   points: [],
   lines: [],
+  serviceArea: [],
   showTotalScore: false,
   showPageWeightScore: false,
   showPerformanceScore: false,
@@ -21,18 +22,9 @@ const StoryCreator = data => {
   const { cdnProvider, cdnLocations } = data.cdnInfo
   const { city, isp } = data.userInfo
   const { hosted_by, green, url } = data.environmentalData.greenWebFoundation
-  // storyItems.push({
-  //   ...defaultStoryItem,
-  //   hero: true,
-  //   title: "You're Stor",
-  //   body: `It's sub content`,
-  //   rotate: true,
-  //   goTo: {
-  //     target: [data.userInfo.lon, data.userInfo.lat],
-  //     zoom: 1,
-  //     duration: 2000,
-  //   },
-  // })
+  const {saPolygons} = data.serviceArea
+
+ 
   storyItems.push({
     ...defaultStoryItem,
     title: "It all starts with you.",
@@ -44,6 +36,12 @@ const StoryCreator = data => {
     },
     points: [{ latitude: data.userInfo.lat, longitude: data.userInfo.lon }],
   })
+  storyItems.push({
+    ...defaultStoryItem,
+   serviceArea: saPolygons
+  })
+
+
 
   storyItems.push({
     ...defaultStoryItem,

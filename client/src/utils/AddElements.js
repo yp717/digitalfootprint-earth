@@ -10,6 +10,7 @@ export const redrawElements = (
   // centralServerLocation,
   points,
   lines,
+  serviceArea,
   hovered,
   setHovered
 ) => {
@@ -137,5 +138,31 @@ export const redrawElements = (
     cdnGraphics.push(polylineGraphic)
   })
 
+  if(serviceArea && serviceArea.features){
+    const {features, spatialReference} = serviceArea
+    const serviceAreaGraphics = features.map(graphic => {
+      const polygon = {
+        type: "polygon",
+        rings: graphic.geometry.rings
+      }
+      const simpleFillSymbol = {
+        type: "simple-fill",
+        color: [227, 139, 79, 0.8],  // Orange, opacity 80%
+        outline: {
+            color: [255, 255, 255],
+            width: 1
+        }
+     };
+     const polygonGraphic = new Graphic({
+      geometry: polygon,
+      symbol: simpleFillSymbol,
+  
+   });
+    
+      return polygonGraphic
+    })
+    mapRef.current.graphics.addMany([...serviceAreaGraphics])
+  }
+ 
   mapRef.current.graphics.addMany([...cdnGraphics])
 }

@@ -51,6 +51,7 @@ const FrontPage = ({ children }) => {
           mapRef,
           currentStoryItem.points,
           currentStoryItem.lines,
+          currentStoryItem.serviceArea,
           hovered,
           setHovered
         )
@@ -58,7 +59,7 @@ const FrontPage = ({ children }) => {
         mapRef.current.graphics.removeAll()
       }
     }
-  }, [hovered, ready, currentStoryItem.points, currentStoryItem.lines, mapRef])
+  }, [hovered, ready, currentStoryItem.points, currentStoryItem.lines, currentStoryItem.serviceArea, mapRef])
 
   return (
     <div className={`text-white scroll`}>

@@ -20,9 +20,9 @@ async function computeServiceArea(origin, c02_used) {
   const distanceCutoff = [radius];
   return serviceArea({
     facilities: [origin],
-    defaultBreaks: [distanceCutoff],
+    // defaultBreaks: [distanceCutoff],
     impedanceAttributeName: "Kilometers",
-    // kilometers: distanceCutoff,
+    kilometers: distanceCutoff,
     trimOuterPolygon: true,
     authentication,
   });
