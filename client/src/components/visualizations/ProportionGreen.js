@@ -57,8 +57,15 @@ const ProportionGreen = ({ data }) => {
     <div className="flex items-center justify-center flex-col lg:flex-row px-5">
       <div className="flex-grow">
         <h2 className="text-left font-bold text-2xl">
-          Only {(data.environment.green / data.environment.notGreen).toFixed(2)}
-          % of sites currently use Green Hosting Providers
+          Only{" "}
+          <span className="underline">
+            {(
+              (data.environment.green * 100) /
+              data.environment.notGreen
+            ).toFixed(2)}
+            %
+          </span>
+          of sites currently use Green Hosting Providers
         </h2>
         <p className="text-left">
           According to Digital Footprint usage statistics and data obtained via
