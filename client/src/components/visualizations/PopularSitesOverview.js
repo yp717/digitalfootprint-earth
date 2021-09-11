@@ -11,19 +11,16 @@ import {
 } from "recharts"
 
 import top10 from "../../assets/top10.json"
-import database from "../../../../scripts/database.json"
 
 const compactNumber = value => {
-  console.log(value)
   const suffixes = ["", "k", "m", "b", "t"]
-
   const suffixNum = Math.floor(("" + value).length / 3)
 
   let shortValue = parseFloat(
-    (suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(2)
+    (suffixNum !== 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(2)
   )
 
-  if (shortValue % 1 != 0) {
+  if (shortValue % 1 !== 0) {
     shortValue = shortValue.toFixed(1)
   }
 

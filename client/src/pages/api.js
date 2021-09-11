@@ -8,9 +8,7 @@ const ReactJson = React.lazy(() => import("react-json-view"))
 const BiggerPicture = () => {
   const isSSR = typeof window === "undefined"
 
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, [])
   return (
     <div className="space-y-12 md:space-y-24 pb-12 px-2">
       <Header />
@@ -56,7 +54,11 @@ const BiggerPicture = () => {
           </React.Suspense>
         )}
         <h2 className="text-xl pt-12">Audit Badge</h2>
-        <StaticImage src="../assets/BadgeHero.png" className="object-cover h-72 w-full rounded" alt=""/>
+        <StaticImage
+          src="../assets/BadgeHero.png"
+          className="object-cover h-72 w-full rounded"
+          alt=""
+        />
         <p>
           If you want to display the results of your audit publically, you can
           embed our customisable badge on any site page.
@@ -76,13 +78,11 @@ const BiggerPicture = () => {
         </div>
       </div>
       <script
-            type="text/javascript"
-            src="https://cdnhatch-api.onrender.com/badge"
-            async
-          ></script>
-          <script type="text/javascript" defer>
-            
-          </script>
+        type="text/javascript"
+        src="https://cdnhatch-api.onrender.com/badge"
+        async
+      ></script>
+      <script type="text/javascript" defer></script>
     </div>
   )
 }

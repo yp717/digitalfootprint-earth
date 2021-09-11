@@ -22,7 +22,6 @@ async function computeServiceArea(origin, c02_used) {
   // to get km radius -> this assumes the c02 is given in grams
   const radius = c02_used / avg_C02_car_per_km;
   const distanceCutoff = [radius];
-
   return serviceArea({
     facilities: [origin],
     defaultBreaks: [distanceCutoff],

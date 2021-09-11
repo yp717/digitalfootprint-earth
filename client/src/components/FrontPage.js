@@ -24,7 +24,7 @@ const FrontPage = ({ children }) => {
     rotate,
     reset,
     currentStoryItem,
-    validationError,
+    // validationError,
   } = useStory()
   const [hovered, setHovered] = useState("")
 

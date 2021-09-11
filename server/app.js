@@ -8,7 +8,6 @@ const differenceInHours = require("date-fns/differenceInHours");
 const format = require("date-fns/format");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
-// const { generateBadge } = require("./generateBadge");
 const { computeServiceArea } = require("./computeServiceArea");
 const { gatherUserData } = require("./gatherUserData");
 const { handle } = require("./cdnHandeler");
@@ -152,6 +151,7 @@ app.get("/story/:url", cors(), async (req, res) => {
   if (doc.exists && notStale(doc)) {
     console.log("Story active");
     const { locked, time, ...data } = doc.data();
+    console.log({ locked, time, ...data });
     if (locked) {
       console.log("Story being processed");
       const observer = userDocRef.onSnapshot(
