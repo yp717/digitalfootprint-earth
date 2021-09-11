@@ -1,9 +1,7 @@
 import * as React from "react"
-import { PieChart, Pie, Cell } from "recharts"
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
 
-{
-  /* stats about proportion of sites that are green using recharts pie chart */
-}
+/* stats about proportion of sites that are green using recharts pie chart */
 const ProportionGreen = ({ data }) => {
   const COLORS = ["#EF4444", "#0B9F6F"]
 
@@ -54,8 +52,8 @@ const ProportionGreen = ({ data }) => {
   }))
 
   return (
-    <div className="flex items-center justify-center flex-col lg:flex-row px-5">
-      <div className="flex-grow">
+    <div className="grid grid-cols-12 items-center justify-center px-5">
+      <div className="col-span-12 md:col-span-4">
         <h2 className="text-left font-bold text-2xl">
           Only{" "}
           <span className="underline">
@@ -75,29 +73,31 @@ const ProportionGreen = ({ data }) => {
           </a>
         </p>
       </div>
-      <div className="flex-initial">
-        <div className="justify-center">
-          <PieChart width={300} height={300}>
-            <Pie
-              stroke="none"
-              data={environmentData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={50}
-              outerRadius={80}
-              fill="#FBBF24"
-              label={renderCustomizedLabel}
-            >
-              {environmentData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
+      <div className="col-span-12 md:col-span-8">
+        <div className="justify-center text-center">
+          <ResponsiveContainer width={"100%"} height={300}>
+            <PieChart>
+              <Pie
+                stroke="none"
+                data={environmentData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={80}
+                fill="#FBBF24"
+                label={renderCustomizedLabel}
+              >
+                {environmentData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>

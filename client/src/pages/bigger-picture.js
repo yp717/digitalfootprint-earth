@@ -4,6 +4,7 @@ import Header from "../components/core/Header"
 import { useState } from "react"
 import ProportionGreen from "../components/visualizations/ProportionGreen"
 import PerformanceOverview from "../components/visualizations/PerformanceOverview"
+import PopularSitesOverview from "../components/visualizations/PopularSitesOverview"
 
 const BiggerPicture = () => {
   const [loading, setLoading] = useState(true)
@@ -63,7 +64,7 @@ const BiggerPicture = () => {
           {/* usage statistics of the platform - number audited on line chart  */}
           <ProportionGreen data={data} />
           <PerformanceOverview data={data} />
-
+          <PopularSitesOverview />
           {/* bar chart of the ten biggest sites on the web and their respective users */}
         </div>
       </div>
