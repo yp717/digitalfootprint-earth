@@ -30,12 +30,24 @@ const compactNumber = value => {
   return shortValue + suffixes[suffixNum]
 }
 
+const numberWithCommas = number => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
 // Plot a horizontal line where the average CO2 produced is for each of the websites
 const PopularSitesOverview = () => {
   // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
   const processedTop10 = top10.map(item => {
     return { ...item, size: (item.size * 10) / 1024 / 1024 }
   })
+
+  let CO2_tonnes = processedTop10.reduce((acc, curr) => {
+    acc += curr.size * curr.etv
+    return acc
+  }, 0)
+
+  // convert to tonnes
+  CO2_tonnes = CO2_tonnes / 1000 / 1000
 
   console.log(processedTop10)
 
@@ -47,7 +59,8 @@ const PopularSitesOverview = () => {
       <p className="text-center lg:text-left w-full">
         Many of the world's most popular sites have an above average carbon
         footprint. With billions of users and visits each year, their combined
-        impact alone produces NUMBER tonnes of CO2 each year.
+        impact alone produces {numberWithCommas(CO2_tonnes.toFixed(2))} tonnes
+        of CO2 each year.
       </p>
       <div className="grid grid-cols-12 mt-6">
         <div className="col-span-12">
