@@ -143,8 +143,16 @@ app.get("/story/:url", cors(), async (req, res) => {
             const userInfo = await gatherUserData(IP);
             const { isp } = data.requestData;
             const cdnInfo = handle(isp);
-
-            res.send({ ...data, userInfo, cdnInfo });
+            const totalSizeMB = data.performance.totalSize / 1024 / 1024;
+            const c02_produced = totalSizeMB * 10;
+            var lat = req.params.lat || userInfo.lat;
+            var lon = req.params.lon || userInfo.lon;
+            const serviceArea = await computeServiceArea(
+              [lon, lat],
+              c02_produced
+            );
+            let geoLocation = {lat, lon}
+            res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
             observer();
           }
         },
@@ -160,19 +168,16 @@ app.get("/story/:url", cors(), async (req, res) => {
       const userInfo = await gatherUserData(IP);
       const { isp } = data.requestData;
       const cdnInfo = handle(isp);
-
-      // use the page size to calculate the approximate carbon value and pass this in to compute route
-      // console.log(typeof userInfo.lon);
-      // https://observablehq.com/@mrchrisadams/carbon-footprint-of-sending-data-around
-      // const c02_produced = await computeCarbonFootprint() not sure where the value comes from but when I get it should go here (can write the function without)
       const totalSizeMB = data.performance.totalSize / 1024 / 1024;
-      const c02_produced = totalSizeMB * 10; // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
+      const c02_produced = totalSizeMB * 10;
+      var lat = req.params.lat || userInfo.lat;
+      var lon = req.params.lon || userInfo.lon;
       const serviceArea = await computeServiceArea(
-        [userInfo.lon, userInfo.lat],
+        [lon, lat],
         c02_produced
       );
-
-      res.send({ ...data, userInfo, cdnInfo, serviceArea });
+      let geoLocation = {lat, lon}
+      res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
       return;
     }
   } else {
@@ -182,15 +187,16 @@ app.get("/story/:url", cors(), async (req, res) => {
       const userInfo = await gatherUserData(IP);
       const { isp } = auditData.requestData;
       const cdnInfo = handle(isp);
-
       const totalSizeMB = data.performance.totalSize / 1024 / 1024;
-      const c02_produced = totalSizeMB * 10; // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
+      const c02_produced = totalSizeMB * 10;
+      var lat = req.params.lat || userInfo.lat;
+      var lon = req.params.lon || userInfo.lon;
       const serviceArea = await computeServiceArea(
-        [userInfo.lon, userInfo.lat],
+        [lon, lat],
         c02_produced
       );
-
-      res.send({ ...auditData, userInfo, cdnInfo, serviceArea });
+      let geoLocation = {lat, lon}
+      res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
     } catch (e) {
       res.sendStatus(500);
       res.end();

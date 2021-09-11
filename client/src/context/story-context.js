@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from "react"
 import StoryCreator from "../utils/StoryCreator"
 import Ping from "ping.js"
 import addLayers from "../utils/AddLayers"
+import { usePosition } from "../hooks/usePosition"
 export const isBrowser = () => typeof window !== "undefined"
 
 const StoryContext = React.createContext()
@@ -13,12 +14,15 @@ export const StoryProvider = ({ ...props }) => {
   const webMapRef = useRef()
   const [mapLoaded, setMapLoaded] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [showLocationRequest, setShowLocationRequest] = useState(false)
   const [validationError, setValidationError] = useState(false)
   const [ready, setReady] = useState(false)
   const [rotate, setRotate] = useState(true)
   const [showTools, setShowTools] = useState(false)
   const [storyIndex, setStoryIndex] = useState(0)
+  const [geoLocationOverlook, setGeoLocationOverlook] = useState(false)
   const [auditScores, setAuditScores] = useState({})
+  const [tempURL, setTempURL] = useState("")
   const [storyItems, setStoryItems] = useState([
     {
       title: "StoryStub",
@@ -34,6 +38,12 @@ export const StoryProvider = ({ ...props }) => {
     },
   ])
 
+  const { latitude, longitude } = usePosition()
+  useEffect(() => {
+    if (geoLocationOverlook) {
+      submitURL(tempURL)
+    }
+  }, [geoLocationOverlook])
   async function validateURL(userInput) {
     // If the URL is not valid then return false
     var pattern = new RegExp(
@@ -63,7 +73,6 @@ export const StoryProvider = ({ ...props }) => {
   }
 
   const submitURL = async userInput => {
-    console.log(userInput)
     const p = new Ping()
     let time = -1
     try {
@@ -75,19 +84,25 @@ export const StoryProvider = ({ ...props }) => {
 
     const validatedURL = await validateURL(userInput)
 
-    console.log(validatedURL)
-
     if (!validationError && validatedURL !== false) {
-      setSubmitted(true)
-      const request = await fetch(
-        `https://cdnhatch-api.onrender.com/story/${validatedURL}`
-      )
-      const data = await request.json()
-      data.requestData.networkLatency = time
-      let story = StoryCreator(data)
-      setStoryItems([...story])
-      setAuditScores(data.auditScores)
-      setReady(true)
+      if ((latitude && longitude) || geoLocationOverlook) {
+        setShowLocationRequest(false)
+        setSubmitted(true)
+        const request = await fetch(
+          latitude && longitude
+            ? `https://cdnhatch-api.onrender.com/story/${validatedURL}?lat=${latitude}&lon=${longitude}`
+            : `https://cdnhatch-api.onrender.com/story/${validatedURL}`
+        )
+        const data = await request.json()
+        data.requestData.networkLatency = time
+        let story = StoryCreator(data)
+        setStoryItems([...story])
+        setAuditScores(data.auditScores)
+        setReady(true)
+      } else {
+        setTempURL(validatedURL)
+        setShowLocationRequest(true)
+      }
     }
   }
 
@@ -178,6 +193,10 @@ export const StoryProvider = ({ ...props }) => {
         webMapRef,
         mapLoaded,
         setMapLoaded,
+        hasLocation: latitude && longitude,
+        geoLocationOverlook,
+        setGeoLocationOverlook,
+        showLocationRequest,
         submitted,
         ready,
         currentStoryItem: storyItems[storyIndex],
@@ -188,6 +207,7 @@ export const StoryProvider = ({ ...props }) => {
         hasPrev,
         submitURL,
         validationError,
+        tempURL,
         setValidationError,
         rotate,
         reset,
