@@ -91,8 +91,8 @@ export const StoryProvider = ({ ...props }) => {
         setSubmitted(true)
         const request = await fetch(
           latitude && longitude
-            ? `https://cdnhatch-api.onrender.com/story/${validatedURL}?lat=${latitude}&lon=${longitude}`
-            : `https://cdnhatch-api.onrender.com/story/${validatedURL}`
+            ? `https://api.digitalfootprint.earth/story/${validatedURL}?lat=${latitude}&lon=${longitude}`
+            : `https://api.digitalfootprint.earth/story/${validatedURL}`
         )
         const data = await request.json()
         data.requestData.networkLatency = time

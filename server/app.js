@@ -31,6 +31,8 @@ var whitelist = [
   "http://localhost:9000",
   "http://cdnhatch-client.onrender.com",
   "https://cdnhatch-client.onrender.com",
+  "http://digitalfootprint.earth",
+  "https://digitalfootprint.earth",
 ];
 var corsOptions = {
   origin: function (origin, callback) {

@@ -12,7 +12,7 @@ const AuditPage = ({ url }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const request = await fetch(`https://cdnhatch-api.onrender.com/audit/${url}`)
+      const request = await fetch(`https://api.digitalfootprint.earth/audit/${url}`)
       const data = await request.json()
       setData(data)
       setLoading(false)

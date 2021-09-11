@@ -12,7 +12,7 @@ const BiggerPicture = () => {
 
   useEffect(() => {
     async function fetchBigPicture() {
-      const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
+      const request = await fetch(`https://api.digitalfootprint.earth/stats`)
       const newData = await request.json()
       setData(newData)
       setLoading(false)

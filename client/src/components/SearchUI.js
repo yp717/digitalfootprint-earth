@@ -18,7 +18,7 @@ const SearchUI = () => {
   const [data, setData] = useState("...")
   useEffect(() => {
     async function fetchData() {
-      const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
+      const request = await fetch(`https://api.digitalfootprint.earth/stats`)
       const data = await request.json()
       setData(`${data.auditCount}+`)
     }

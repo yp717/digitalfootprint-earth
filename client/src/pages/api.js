@@ -33,7 +33,7 @@ const BiggerPicture = () => {
         <div className="flex items-center space-x-4 border-yellow-400 rounded border-2">
           <p className="px-2 py-1 bg-yellow-400 text-black md:text-xl">GET</p>
           <code className="md:text-2xl">
-            https://api.our-url.com/audit/{`<your-url>`}
+            https://api.digitalfootprint.earth/audit/{`<your-url>`}
           </code>
         </div>
         <p>
@@ -44,7 +44,7 @@ const BiggerPicture = () => {
         </p>
         <p className="font-bold">Sample Request:</p>
         <div className="bg-gray-800 w-full rounded p-2">
-          <code>https://api.our-url.com/audit/sld.codes</code>
+          <code>https://api.digitalfootprint.earth/audit/sld.codes</code>
         </div>
         <p className="font-bold">Sample Response:</p>
         {!isSSR && (
@@ -74,7 +74,7 @@ const BiggerPicture = () => {
             {`<div id="our-badge"></div>
 <script
   type="text/javascript"
-  src="https://cdnhatch-api.onrender.com/badge"
+  src="https://api.digitalfootprint.earth/badge"
 ></script>
 <script type="text/javascript" defer>
   generateBadge.init(); generateBadge.draw("our-badge");
@@ -84,7 +84,7 @@ const BiggerPicture = () => {
       </div>
       <script
         type="text/javascript"
-        src="https://cdnhatch-api.onrender.com/badge"
+        src="https://api.digitalfootprint.earth/badge"
         async
       ></script>
       <script type="text/javascript" defer></script>
