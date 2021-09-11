@@ -8,7 +8,6 @@ const differenceInHours = require("date-fns/differenceInHours");
 const format = require("date-fns/format");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
-// const { generateBadge } = require("./generateBadge");
 const { computeServiceArea } = require("./computeServiceArea");
 const { gatherUserData } = require("./gatherUserData");
 const { handle } = require("./cdnHandeler");
