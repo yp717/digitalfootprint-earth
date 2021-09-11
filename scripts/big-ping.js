@@ -7,24 +7,23 @@ async function bigPing() {
     if (count >= 0) {
       console.log(`Loading ${count}/${Data.length}: ${domain}`);
       try {
-        const controller = new AbortController()
-        const signal = controller.signal
+        const controller = new AbortController();
+        const signal = controller.signal;
         const timeout = setTimeout(() => {
-          console.log("Failed.") 
-          controller.abort()
-        }, 80000)
-        await fetch(
-          `http://cdnhatch-api.onrender.com/audit/${domain}`,
-          { signal }
-        );
-        clearTimeout(timeout)
+          console.log("Failed.");
+          controller.abort();
+        }, 80000);
+        await fetch(`http://cdnhatch-api.onrender.com/audit/${domain}`, {
+          signal,
+        });
+        clearTimeout(timeout);
         count++;
-      } catch(e){
+      } catch (e) {
         // console.log(e)
         count++;
       }
     } else {
-      count ++;
+      count++;
     }
   }
 }

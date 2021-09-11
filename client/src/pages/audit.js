@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react"
-import {Link} from "gatsby"
-import { Router, Match, useLocation } from "@reach/router"
+import { Link } from "gatsby"
+import { Match } from "@reach/router"
 import { navigate } from "gatsby"
 import Header from "../components/core/Header"
 
 const AuditPage = ({ url }) => {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState()
-  useEffect(async () => {
-    const request = await fetch(
-      `https://cdnhatch-api.onrender.com/audit/${url}`
-    )
-    const data = await request.json()
-    setData(data)
-    setLoading(false)
-  }, [])
+
+  useEffect(() => {
+    async function fetchData() {
+      const request = await fetch(
+        `https://cdnhatch-api.onrender.com/audit/${url}`
+      )
+      const data = await request.json()
+      setData(data)
+      setLoading(false)
+    }
+    fetchData()
+  }, [url])
 
   if (loading) {
     return (
@@ -48,16 +52,11 @@ const AuditPage = ({ url }) => {
     )
   }
   const {
-    requestData,
+    // requestData,
     environmentalData: {
       greenWebFoundation: { green, hosted_by, hosted_by_website },
     },
-    auditScores: {
-      hosting,
-      pageWeight,
-      performance,
-      total
-    },
+    auditScores: { hosting, pageWeight, performance, total },
     cdnInfo: { cdnProvider, cdnLocations },
     performance: { performanceScore, totalSize },
   } = data
@@ -74,7 +73,10 @@ const AuditPage = ({ url }) => {
             <p>{performance}/3</p>
           </div>
           <div>
-            <p>Your site has a Lighthouse performance score of {performanceScore}%.</p>
+            <p>
+              Your site has a Lighthouse performance score of {performanceScore}
+              %.
+            </p>
           </div>
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
@@ -83,7 +85,10 @@ const AuditPage = ({ url }) => {
             <p>{pageWeight}/3</p>
           </div>
           <div>
-            <p>Your site has a page size of {(totalSize / (1024 * 1024)).toFixed(2)}MB.</p>
+            <p>
+              Your site has a page size of{" "}
+              {(totalSize / (1024 * 1024)).toFixed(2)}MB.
+            </p>
           </div>
         </div>
         <div className="bg-gray-800 rounded p-4 w-full h-full ">
@@ -111,9 +116,7 @@ const AuditPage = ({ url }) => {
           <p>{total}/9</p>
         </div>
         <div className="grid md:grid-cols-2">
-          <Link to="/">
-            See your personal story with {url}.
-          </Link>
+          <Link to="/">See your personal story with {url}.</Link>
         </div>
       </div>
     </div>
@@ -126,7 +129,11 @@ function Audit() {
       <Header />
       <Match path="/audit/:eventId">
         {props =>
-          props.match ? <AuditPage url={props.match.eventId} /> : typeof window !== "undefined" && navigate("/")
+          props.match ? (
+            <AuditPage url={props.match.eventId} />
+          ) : (
+            typeof window !== "undefined" && navigate("/")
+          )
         }
       </Match>
     </div>

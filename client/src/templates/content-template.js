@@ -1,7 +1,7 @@
 import React from "react"
 import Header from "../components/core/Header"
 import { MDXProvider } from "@mdx-js/react"
-import { graphql, Link } from "gatsby"
+import { graphql } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 
 const ContentTemplate = ({ data }) => {
