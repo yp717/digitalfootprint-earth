@@ -7,8 +7,10 @@ import {
   Legend,
   ResponsiveContainer,
   LabelList,
+  Label,
 } from "recharts"
 
+import top10 from "../../assets/top10.json"
 import database from "../../../../scripts/database.json"
 
 const compactNumber = value => {
@@ -30,6 +32,13 @@ const compactNumber = value => {
 
 // Plot a horizontal line where the average CO2 produced is for each of the websites
 const PopularSitesOverview = () => {
+  // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
+  const processedTop10 = top10.map(item => {
+    return { ...item, size: (item.size * 10) / 1024 / 1024 }
+  })
+
+  console.log(processedTop10)
+
   return (
     <div className="w-full px-5">
       <h3 className="font-bold text-3xl text-center lg:text-left w-full mb-4">
@@ -43,48 +52,66 @@ const PopularSitesOverview = () => {
       <div className="grid grid-cols-12 mt-6">
         <div className="col-span-12">
           <ResponsiveContainer width={"100%"} height={300}>
-            <BarChart
-              width={500}
-              height={300}
-              data={database.slice(0, 10)}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
+            <BarChart width={500} height={300} data={processedTop10}>
               {/* <CartesianGrid strokeDasharray="3 3" /> */}
               <XAxis tick={{ fill: "white" }} dataKey="position" />
-              <YAxis tick={{ fill: "white" }} tickFormatter={compactNumber} />
+              <YAxis
+                tick={{ fill: "white" }}
+                tickFormatter={compactNumber}
+                yAxisId="left"
+              >
+                <Label
+                  value="Est. CO2 per visit"
+                  position="insideLeft"
+                  angle={-90}
+                  dy={-10}
+                  fill="white"
+                  style={{ textAnchor: "middle" }}
+                />
+              </YAxis>
+              <YAxis
+                tick={{ fill: "white" }}
+                tickFormatter={compactNumber}
+                yAxisId="right"
+                orientation="right"
+              >
+                <Label
+                  value="Estimated Traffic"
+                  position="insideLeft"
+                  angle={-90}
+                  dx={50}
+                  fill="white"
+                  style={{ textAnchor: "middle" }}
+                />
+              </YAxis>
               <Legend
                 payload={[
                   {
-                    id: "count",
-                    value: "Unique Page Visitors",
+                    id: "size",
+                    value: "Est. CO2 per visit",
                     type: "square",
-                    color: "#8884d8",
+                    color: "#10B981",
                   },
                   {
                     id: "etv",
                     value: "Estimated Traffic",
                     type: "square",
-                    color: "#82ca9d",
+                    color: "#3B82F6",
                   },
                 ]}
                 height={40}
               />
-              <Bar dataKey="count" fill="#10B981">
+              <Bar dataKey="size" fill="#10B981" yAxisId="left">
                 <LabelList
                   dataKey="domain"
                   position="insideLeft"
                   angle="-90"
                   stroke="white"
                   fill="white"
-                  offset={12}
+                  // offset={12}
                 />
               </Bar>
-              <Bar dataKey="etv" fill="#3B82F6" />
+              <Bar dataKey="etv" fill="#3B82F6" yAxisId="right" />
             </BarChart>
           </ResponsiveContainer>
         </div>
