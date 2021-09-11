@@ -64,6 +64,28 @@ app.get("/stats", cors(corsOptions), async (req, res) => {
   }
 });
 
+app.get("/timeline/:url", cors(corsOptions), async (req, res) => {
+  var URL = req.params.url;
+  const validURL = await validateURL(URL);
+  if (!validURL) {
+    res.sendStatus(400);
+    return;
+  }
+  let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
+  const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
+  const timelineDocRef = await db.collection("timelines").doc(id);
+  const doc = await timelineDocRef.get();
+  if (doc.exists) {
+    let response = doc.data().timeline;
+    response = response.map((item) => ({ ...item, date: item.date.toDate() }));
+
+    res.send({ timeline: response });
+  } else {
+    res.sendStatus(404);
+    res.end();
+  }
+});
+
 app.get("/audit/:url", cors(), async (req, res) => {
   var URL = req.params.url;
   const validURL = await validateURL(URL);
@@ -75,7 +97,6 @@ app.get("/audit/:url", cors(), async (req, res) => {
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
-  console.log(doc);
   if (doc.exists && notStale(doc)) {
     const { locked, time, ...data } = doc.data();
     if (locked) {
@@ -210,7 +231,9 @@ app.get("/badge", async (req, res) => {
     const {
       auditScores: { total },
     } = data;
+    console.log({ time });
     const auditTime = time.toDate();
+    console.log({ auditTime });
     fs.readFile(path.join(__dirname, "generateBadge.js"), (error, data) => {
       if (error) {
         throw error;
