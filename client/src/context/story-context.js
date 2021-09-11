@@ -63,6 +63,7 @@ export const StoryProvider = ({ ...props }) => {
   }
 
   const submitURL = async userInput => {
+    console.log(userInput)
     const p = new Ping()
     let time = -1
     try {
@@ -73,6 +74,8 @@ export const StoryProvider = ({ ...props }) => {
     }
 
     const validatedURL = await validateURL(userInput)
+
+    console.log(validatedURL)
 
     if (!validationError && validatedURL !== false) {
       setSubmitted(true)
@@ -93,7 +96,6 @@ export const StoryProvider = ({ ...props }) => {
       document.body.classList.remove("tools-hidden")
     } else {
       document.body.classList.add("tools-hidden")
-      
     }
   }, [ready, showTools])
 

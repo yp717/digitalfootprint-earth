@@ -1,5 +1,4 @@
 import React, { useEffect } from "react"
-import { Link } from "gatsby"
 import Header from "../components/core/Header"
 import { useState } from "react"
 import ProportionGreen from "../components/visualizations/ProportionGreen"
@@ -10,11 +9,14 @@ const BiggerPicture = () => {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState()
 
-  useEffect(async () => {
-    const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
-    const newData = await request.json()
-    setData(newData)
-    setLoading(false)
+  useEffect(() => {
+    async function fetchBigPicture() {
+      const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
+      const newData = await request.json()
+      setData(newData)
+      setLoading(false)
+    }
+    fetchBigPicture()
   }, [])
 
   console.log(data)

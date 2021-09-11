@@ -1,9 +1,15 @@
 import React, { useState } from "react"
 import { useStory } from "../context/story-context"
-import { CogIcon, HandIcon, XCircleIcon, VolumeUpIcon  } from "@heroicons/react/solid"
+import {
+  CogIcon,
+  HandIcon,
+  XCircleIcon,
+  VolumeUpIcon,
+} from "@heroicons/react/solid"
 const AuditUI = () => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { currentStoryItem, auditScores, toggleTools } = useStory()
+  // can also pull out auditScores from the story
+  const { currentStoryItem, toggleTools } = useStory()
   const {
     showTotalScore,
     showPageWeightScore,
@@ -31,7 +37,10 @@ const AuditUI = () => {
         </button>
         {menuOpen && (
           <div className="space-y-1 mt-1">
-            <button onClick={toggleTools} className="flex space-x-1 items-center bg-yellow-400 p-1 rounded">
+            <button
+              onClick={toggleTools}
+              className="flex space-x-1 items-center bg-yellow-400 p-1 rounded"
+            >
               <HandIcon className="h-6 w-6" />
               <p>Toggle Map Tools</p>
             </button>

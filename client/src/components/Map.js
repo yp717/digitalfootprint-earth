@@ -97,7 +97,7 @@ const Map = ({ mapRef, webMapRef, setIsLoaded, setHovered }) => {
 
       mapRef.current = view
     }
-  }, [mapRef, setHovered, setIsLoaded])
+  }, [mapRef, webMapRef, setHovered, setIsLoaded])
 
   return (
     <div className="w-full h-full relative">

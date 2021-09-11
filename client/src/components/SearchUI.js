@@ -8,12 +8,15 @@ const SearchUI = () => {
   const { mapLoaded, submitted, ready, validationError, setValidationError } =
     useStory()
 
-    const [data, setData] = useState("...")
-    useEffect(async () => {
+  const [data, setData] = useState("...")
+  useEffect(() => {
+    async function fetchData() {
       const request = await fetch(`https://cdnhatch-api.onrender.com/stats`)
       const data = await request.json()
       setData(`${data.auditCount}+`)
-    }, [])
+    }
+    fetchData()
+  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => setValidationError(false), 3000)
