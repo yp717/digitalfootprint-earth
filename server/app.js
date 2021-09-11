@@ -76,7 +76,10 @@ app.get("/timeline/:url", cors(corsOptions), async (req, res) => {
   const timelineDocRef = await db.collection("timelines").doc(id);
   const doc = await timelineDocRef.get();
   if (doc.exists) {
-    res.send(doc.data());
+    let response = doc.data().timeline;
+    response = response.map((item) => ({ ...item, date: item.date.toDate() }));
+
+    res.send({ timeline: response });
   } else {
     res.sendStatus(404);
     res.end();
