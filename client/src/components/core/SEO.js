@@ -23,6 +23,9 @@ const SEO = ({ title, description }) => {
 
   const metaDescription = description || site.siteMetadata.description
 
+  React.useEffect(() => {
+    document.body.classList.remove("noscroll")
+  }, [])
   return (
     <Helmet
       title={title}

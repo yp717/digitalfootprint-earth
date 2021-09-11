@@ -5,15 +5,58 @@ import {
   EyeOffIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
+  CheckCircleIcon,
+  ChartBarIcon,
 } from "@heroicons/react/solid"
 import { motion } from "framer-motion"
 import AuditUI from "./AuditUI"
+import { Link } from "gatsby"
 
 const StoryUI = () => {
-  const { currentStoryItem, hasNext, hasPrev, next, prev, ready } = useStory()
+  const {
+    currentStoryItem,
+    hasNext,
+    hasPrev,
+    next,
+    prev,
+    ready,
+    storyEnd,
+    setStoryEnd,
+    tempURL,
+  } = useStory()
   const [hidden, setHidden] = useState(false)
   if (!ready) {
     return null
+  }
+  if (storyEnd) {
+    return (
+      <div className="absolute top-0 left-0 w-full h-full z-10">
+        <div className="relative w-full h-full z-20">
+          <div className="absolute top-0 left-0 flex flex-col space-y-5 h-full w-full items-center justify-center">
+            <p className="">Story Complete</p>
+            <div className="w-full max-w-xl">
+              <div className="bg-space p-5 rounded"></div>
+              <div className="grid grid-cols-2 gap-2 my-2 text-gray-900">
+                <button
+                  onClick={() => setStoryEnd(false)}
+                  className="bg-yellow-400 hover:bg-yellow-300  rounded py-1 px-2 flex items-center space-x-2"
+                >
+                  <ArrowLeftIcon className="h-5 w-5 text-gray-900" />
+                  <p className="text-gray-900">Return To Story</p>
+                </button>
+                <Link
+                  to={`/audit/${tempURL}`}
+                  className="bg-yellow-400 hover:bg-yellow-300 rounded py-1 px-2 flex items-center space-x-2"
+                >
+                  <ChartBarIcon className="h-5 w-5 text-gray-900" />
+                  <p className="text-gray-900">View Audit Results</p>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
   const { hero, title, body } = currentStoryItem
   if (hero) {
@@ -59,7 +102,13 @@ const StoryUI = () => {
                       <ArrowRightIcon className="h-5 w-5" />
                     </button>
                   ) : (
-                    <div />
+                    <button
+                      onClick={next}
+                      className="bg-yellow-400 hover:bg-yellow-300 text-gray-900 rounded-b py-1 px-2 flex items-center space-x-1"
+                    >
+                      <p className="font-bold">Finish</p>
+                      <CheckCircleIcon className="h-5 w-5" />
+                    </button>
                   )}
                 </div>
               </motion.div>
@@ -126,7 +175,13 @@ const StoryUI = () => {
                   <ArrowRightIcon className="h-5 w-5" />
                 </button>
               ) : (
-                <div />
+                <button
+                  onClick={next}
+                  className="bg-yellow-400 hover:bg-yellow-300 text-gray-900 rounded-b py-1 px-2 flex items-center space-x-1"
+                >
+                  <p className="font-bold">Finish</p>
+                  <CheckCircleIcon className="h-5 w-5" />
+                </button>
               )}
             </div>
           </motion.div>
