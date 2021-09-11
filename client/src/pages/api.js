@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import Header from "../components/core/Header"
 import sampleRequest from "../assets/sample-audit-request.json"
 import { StaticImage } from "gatsby-plugin-image"
+import SEO from "../components/core/SEO"
 
 const ReactJson = React.lazy(() => import("react-json-view"))
 
@@ -11,6 +12,10 @@ const BiggerPicture = () => {
   useEffect(() => {}, [])
   return (
     <div className="space-y-12 md:space-y-24 pb-12 px-2">
+      <SEO
+        title="API"
+        description="Digitalfootprint.earth API Access & Badge"
+      />
       <Header />
       <div className="flex items-center justify-center max-w-4xl mx-auto pt-24">
         <div className="flex flex-col text-center">

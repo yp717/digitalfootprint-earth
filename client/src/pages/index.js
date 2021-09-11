@@ -3,11 +3,13 @@ import { Link } from "gatsby"
 import FrontPage from "../components/FrontPage"
 import StoryUI from "../components/StoryUI"
 import { StoryProvider } from "../context/story-context"
+import SEO from "../components/core/SEO"
 
 const Index = () => {
   return (
     <StoryProvider>
       <FrontPage>
+        <SEO title="Home" description="DigitalFootprint.earth" />
         <StoryUI />
         <div
           id="research"

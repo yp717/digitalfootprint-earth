@@ -4,6 +4,7 @@ import { Match } from "@reach/router"
 import { navigate } from "gatsby"
 import Header from "../components/core/Header"
 import ScoreTimeline from "../components/ScoreTimeline"
+import SEO from "../components/core/SEO"
 
 const AuditPage = ({ url }) => {
   const [loading, setLoading] = useState(true)
@@ -24,6 +25,7 @@ const AuditPage = ({ url }) => {
   if (loading) {
     return (
       <div className="absolute z-30 h-full w-full top-0 left-0">
+        <SEO title="Audit" description={`Audit Results for ${url}`} />
         <div className="flex flex-col items-center justify-center w-full h-full space-y-3">
           <svg
             className="animate-spin -ml-1 mr-3 h-16 w-16 md:h-24 md:w-24 text-yellow-400"
@@ -116,7 +118,7 @@ const AuditPage = ({ url }) => {
           <p>Our Score</p>
           <p>{total}/9</p>
         </div>
-        <ScoreTimeline url={url}/>
+        <ScoreTimeline url={url} />
         <div className="grid md:grid-cols-2">
           <Link to="/">See your personal story with {url}.</Link>
         </div>

@@ -15,10 +15,6 @@ async function computeServiceArea(origin, c02_used) {
     key: apiKey,
   });
 
-  // console.log(origin); // should have coordinates given as lat and long
-  // console.log(c02_used); // should be a number that says how much c02 was used
-
-  // console.log(serviceArea);
   // to get km radius -> this assumes the c02 is given in grams
   const radius = c02_used / avg_C02_car_per_km;
   const distanceCutoff = [radius];
