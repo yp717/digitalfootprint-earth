@@ -29,7 +29,7 @@ DigitalFootprint.earth is a trifecta of tools that:
 
 2. **Helps you reduce the impact your site has on the enviroment.** We investigate a site's hosting, CDN, performance and size to suggest mechanisms for improvement. Our research during this hack found that the steps we need to take toward making the internet greener are simple and awareness is the biggest challenge.
 
-3. **Provides a way to audit, rank and aggregate web pages to create a new standard for a greener web.** Via our web application or API, developers can consistently monitor their site's performance, CDN responsivness, and other request metadata via our scoring system.
+3. **Provides a way to audit, rank and aggregate web pages to create a new standard for a greener web.** Via our web application or API, developers can consistently monitor their site's performance, CDN response time, and other request metadata via our scoring system.
 
 Our custom designed score can be displayed as a badge on a webpage to demonstrate to a site's visitors that the developers are holding themselves accountable to ensuring that their site is as green as it can be.
 

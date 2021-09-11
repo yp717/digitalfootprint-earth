@@ -63,6 +63,8 @@ const BiggerPicture = () => {
           {/* usage statistics of the platform - number audited on line chart  */}
           <ProportionGreen data={data} />
           <PerformanceOverview data={data} />
+
+          {/* bar chart of the ten biggest sites on the web and their respective users */}
         </div>
       </div>
     </>
