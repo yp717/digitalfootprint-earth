@@ -18,8 +18,9 @@ const ScoreTimeline = ({ url }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(async () => {
-    // todo: change this to the real API when its pushed
-    const request = await fetch(`http://localhost:3000/timeline/${url}`)
+    const request = await fetch(
+      `http://cdnhatch-api.onrender.com/timeline/${url}`
+    )
     const data = await request.json()
     setData(data)
     setLoading(false)
