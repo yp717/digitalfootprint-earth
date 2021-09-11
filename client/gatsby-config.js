@@ -13,6 +13,8 @@ module.exports = {
   /* Your site config here */
   siteMetadata: siteMetadata,
   plugins: [
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
     `gatsby-plugin-postcss`,
     `gatsby-plugin-mdx`,
     `gatsby-plugin-react-helmet-async`,

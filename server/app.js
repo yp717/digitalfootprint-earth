@@ -177,24 +177,30 @@ app.get("/story/:url", cors(), async (req, res) => {
     }
   } else {
     console.log("Creating Story");
-    const auditData = await generateAudit(URL, db, id);
-    const userInfo = await gatherUserData(IP);
-    const { isp } = auditData.requestData;
-    const cdnInfo = handle(isp);
+    try {
+      const auditData = await generateAudit(URL, db, id);
+      const userInfo = await gatherUserData(IP);
+      const { isp } = auditData.requestData;
+      const cdnInfo = handle(isp);
 
-    const totalSizeMB = data.performance.totalSize / 1024 / 1024;
-    const c02_produced = totalSizeMB * 10; // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
-    const serviceArea = await computeServiceArea(
-      [userInfo.lon, userInfo.lat],
-      c02_produced
-    );
+      const totalSizeMB = data.performance.totalSize / 1024 / 1024;
+      const c02_produced = totalSizeMB * 10; // assumimg 10 g/MB based on https://www.earth.org.uk/note-on-carbon-cost-of-CDN.html
+      const serviceArea = await computeServiceArea(
+        [userInfo.lon, userInfo.lat],
+        c02_produced
+      );
 
-    res.send({ ...auditData, userInfo, cdnInfo, serviceArea });
+      res.send({ ...auditData, userInfo, cdnInfo, serviceArea });
+    } catch (e) {
+      res.sendStatus(500);
+      res.end();
+      return;
+    }
   }
 });
 
 app.get("/badge", async (req, res) => {
-  const URL = "yellow.com";
+  const URL = req.query.url || req.get("host");
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
@@ -213,7 +219,7 @@ app.get("/badge", async (req, res) => {
       res.send(
         data
           .toString()
-          .replace("[URL]", req.get("host"))
+          .replace("[URL]", URL)
           .replace("[SCORE]", total)
           .replace("[DATE]", "Audited " + format(auditTime, "MM/dd/yyyy"))
       );
@@ -227,12 +233,16 @@ app.get("/badge", async (req, res) => {
       res.send(
         data
           .toString()
-          .replace("[URL]", req.hostname)
+          .replace("[URL]", URL)
           .replace("[SCORE]", "-")
           .replace("[DATE]", "Auditing right now.")
       );
     });
-    // generateAudit(URL, db, id);
+    try {
+      generateAudit(URL, db, id);
+    } catch (e) {
+      console.log(e);
+    }
   }
 });
 
