@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <script type="text/javascript" src="http://localhost:3000/badge"></script>
+    <div id="our-badge-1"></div>
+    <script type="text/javascript" src="http://localhost:3000/badge?url=bbc.com"></script>
     <script type="text/javascript">
-      generateBadge.init('red', "yellow");
-      generateBadge.draw();
+      generateBadge.init('#fff', "#32292F");
+      generateBadge.draw("our-badge-1");
     </script>
   </body>
 </html>

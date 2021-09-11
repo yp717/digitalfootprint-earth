@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
 import { Helmet } from "react-helmet-async"
 import Header from "../components/core/Header"
-
 import sampleRequest from "../assets/sample-audit-request.json"
+import { StaticImage } from "gatsby-plugin-image"
 
 const ReactJson = React.lazy(() => import("react-json-view"))
 
@@ -57,6 +57,7 @@ const BiggerPicture = () => {
           </React.Suspense>
         )}
         <h2 className="text-xl pt-12">Audit Badge</h2>
+        <StaticImage src="../assets/BadgeHero.png" className="object-cover h-72 w-full rounded" alt=""/>
         <p>
           If you want to display the results of your audit publically, you can
           embed our customisable badge on any site page.
