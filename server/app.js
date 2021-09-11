@@ -179,10 +179,9 @@ app.get("/story/:url", cors(), async (req, res) => {
             let geoLocation = undefined;
 
             if (req.query.lat && req.query.lon) {
-              console.log("if it happens it happens");
               geoLocation = { lat, lon };
-              // overwrite the city in userInfo
-              userInfo = { ...userInfo, city: "YANASAMLAND" };
+              const {city} = await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`).then(res => res.json())
+              userInfo = { ...userInfo, city };
             }
 
             res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
@@ -211,8 +210,8 @@ app.get("/story/:url", cors(), async (req, res) => {
 
       if (req.query.lat && req.query.lon) {
         geoLocation = { lat, lon };
-        // overwrite the city in userInfo
-        userInfo = { ...userInfo, city: "YANASAMLAND" };
+        const {city} = await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`).then(res => res.json())
+        userInfo = { ...userInfo, city };
       }
 
       res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
@@ -234,12 +233,11 @@ app.get("/story/:url", cors(), async (req, res) => {
       let geoLocation = undefined;
 
       if (req.query.lat && req.query.lon) {
-        console.log("if it happens it happens");
         geoLocation = { lat, lon };
-        // overwrite the city in userInfo
-        userInfo = { ...userInfo, city: "YANASAMLAND" };
+        const {city} = await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`).then(res => res.json())
+        userInfo = { ...userInfo, city };
       }
-
+      
       res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
     } catch (e) {
       res.sendStatus(500);
