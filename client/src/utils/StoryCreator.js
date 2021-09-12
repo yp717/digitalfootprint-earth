@@ -23,8 +23,8 @@ const defaultStoryItem = {
 function computeZoom(dist) {
   const overhead = 0.4
   const linInterpolator = (x, y, a) => x * (1 - a) + y * a
-  console.log(linInterpolator(15, 1, (dist * (1 + overhead)) / 20000))
-  return Math.floor(linInterpolator(15, 1, (dist * (1 + overhead)) / 20000))
+  console.log(linInterpolator(15, 1, (dist * (1 + overhead)) / 6371 ))
+  return Math.floor(linInterpolator(15, 1, (dist * (1 + overhead)) / 6371 ))
 }
 
 const StoryCreator = data => {
@@ -89,6 +89,7 @@ const StoryCreator = data => {
   ////////// PART 2: CDN Locations //////////
   if (cdnProvider !== "UNKNOWN") {
     const CDNDistance = getDistanceInKM(data.userInfo, data.requestData)
+    console.log(CDNDistance)
     storyItems.push({
       ...defaultStoryItem,
       title: `Routed through ${cdnProvider}'s CDN`,
@@ -99,7 +100,7 @@ const StoryCreator = data => {
       )} hours to walk that far!`,
       goTo: {
         target: [data.requestData.lon, data.requestData.lat],
-        zoom: 15 * (1 / getDistance(data.userInfo, data.requestData)),
+        zoom: computeZoom(CDNDistance),
         duration: 2000,
       },
       points: [
@@ -117,7 +118,6 @@ const StoryCreator = data => {
       ],
     })
 
-    console.log({ cdnLocations })
     storyItems.push({
       ...defaultStoryItem,
       title: "The CDN Network",
