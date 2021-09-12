@@ -18,6 +18,15 @@ const defaultStoryItem = {
   showHostingScore: false,
 }
 
+// zoom 1: 20k x 20k
+// zoom 15: 25m x 25m
+function computeZoom(dist) {
+  const overhead = 0.4
+  const linInterpolator = (x, y, a) => x * (1 - a) + y * a
+  console.log(linInterpolator(15, 1, (dist * (1 + overhead)) / 20000))
+  return Math.floor(linInterpolator(15, 1, (dist * (1 + overhead)) / 20000))
+}
+
 const StoryCreator = data => {
   let storyItems = []
   const { networkLatency } = data.requestData
@@ -58,7 +67,7 @@ const StoryCreator = data => {
       )} olympic-sized swimming pools end-to-end.`,
       goTo: {
         target: [data.userInfo.lon, data.userInfo.lat],
-        zoom: 15 * (1 / getDistance(data.userInfo, data.geoLocation)),
+        zoom: computeZoom(ISPDistance),
         duration: 2000,
       },
       points: [

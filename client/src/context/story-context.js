@@ -16,7 +16,7 @@ export const StoryProvider = ({ ...props }) => {
   const rotateTimeout = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [storyEnd, setStoryEnd] = useState(true)
+  const [storyEnd, setStoryEnd] = useState(false)
   const [showLocationRequest, setShowLocationRequest] = useState(false)
   const [validationError, setValidationError] = useState(false)
   const [ready, setReady] = useState(false)
