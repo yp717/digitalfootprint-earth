@@ -31,7 +31,7 @@ const LoadingProgressIndicator = () => {
         <p className="text-lg md:text-2xl font-bold">
           {!mapLoaded
             ? "Preparing your experience..."
-            : "Creating the story..."}
+            : "Creating your story. This may take up to 30 seconds."}
         </p>
       </div>
     </div>

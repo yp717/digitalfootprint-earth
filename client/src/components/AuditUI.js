@@ -21,7 +21,7 @@ const AuditUI = () => {
     showPageWeightScore,
     showPerformanceScore,
     showHostingScore,
-  ].some(val => val === true)
+  ].some(val => val)
   return (
     <div className="absolute top-0 right-0 pt-4 px-2 w-full md:max-w-md z-20">
       <div className="w-full ml-auto flex flex-col items-end justify-center mb-4 text-black">
@@ -57,25 +57,25 @@ const AuditUI = () => {
             {showPageWeightScore && (
               <div className="flex justify-between items-center text-xl text-gray-100 font-bold">
                 <p>Page Weight</p>
-                <p>1/3</p>
+                <p>{showPageWeightScore}/3</p>
               </div>
             )}
             {showPerformanceScore && (
               <div className="flex justify-between items-center text-xl text-gray-100 font-bold">
                 <p>Performance</p>
-                <p>3/3</p>
+                <p>{showPerformanceScore}/3</p>
               </div>
             )}
             {showHostingScore && (
               <div className="flex justify-between items-center text-xl text-gray-100 font-bold">
                 <p>Hosting</p>
-                <p>3/3</p>
+                <p>{showHostingScore}/3</p>
               </div>
             )}
             {showTotalScore && (
               <div className="flex justify-between items-center border-t-4 border-gray-700 pt-2 mb-2 text-xl text-gray-100 font-bold">
                 <p>Our score</p>
-                <p>7/9</p>
+                <p>{showTotalScore}/9</p>
               </div>
             )}
           </div>

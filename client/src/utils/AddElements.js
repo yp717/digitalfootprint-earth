@@ -62,7 +62,7 @@ export const redrawElements = (
 
     cdnGraphics.push(pointGraphic)
   })
-  lines.forEach(({ start, end }, i) => {
+  lines.forEach(({ start, end, color }, i) => {
     const polyline = {
       type: "polyline", // autocasts as new Polyline()
       paths: [
@@ -74,7 +74,7 @@ export const redrawElements = (
     // Create a symbol for drawing the line
     const lineSymbol = {
       type: "simple-line", // autocasts as SimpleLineSymbol()
-      color: hovered === lineID ? [255, 231, 153] : [252, 211, 77],
+      color: color? color : hovered === lineID ? [255, 231, 153] : [252, 211, 77],
       width: hovered === lineID ? 5 : 4,
     }
     const polylineGraphic = new Graphic({

@@ -12,9 +12,11 @@ export const StoryProvider = ({ ...props }) => {
 
   const mapRef = useRef()
   const webMapRef = useRef()
+  const travelTimeout = useRef(null);
+  const rotateTimeout = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [storyEnd, setStoryEnd] = useState(false)
+  const [storyEnd, setStoryEnd] = useState(true)
   const [showLocationRequest, setShowLocationRequest] = useState(false)
   const [validationError, setValidationError] = useState(false)
   const [ready, setReady] = useState(false)
@@ -128,7 +130,7 @@ export const StoryProvider = ({ ...props }) => {
   useEffect(() => {
     if (ready) {
       setRotate(false)
-      setTimeout(() => {
+      travelTimeout.current = setTimeout(() => {
         webMapRef.current.layers.removeAll()
         if (storyItems[storyIndex].goTo) {
           const { target, zoom, duration } = storyItems[storyIndex].goTo
@@ -140,7 +142,7 @@ export const StoryProvider = ({ ...props }) => {
             { animate: true, duration: duration }
           )
           if (storyItems[storyIndex].rotate === true) {
-            setTimeout(() => {
+            rotateTimeout.current = setTimeout(() => {
               setRotate(true)
             }, duration)
           }
@@ -158,6 +160,10 @@ export const StoryProvider = ({ ...props }) => {
         }
       }, 200)
     }
+    return () => {
+      clearInterval(travelTimeout.current);
+      clearInterval(rotateTimeout.current);
+    };
   }, [ready, storyIndex, storyItems])
 
   const next = () => {
