@@ -15,6 +15,8 @@ const { validateURL } = require("./urlValidator");
 const app = express();
 var get_ip = require("ipware")().get_ip;
 
+const { constructStoryResponse } = require("./utils/constructStoryResponse");
+
 const port = process.env.PORT || 3000;
 
 var serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
@@ -91,14 +93,16 @@ app.get("/timeline/:url", cors(corsOptions), async (req, res) => {
 app.get("/audit/:url", cors(), async (req, res) => {
   var URL = req.params.url;
   const validURL = await validateURL(URL);
+
   if (!validURL) {
     res.sendStatus(400);
     return;
   }
-  let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
+
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
+
   if (doc.exists && notStale(doc)) {
     const { locked, time, ...data } = doc.data();
     if (locked) {
@@ -107,10 +111,9 @@ app.get("/audit/:url", cors(), async (req, res) => {
         async (doc) => {
           const { locked, time, ...data } = doc.data();
           if (!locked) {
-            const userInfo = await gatherUserData(IP);
             const { isp } = data.requestData;
             const cdnInfo = handle(isp);
-            res.send({ ...data, userInfo, cdnInfo });
+            res.send({ ...data, cdnInfo });
             observer();
           }
         },
@@ -148,8 +151,6 @@ app.get("/story/:url", cors(), async (req, res) => {
     return;
   }
 
-  let IP = !req.clientIpRoutable ? "51.9.166.141" : req.clientIp;
-
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
@@ -157,39 +158,19 @@ app.get("/story/:url", cors(), async (req, res) => {
   if (doc.exists && notStale(doc)) {
     console.log("Story active");
     const { locked, time, ...data } = doc.data();
-    // console.log({ locked, time, ...data });
     if (locked) {
       console.log("Story being processed");
       const observer = userDocRef.onSnapshot(
         async (doc) => {
           const { locked, time, ...data } = doc.data();
           if (!locked) {
-            let userInfo = await gatherUserData(IP);
-            const { isp } = data.requestData;
-            const cdnInfo = handle(isp);
-            const totalSizeMB = data.performance.totalSize / 1024 / 1024;
-            const c02_produced = totalSizeMB * 10;
-            var lat = req.query.lat || userInfo.lat;
-            var lon = req.query.lon || userInfo.lon;
-            const serviceArea = await computeServiceArea(
-              [lon, lat],
-              c02_produced
-            );
-
-            let geoLocation = undefined;
-
-            if (req.query.lat && req.query.lon) {
-              geoLocation = { lat, lon };
-              const {city} = await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`).then(res => res.json())
-              userInfo = { ...userInfo, city };
-            }
-
-            res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
+            await constructStoryResponse(data, req, res);
             observer();
           }
         },
         (err) => {
           observer();
+          console.error(err);
           res.sendStatus(500);
           res.end();
           return;
@@ -197,49 +178,21 @@ app.get("/story/:url", cors(), async (req, res) => {
       );
     } else {
       // Story is already ready -> Send it!
-      let userInfo = await gatherUserData(IP);
-      const { isp } = data.requestData;
-      const cdnInfo = handle(isp);
-      const totalSizeMB = data.performance.totalSize / 1024 / 1024;
-      const c02_produced = totalSizeMB * 10;
-      var lat = req.query.lat || userInfo.lat;
-      var lon = req.query.lon || userInfo.lon;
-      const serviceArea = await computeServiceArea([lon, lat], c02_produced);
-
-      let geoLocation = undefined;
-
-      if (req.query.lat && req.query.lon) {
-        geoLocation = { lat, lon };
-        const {city} = await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`).then(res => res.json())
-        userInfo = { ...userInfo, city };
+      try {
+        await constructStoryResponse(data, req, res);
+      } catch (e) {
+        console.error(e);
       }
-
-      res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
       return;
     }
   } else {
     console.log("Creating Story");
     try {
       const auditData = await generateAudit(URL, db, id);
-      let userInfo = await gatherUserData(IP);
-      const { isp } = auditData.requestData;
-      const cdnInfo = handle(isp);
-      const totalSizeMB = data.performance.totalSize / 1024 / 1024;
-      const c02_produced = totalSizeMB * 10;
-      var lat = req.query.lat || userInfo.lat;
-      var lon = req.query.lon || userInfo.lon;
-      const serviceArea = await computeServiceArea([lon, lat], c02_produced);
-
-      let geoLocation = undefined;
-
-      if (req.query.lat && req.query.lon) {
-        geoLocation = { lat, lon };
-        const {city} = await fetch(`https://geocode.xyz/${lat},${lon}?geoit=json`).then(res => res.json())
-        userInfo = { ...userInfo, city };
-      }
-      
-      res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation });
+      await constructStoryResponse(auditData, req, res);
+      return;
     } catch (e) {
+      console.error(e);
       res.sendStatus(500);
       res.end();
       return;
