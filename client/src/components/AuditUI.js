@@ -44,20 +44,16 @@ const AuditUI = () => {
               <HandIcon className="h-6 w-6" />
               <p>Toggle Map Tools</p>
             </button>
-            <button className="flex space-x-1 items-center bg-yellow-400 p-1 rounded">
-              <VolumeUpIcon className="h-6 w-6" />
-              <p>Toggle Sound</p>
-            </button>
           </div>
         )}
       </div>
       {shouldShow && (
         <div className="grid grid-cols-1 gap-2 w-full ml-auto">
           <div className="bg-gray-800 rounded p-4 w-full h-full space-y-2">
-            {showPageWeightScore && (
+            {showHostingScore && (
               <div className="flex justify-between items-center text-xl text-gray-100 font-bold">
-                <p>Page Weight</p>
-                <p>{showPageWeightScore}/3</p>
+                <p>Hosting</p>
+                <p>{showHostingScore}/3</p>
               </div>
             )}
             {showPerformanceScore && (
@@ -66,10 +62,10 @@ const AuditUI = () => {
                 <p>{showPerformanceScore}/3</p>
               </div>
             )}
-            {showHostingScore && (
+            {showPageWeightScore && (
               <div className="flex justify-between items-center text-xl text-gray-100 font-bold">
-                <p>Hosting</p>
-                <p>{showHostingScore}/3</p>
+                <p>Page Weight</p>
+                <p>{showPageWeightScore}/3</p>
               </div>
             )}
             {showTotalScore && (

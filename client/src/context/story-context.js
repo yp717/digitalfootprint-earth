@@ -58,9 +58,8 @@ export const StoryProvider = ({ ...props }) => {
         "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
         "(\\#[-a-z\\d_]*)?$",
       "i"
-    ) // fragment locator
+    )
 
-    // todo: we may not want to use a traditional alert it was just for testing
     if (await !pattern.test(userInput)) {
       setValidationError(true)
       return false
@@ -94,9 +93,9 @@ export const StoryProvider = ({ ...props }) => {
         setSubmitted(true)
         const request = await fetch(
           latitude && longitude
-            ? `https://api.digitalfootprint.earth/story/${validatedURL}?lat=${latitude}&lon=${longitude}`
-            : `https://api.digitalfootprint.earth/story/${validatedURL}`
-        )
+          ? `https://api.digitalfootprint.earth/story/${validatedURL}?lat=${latitude}&lon=${longitude}`
+          : `https://api.digitalfootprint.earth/story/${validatedURL}`
+      )
         const data = await request.json()
         data.requestData.networkLatency = time
         let story = StoryCreator(data)
@@ -180,6 +179,7 @@ export const StoryProvider = ({ ...props }) => {
 
   const reset = () => {
     setRotate(false)
+    setStoryEnd(false)
     mapRef.current.goTo(
       {
         target: [-93.94, 29.89],

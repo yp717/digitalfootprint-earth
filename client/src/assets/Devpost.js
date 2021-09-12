@@ -2,6 +2,7 @@ import React from "react"
 
 const DevPost = ({ className }) => {
   return (
+    <a href="https://devpost.com/software/digitalfootprint-earth" target="_blank" rel="noopener noreferrer">
     <svg
       version="1.1"
       id="Layer_1"
@@ -62,6 +63,7 @@ const DevPost = ({ className }) => {
         />
       </g>
     </svg>
+    </a>
   )
 }
 export default DevPost

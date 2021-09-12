@@ -3,6 +3,7 @@ import Header from "../components/core/Header"
 import { MDXProvider } from "@mdx-js/react"
 import { graphql } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
+import SEO from "../components/core/SEO"
 
 const ContentTemplate = ({ data }) => {
   const { mdx } = data
@@ -11,15 +12,21 @@ const ContentTemplate = ({ data }) => {
   return (
     <MDXProvider>
       <Header />
-      <div className="container row margin-10-t margin-10-b">
-        <div className="col-xs-12 pad-5-lr">
-          <h1 className="text-align-left is-background-blue-text">
-            {frontmatter.title}
+      <div className="space-y-12 md:space-y-24 pb-12 px-2">
+      <SEO
+        title={frontmatter.title}
+        description="Digitalfootprint.earth"
+      />
+      <div className="flex items-center justify-center max-w-4xl mx-auto pt-24">
+        <div className="flex flex-col">
+          <h1 className="font-bold text-4xl md:text-6xl mb-6">
+          {frontmatter.title}
           </h1>
-        </div>
-        <div className="mx-auto">
+          <div className="prose text-white prose-primary">
           <MDXRenderer>{body}</MDXRenderer>
+          </div>
         </div>
+      </div>
       </div>
     </MDXProvider>
   )

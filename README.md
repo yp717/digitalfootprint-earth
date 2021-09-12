@@ -5,12 +5,12 @@ Made by Sam Larsen-Disney & Yannis Panagis for the Hack for a Sustainable Future
 ## ⚡️ Quick Links:
 
 [Try the site](https://digitalfootprint.earth)
-[Github Repo](www.ENTER-THIS-HERE.com)
+[Github Repo](https://github.com/yp717/digitalfootprint-earth)
 🔨 Made By:
 [yannispanagis.com](https://yannispanagis.com/)
 [sld.codes](https://sld.codes/)
 
-In this hackathon, we wrote _exactly_ NUMBER lines of code and made 78 commits over the three weeks.
+In this hackathon, we wrote _exactly_ 7,172 lines of code and made 121 commits over the three weeks. We're hoping this is our new lucky number!
 
 ## Introduction
 
@@ -73,13 +73,12 @@ The primary objective of digitalfootprint.earth is not to make money, but instea
 
 We currently cache audits to reduce strain on our servers and speed up our application to improve user experience. Developers may find that they would like to audit their site more frequently than our caching mechanisim allow. We could provide a membership that allows individuals and/or organisations to refresh cached scores on our API more frequently, leading to a more accurate reading.
 
-<!-- there was an article with statistics on how much companies and individuals cared about this subject that would be good to plug here as a citation -->
-
 ## 🧐 Challenges we ran into
 
-- _Working with a brand new API_: ArcGis was new to both of us.
-- _Generating badges on the server_:
-- _Caching_:
+- _Working with a brand new API_: ArcGis was new to both of us. Some parts of the API such as the service areas proved to be particularly tricky to get our heads around.
+- _ArcGIS + Gatsby_: We ❤️ GatsbyJS and wanted to use it as our front-end framework. The SSR that it utilised did not play nicely with the ArcGis Map, we ended up having to lazy load it in. We tried to use some simple animation (framer-motion) to help it load in gracefull.
+- _Generating badges on the server_: We had a very hard time generating badges on the server without a DOM. Constructing the html and dynamically udpating it based on the parameters we received in a request was tricky. We ended up creating an embeddable script that developers could add to their site that creates the badge on their end.
+- _Caching_: We didnt want the user to have to wait for audits we had recently computed so we spent a while setting up caching and cache invalidation. Semaphore logic was a little rusty - havent touched it since uni!
 - _Data sourcing_: While there were many technical challenges over the last three weeks, collecting data to substantiate our claims, insights and findings and to integrate into our tools was one of the biggest challenges.
 
 ## 💪 Accomplishments that we're proud of
@@ -90,11 +89,11 @@ Over the past three weeks we've turned an idea we thought to be impossible into 
 
 Yannis:
 
-> “”
+> “When we trying to dynamically set the zoom to different areas of the map, we quickly realised it was a lot more complicated than it seemed. By linearly interpolating from the area we wanted to show as a ratio to the radius of the earth, we could infer the zoom parameter. We had to make a lot of mathematical assumptions to get a working prototype during this hack, and including the sources close to those values in the code saved us a lot of time as we iterated. I'm used to documenting things from a high level in the README, but in this project keeping some documentation close to the code proved to be invaluable! I was also shocked to learn how serious the CO2 produced by a website could be when we used the ArcGIS API to draw the service areas and compare it to car journeys...blew my mind 🤯”
 
 Sam:
 
-> “We realised early on that our audits were going to be slow. This worried me alot as the user experience was something we both cared about. We had the realisation that most people would probably be searching for the same sites. By caching the audit results, only the first user would experience a wait time, for every visitor after that searched for the same site the load would be near-instant. Caching and cache-invalidation was new to me - a handy skill to pick up!”
+> “We knew early on that our audits were going to be slow. This worried me alot as the user experience was something we both cared about. We had the realisation that most people would probably be searching for the same sites. By caching the audit results, only the first user would experience a wait time, for every visitor after that searched for the same site the load would be near-instant. Caching and cache-invalidation was new to me - a handy skill to pick up!”
 
 ## ✋ Limitations
 
@@ -102,11 +101,20 @@ Sam:
 - All performance audits are run from the same server. This means that while the carbon value may not be truly representative due to the limitations in our analysis based on the time constraints of a hack, the error between audits of sites is systematic and consistent.
 - Lack of data access: we would have liked to get more precise information as to whether or not a specific server location has a Renewable Energy Certificate (REC). This would have allowed us to more accurately geo-locate the biggest culprits of environmental damage in the network. We had to make significant assumptions to simplify our analysis because we could not get access to this data.
 
+CDN services recognised:
+- Cloudflare
+- Akamai
+- Fastly
+- AWS (Partial)
+- Azure (Partial)
+- Google (Partial)
+
+We hope to expand this list in the future. We have handled the case in the story where we couldn't identify a CDN.
+
+
 ## What's next for [digitalfootprint.earth](https://digitalfootprint.earth)
 
 Although this hackathon took place over three weeks, there were still a lot of features that we would have loved to implement that we did not have time for. The following is a list of some of the extensions we would like to implement next:
-
-<!-- check wording with Alex -->
 
 - Improving the accuracy of CDN locations: the datasets we could find with the locations of CDNs from different hosting providers was notably incomplete. A more complete dataset would help to give a more complete picture of the scale of this issue.
 - Tracing the green efficiency of specific CDN locations: this data was very difficult to source and we could not get access to whether or not a specific CDN
@@ -125,8 +133,8 @@ If you don't host your own site, that doesn't mean that there's nothing you can 
 
 ## Citations
 
-[1] [BBC. Why your internet habits are not as clean as you think](https://www.bbc.com/future/article/20200305-why-your-internet-habits-are-not-as-clean-as-you-think#:~:text=The%20carbon%20footprint%20of%20our,a%20researcher%20at%20Lancaster%20University)
-[2] [WWF. Plastic waste and climate change whats the connection?](https://www.wwf.org.au/news/blogs/plastic-waste-and-climate-change-whats-the-connection#gs.az5w7t)
-[3] [Digiplex. Factories of the digital Age](https://digiplex.com/insights/factories-of-the-digital-age/)
-[4] [Statista. Digital population worldwide](https://www.statista.com/statistics/617136/digital-population-worldwide/#:~:text=How%20many%20people%20use%20the,the%20internet%20via%20mobile%20devices)
-[5] [BBC Science Focus. Citation of the Boston Consulting Group (BCG)](https://www.sciencefocus.com/science/what-is-the-carbon-footprint-of-the-internet/)
+- [1] [BBC. Why your internet habits are not as clean as you think](https://www.bbc.com/future/article/20200305-why-your-internet-habits-are-not-as-clean-as-you-think#:~:text=The%20carbon%20footprint%20of%20our,a%20researcher%20at%20Lancaster%20University)
+- [2] [WWF. Plastic waste and climate change whats the connection?](https://www.wwf.org.au/news/blogs/plastic-waste-and-climate-change-whats-the-connection#gs.az5w7t)
+- [3] [Digiplex. Factories of the digital Age](https://digiplex.com/insights/factories-of-the-digital-age/)
+- [4] [Statista. Digital population worldwide](https://www.statista.com/statistics/617136/digital-population-worldwide/#:~:text=How%20many%20people%20use%20the,the%20internet%20via%20mobile%20devices)
+- [5] [BBC Science Focus. Citation of the Boston Consulting Group (BCG)](https://www.sciencefocus.com/science/what-is-the-carbon-footprint-of-the-internet/)

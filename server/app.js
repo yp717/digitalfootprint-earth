@@ -200,7 +200,8 @@ app.get("/story/:url", cors(), async (req, res) => {
 });
 
 app.get("/badge", async (req, res) => {
-  const URL = req.query.url.toLowerCase()|| req.get("host");
+  let URL = req.query.url || req.get("host");
+  URL = URL.toLowerCase()
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();

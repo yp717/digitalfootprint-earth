@@ -72,13 +72,11 @@ const BiggerPicture = () => {
         <div id="our-badge"></div>
         <div className="bg-gray-800 w-full rounded p-2">
           <code className="whitespace-pre-wrap">
-            {`<div id="our-badge"></div>
-<script
-  type="text/javascript"
-  src="https://api.digitalfootprint.earth/badge"
-></script>
-<script type="text/javascript" defer>
-  generateBadge.init(); generateBadge.draw("our-badge");
+            {`<div id="our-badge-1"></div>
+<script type="text/javascript" src="https://api.digitalfootprint.earth/badge"></script>
+<script type="text/javascript">
+ generateBadge.init('#fff', "#32292F");
+ generateBadge.draw("our-badge-1");
 </script>`}
           </code>
         </div>

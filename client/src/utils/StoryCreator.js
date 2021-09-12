@@ -18,13 +18,65 @@ const defaultStoryItem = {
   showHostingScore: false,
 }
 
+/**
+ * Returns a bezier interpolated value, using the given ranges
+ * @param {number} value  Value to be interpolated
+ * @param {number} s1 Source range start
+ * @param {number} s2  Source range end
+ * @param {number} t1  Target range start
+ * @param {number} t2  Target range end
+ * @param {number} [slope]  Weight of the curve (0.5 = linear, 0.1 = weighted near target start, 0.9 = weighted near target end)
+ * @returns {number} Interpolated value
+ */
+var interpolate = function (value, s1, s2, t1, t2, slope) {
+  //Default to linear interpolation
+  slope = slope || 0.5
+
+  //If the value is out of the source range, floor to min/max target values
+  if (value < Math.min(s1, s2)) {
+    return Math.min(s1, s2) === s1 ? t1 : t2
+  }
+
+  if (value > Math.max(s1, s2)) {
+    return Math.max(s1, s2) === s1 ? t1 : t2
+  }
+
+  //Reverse the value, to make it correspond to the target range (this is a side-effect of the bezier calculation)
+  value = s2 - value
+
+  var C1 = { x: s1, y: t1 } //Start of bezier curve
+  var C3 = { x: s2, y: t2 } //End of bezier curve
+  var C2 = {
+    //Control point
+    x: C3.x,
+    y: C1.y + Math.abs(slope) * (C3.y - C1.y),
+  }
+
+  //Find out how far the value is on the curve
+  var percent = value / (C3.x - C1.x)
+
+  return C1.y * b1(percent) + C2.y * b2(percent) + C3.y * b3(percent)
+
+  function b1(t) {
+    return t * t
+  }
+  function b2(t) {
+    return 2 * t * (1 - t)
+  }
+  function b3(t) {
+    return (1 - t) * (1 - t)
+  }
+}
+
 // zoom 1: 20k x 20k
 // zoom 15: 25m x 25m
 function computeZoom(dist) {
-  const overhead = 0.4
-  const linInterpolator = (x, y, a) => x * (1 - a) + y * a
-  console.log(linInterpolator(15, 1, (dist * (1 + overhead)) / 6371 ))
-  return Math.floor(linInterpolator(15, 1, (dist * (1 + overhead)) / 6371 ))
+  const overhead = 0.2
+
+  console.log(interpolate((dist * (1 + overhead)) / 6371, 0, 1, 13.5, 1, 8))
+  return Math.floor(
+    interpolate((dist * (1 + overhead)) / 6371, 0, 1, 13.5, 1, 8)
+  )
 }
 
 const StoryCreator = data => {
@@ -38,11 +90,9 @@ const StoryCreator = data => {
     url,
     data: greenData,
   } = data.environmentalData.greenWebFoundation
-  const { saPolygons } = data.serviceArea
+  const { saPolygons, approxDistance } = data.serviceArea
   const { totalSize } = data.performance
   const { hosting, pageWeight, performance, total } = data.auditScores
-
-  console.log({ data })
 
   ////////// PART 1: Story Introduction //////////
   if (typeof data.geoLocation === "undefined") {
@@ -178,14 +228,14 @@ const StoryCreator = data => {
     storyItems.push({
       ...defaultStoryItem,
       title: `${carbon}g of carbon`,
-      body: `You could travel by car this far and release the same amount.`,
+      body: `You could travel this far by car and release the same amount if you visit this website 100 times.`,
       serviceArea: saPolygons,
       goTo: {
         target: [
           parseFloat(data.geoLocation.lon),
           parseFloat(data.geoLocation.lat),
         ],
-        zoom: 12,
+        zoom: computeZoom(approxDistance),
         duration: 2000,
       },
     })
@@ -283,14 +333,15 @@ const StoryCreator = data => {
   // Performance
   let perfBodyText = ""
   switch (performance) {
-    case 0 || 1:
+    case 0:
+    case 1:
       perfBodyText = `${url} achieved a below average performance score. Improving this websites performance could significantly reduce its carbon footprint.`
       break
     case 2:
       perfBodyText = `${url} achieved an average performance score. Any steps taken to further improve this sites could significantly reduce your carbon footprint and improve user experience with faster load times.`
       break
     case 3:
-      perfBodyText = `${url} achieved an excellent performance score. This means that ...`
+      perfBodyText = `${url} achieved an excellent performance score. This means that the site loads quickly and is efficient!`
       break
     default:
       console.error("received invalid performance score")
@@ -342,6 +393,3 @@ const StoryCreator = data => {
 }
 
 export default StoryCreator
-
-// If you own this site, there are a number of steps you can take to make your site greener!
-// If not, there are still steps you can take to be a greener digital citizen

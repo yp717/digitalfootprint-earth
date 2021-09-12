@@ -1,31 +1,20 @@
 require("dotenv").config();
-require("cross-fetch/polyfill");
-require("isomorphic-form-data");
-
-const { ApiKey } = require("@esri/arcgis-rest-auth");
-// const { solveRoute } = require("@esri/arcgis-rest-routing");
-const { serviceArea } = require("@esri/arcgis-rest-routing");
+const fetch = require("node-fetch");
 
 const apiKey = process.env.ARCGIS_API_KEY;
 
-const avg_C02_car_per_km = 120.1; // g/km
-
 async function computeServiceArea(origin, c02_used) {
-  const authentication = new ApiKey({
-    key: apiKey,
-  });
+  // how many minutes it takes to generate the same amount of carbon as the website?
+  // By visiting the website 100 times, compute the radius that you could drive to from your location
+  // assumes average car speed of 50 km/h and avg c02 output from cars of 0.099 kg/km (= 99 g/km)
+  // approximation based on:https://www.carbonindependent.org/17.html#:~:text=A%20second%20estimate%20(not%20used,i.e.%20a%20considerably%20higher%20estimate
+  const timeRadius = (c02_used * 100 * 60 )/ (99 * 50)//(50 * 0.099 * 1000) / (60 * c02_used);
 
-  // to get km radius -> this assumes the c02 is given in grams
-  const radius = c02_used / avg_C02_car_per_km;
-  const distanceCutoff = [radius];
-  return serviceArea({
-    facilities: [origin],
-    // defaultBreaks: [distanceCutoff],
-    impedanceAttributeName: "Kilometers",
-    kilometers: distanceCutoff,
-    trimOuterPolygon: true,
-    authentication,
-  });
+  let response = await fetch(
+    `https://route.arcgis.com/arcgis/rest/services/World/ServiceAreas/NAServer/ServiceArea_World/solveServiceArea?token=${apiKey}&defaultBreaks=${[timeRadius]}&facilities=${[origin]}&f=json`
+  ).then(res => res.json());
+  response.approxDistance = (c02_used * 100) / 99
+  return response
 }
 
 module.exports = {
