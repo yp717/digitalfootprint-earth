@@ -69,7 +69,7 @@ app.get("/stats", cors(corsOptions), async (req, res) => {
 });
 
 app.get("/timeline/:url", cors(corsOptions), async (req, res) => {
-  var URL = req.params.url;
+  var URL = req.params.url.toLowerCase();
   const validURL = await validateURL(URL);
   if (!validURL) {
     res.sendStatus(400);
@@ -91,7 +91,7 @@ app.get("/timeline/:url", cors(corsOptions), async (req, res) => {
 });
 
 app.get("/audit/:url", cors(), async (req, res) => {
-  var URL = req.params.url;
+  var URL = req.params.url.toLowerCase();
   const validURL = await validateURL(URL);
 
   if (!validURL) {
@@ -143,8 +143,7 @@ app.get("/audit/:url", cors(), async (req, res) => {
 });
 
 app.get("/story/:url", cors(), async (req, res) => {
-  console.log(req.params);
-  var URL = req.params.url;
+  var URL = req.params.url.toLowerCase();
   const validURL = await validateURL(URL);
   if (!validURL) {
     res.sendStatus(400);
@@ -201,7 +200,7 @@ app.get("/story/:url", cors(), async (req, res) => {
 });
 
 app.get("/badge", async (req, res) => {
-  const URL = req.query.url || req.get("host");
+  const URL = req.query.url.toLowerCase()|| req.get("host");
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
