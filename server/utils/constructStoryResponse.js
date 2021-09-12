@@ -25,7 +25,7 @@ async function constructStoryResponse(data, req, res) {
     userInfo = { ...userInfo, city };
   }
 
-  res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation, exampleCdnLoc });
+  res.send({ ...data, userInfo, cdnInfo, serviceArea, geoLocation, exampleCdnLoc: Object.keys(exampleCdnLoc).map((key) => exampleCdnLoc[key]), });
 }
 
 module.exports = {

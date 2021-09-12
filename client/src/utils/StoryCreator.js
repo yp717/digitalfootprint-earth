@@ -27,11 +27,11 @@ const StoryCreator = data => {
 
   console.log({ data })
 
+  ////////// PART 1: Story Introduction //////////
   if (typeof data.geoLocation === "undefined") {
     storyItems.push({
       ...defaultStoryItem,
       title: "It all starts with you.",
-
       body: `Your request to ${url} started from your laptop and was routed via your ISP - ${isp} in ${city}.`,
       goTo: {
         target: [data.userInfo.lon, data.userInfo.lat],
@@ -70,7 +70,6 @@ const StoryCreator = data => {
   }
 
   ////////// PART 2: CDN Locations //////////
-
   if (cdnProvider !== "UNKNOWN") {
     const CDNDistance = getDistanceInKM(data.userInfo, data.requestData)
     storyItems.push({
@@ -100,10 +99,12 @@ const StoryCreator = data => {
         },
       ],
     })
+
+    console.log({ cdnLocations })
     storyItems.push({
       ...defaultStoryItem,
       title: "The CDN Network",
-      body: `${cdnProvider} has servers in ${cdnLocations.length} locations around the globe serving requests every minute.`,
+      body: `${cdnProvider} has servers in ${cdnLocations.length} locations around the globe serving requests every second.`,
       goTo: {
         target: [data.requestData.lon, data.requestData.lat],
         zoom: 3,
@@ -122,6 +123,29 @@ const StoryCreator = data => {
   } else {
     // TODO: While we couldn't find this sites exact CDN. Akamai is a great example of a typical CDN
     // When you visit a website, your request
+    const sample_cdn_locs = Object.entries(data.exampleCdnLoc)
+
+    storyItems.push({
+      ...defaultStoryItem,
+      title: "CDN Networks",
+      body: `While we couldn't find this sites exact Content Delivery Network (CDN), Akamai is a great example. Akamai has servers in ${sample_cdn_locs.length} locations around the globe serving requests every second.`,
+      goTo: {
+        target: [data.requestData.lon, data.requestData.lat],
+        zoom: 3,
+        duration:
+          15 * (1 / getDistance(data.userInfo, data.requestData)) - 3 < 1
+            ? 100
+            : 2000,
+      },
+      rotate: false,
+      points: sample_cdn_locs.map(item => {
+        console.log({ item })
+        return {
+          latitude: item.lat,
+          longitude: item.lon,
+        }
+      }),
+    })
   }
 
   ////////// PART 4: Analysis specific to individual //////////
