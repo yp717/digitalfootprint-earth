@@ -29,6 +29,7 @@ const SEO = ({ title, description }) => {
   return (
     <Helmet
       title={title}
+      titleTemplate={`%s · digitalfootprint.earth`}
       meta={[
         {
           property: `title`,
@@ -37,6 +38,18 @@ const SEO = ({ title, description }) => {
         {
           property: `description`,
           content: metaDescription,
+        },
+        {
+          property: `og:image`,
+          content: `https://ik.imagekit.io/sld/Screenshot_2021-09-13_at_09.58.19_wg1PxhSlh.png`,
+        },
+        {
+          property: `og:title`,
+          content: title,
+        },
+        {
+          property: `og:description`,
+          content: description,
         },
       ]}
     />

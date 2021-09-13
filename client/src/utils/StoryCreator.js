@@ -268,8 +268,8 @@ const StoryCreator = data => {
 
   storyItems.push({
     ...defaultStoryItem,
-    title:
-      "This map shows the CO2 emissions per capita by country. Every single request to a website produces CO2 - producing more combined emissions than all countries except the US and China, more than the entire airline industry anually and almost as much as the production and inciniration of plastic.",
+    title: "This map shows the CO2 emissions per capita by country.",
+    body: "Every single request to a website produces CO2 - producing more combined emissions than all countries except the US and China, more than the entire airline industry anually and almost as much as the production and inciniration of plastic.",
     rotate: true,
     layers: ["CO2"],
   })
