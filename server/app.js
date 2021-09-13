@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const path = require("path");
 const express = require("express");
 var firebase = require("firebase-admin");
-const differenceInHours = require("date-fns/differenceInHours");
+const differenceInDays = require("date-fns/differenceInDays");
 const format = require("date-fns/format");
 var cors = require("cors");
 const { generateAudit } = require("./generateAudit");
@@ -50,7 +50,8 @@ function notStale(doc) {
   }
   const currentTime = new Date();
   const auditTime = time.toDate();
-  return differenceInHours(currentTime, auditTime) < 24 * 7;
+  console.log(differenceInDays(currentTime, auditTime))
+  return differenceInDays(currentTime, auditTime) < 7;
 }
 
 app.use(function (req, res, next) {
@@ -201,7 +202,7 @@ app.get("/story/:url", cors(), async (req, res) => {
 
 app.get("/badge", async (req, res) => {
   let URL = req.query.url || req.get("host");
-  URL = URL.toLowerCase()
+  URL = URL.toLowerCase();
   const id = crypto.createHash(`md5`).update(`${URL}`).digest(`hex`);
   const userDocRef = await db.collection("stories").doc(id);
   const doc = await userDocRef.get();
