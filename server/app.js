@@ -50,7 +50,7 @@ function notStale(doc) {
   }
   const currentTime = new Date();
   const auditTime = time.toDate();
-  return differenceInHours(currentTime, auditTime) < 12;
+  return differenceInHours(currentTime, auditTime) < 24 * 7;
 }
 
 app.use(function (req, res, next) {
