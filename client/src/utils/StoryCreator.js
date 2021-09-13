@@ -18,17 +18,7 @@ const defaultStoryItem = {
   showHostingScore: false,
 }
 
-/**
- * Returns a bezier interpolated value, using the given ranges
- * @param {number} value  Value to be interpolated
- * @param {number} s1 Source range start
- * @param {number} s2  Source range end
- * @param {number} t1  Target range start
- * @param {number} t2  Target range end
- * @param {number} [slope]  Weight of the curve (0.5 = linear, 0.1 = weighted near target start, 0.9 = weighted near target end)
- * @returns {number} Interpolated value
- */
-var interpolate = function (value, s1, s2, t1, t2, slope) {
+function interpolate(value, s1, s2, t1, t2, slope) {
   //Default to linear interpolation
   slope = slope || 0.5
 
@@ -55,8 +45,6 @@ var interpolate = function (value, s1, s2, t1, t2, slope) {
   //Find out how far the value is on the curve
   var percent = value / (C3.x - C1.x)
 
-  return C1.y * b1(percent) + C2.y * b2(percent) + C3.y * b3(percent)
-
   function b1(t) {
     return t * t
   }
@@ -66,14 +54,14 @@ var interpolate = function (value, s1, s2, t1, t2, slope) {
   function b3(t) {
     return (1 - t) * (1 - t)
   }
+
+  return C1.y * b1(percent) + C2.y * b2(percent) + C3.y * b3(percent)
 }
 
 // zoom 1: 20k x 20k
 // zoom 15: 25m x 25m
 function computeZoom(dist) {
   const overhead = 0.2
-
-  console.log(interpolate((dist * (1 + overhead)) / 6371, 0, 1, 13.5, 1, 8))
   return Math.floor(
     interpolate((dist * (1 + overhead)) / 6371, 0, 1, 13.5, 1, 8)
   )
@@ -92,7 +80,7 @@ const StoryCreator = data => {
   } = data.environmentalData.greenWebFoundation
   const { saPolygons, approxDistance } = data.serviceArea
   const { totalSize } = data.performance
-  const { hosting, pageWeight, performance, total } = data.auditScores
+  const { hosting, pageWeight, performance } = data.auditScores
 
   ////////// PART 1: Story Introduction //////////
   if (typeof data.geoLocation === "undefined") {

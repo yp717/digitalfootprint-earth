@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import Header from "../components/core/Header"
 import sampleRequest from "../assets/sample-audit-request.json"
 import { StaticImage } from "gatsby-plugin-image"
-import SEO from "../components/core/SEO"
+import Seo from "../components/core/SEO"
 import Footer from "../components/core/Footer"
 
 const ReactJson = React.lazy(() => import("react-json-view"))
@@ -13,7 +13,7 @@ const BiggerPicture = () => {
   useEffect(() => {}, [])
   return (
     <div className="space-y-12 md:space-y-24 pb-12 px-2">
-      <SEO
+      <Seo
         title="API"
         description="Digitalfootprint.earth API Access & Badge"
       />

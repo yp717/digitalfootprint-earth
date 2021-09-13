@@ -11,7 +11,6 @@ import {
 import { CheckCircleIcon as CheckCircleOutline } from "@heroicons/react/outline"
 import { motion } from "framer-motion"
 import AuditUI from "./AuditUI"
-import Overlay from "./Overlay"
 import { Link } from "gatsby"
 import ActGreener from "./ActGreener"
 
@@ -97,7 +96,6 @@ const StoryUI = () => {
   if (hero) {
     return (
       <>
-        <Overlay />
         <AuditUI />
         <div className="absolute top-0 left-0 w-full h-full z-10">
           <div className="relative w-full h-full z-20">
@@ -170,7 +168,6 @@ const StoryUI = () => {
   }
   return (
     <>
-      <Overlay />
       <AuditUI />
       <div className="absolute bottom-0 right-0 mb-12 px-4 w-full z-30">
         <div className="w-full md:max-w-xl ml-auto">

@@ -43,38 +43,6 @@ export const StoryProvider = ({ ...props }) => {
 
   const { latitude, longitude } = usePosition()
 
-  useEffect(() => {
-    if (geoLocationOverlook) {
-      submitURL(tempURL)
-    }
-  }, [geoLocationOverlook])
-  async function validateURL(userInput) {
-    // If the URL is not valid then return false
-    var pattern = new RegExp(
-      "^(https?:\\/\\/)?" + // protocol
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-        "(\\#[-a-z\\d_]*)?$",
-      "i"
-    )
-
-    if (await !pattern.test(userInput)) {
-      setValidationError(true)
-      return false
-    }
-
-    setValidationError(false)
-    // Remove the protocol if there is one
-    let result = userInput.replace(/(^\w+:|^)\/\//, "")
-
-    // Remove any trailing paths if there are any
-    result = result.split("/")[0]
-
-    return result
-  }
-
   const submitURL = async userInput => {
     const p = new Ping()
     let time = -1
@@ -109,6 +77,40 @@ export const StoryProvider = ({ ...props }) => {
       }
     }
   }
+  
+  useEffect(() => {
+    if (geoLocationOverlook) {
+      submitURL(tempURL)
+    }
+  }, [geoLocationOverlook, submitURL, tempURL])
+  async function validateURL(userInput) {
+    // If the URL is not valid then return false
+    var pattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    )
+
+    if (await !pattern.test(userInput)) {
+      setValidationError(true)
+      return false
+    }
+
+    setValidationError(false)
+    // Remove the protocol if there is one
+    let result = userInput.replace(/(^\w+:|^)\/\//, "")
+
+    // Remove any trailing paths if there are any
+    result = result.split("/")[0]
+
+    return result
+  }
+
+
 
   useEffect(() => {
     if (ready && showTools) {

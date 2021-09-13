@@ -1,15 +1,14 @@
 const proseClasses = ["h1", "h2", "h3", "h4", "h5", "h6"].reduce((acc, cur) => {
   acc[cur] = {
     color: "#FBBF24",
-  };
-  return acc;
-}, {});
-
+  }
+  return acc
+}, {})
 
 module.exports = {
   variants: {},
   theme: {
-    extend:{
+    extend: {
       typography: {
         primary: {
           css: {
@@ -17,11 +16,11 @@ module.exports = {
             strong: {
               color: "#fff",
             },
-            ...proseClasses
+            ...proseClasses,
           },
         },
-    }
-  },
+      },
+    },
   },
   purge: {
     content: [

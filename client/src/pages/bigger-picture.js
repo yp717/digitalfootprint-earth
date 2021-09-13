@@ -4,7 +4,7 @@ import { useState } from "react"
 import ProportionGreen from "../components/visualizations/ProportionGreen"
 import PerformanceOverview from "../components/visualizations/PerformanceOverview"
 import PopularSitesOverview from "../components/visualizations/PopularSitesOverview"
-import SEO from "../components/core/SEO"
+import Seo from "../components/core/SEO"
 import Layout from "../components/core/Layout"
 import Footer from "../components/core/Footer"
 
@@ -27,7 +27,7 @@ const BiggerPicture = () => {
   if (loading) {
     return (
       <div className="absolute z-30 h-full w-full top-0 left-0">
-        <SEO
+        <Seo
           title="Bigger Picture"
           description="A closer look at the bigger picture behind your digital footprint."
         />
